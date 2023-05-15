@@ -13,9 +13,9 @@ SOURCES = $(shell find $(SRC_DIR) -type f -name '*.c')
 OBJECTS := $(patsubst $(SRC_DIR)%,$(OBJ_DIR)%,$(SOURCES:.c=.o))	
 
 CC  := gcc
-IFLAGS := -Iinclude -I$(LIBFT_DIR)/include -I$(shell brew --prefix readline)/include
+IFLAGS := -Iinclude -I$(LIBFT_DIR)/include #-I$(shell brew --prefix readline)/include
 CFLAGS := -Wall -Wextra -Werror #-g3 -fsanitize=address
-LFLAGS := -Llibft -lft -L$(shell brew --prefix readline)/lib -lreadline -lhistory
+LFLAGS := -Llibft -lft  -lreadline -lhistory #-L$(shell brew --prefix readline)/lib
 
 GREEN = \x1b[32;01m
 RED = \x1b[31;01m
