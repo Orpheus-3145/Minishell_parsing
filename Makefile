@@ -21,6 +21,8 @@ ifeq ($(shell uname -s),Darwin)			# Mac
 	IFLAGS := $(IFLAGS) -I$(shell brew --prefix readline)/include
 	LFLAGS := $(LFLAGS) -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 else ifeq ($(shell uname -s),Linux)		# Linux
+#	IFLAGS := $(IFLAGS)
+	LFLAGS := $(LFLAGS) -lreadline -lhistory
 	
 endif
 
@@ -35,8 +37,9 @@ all: $(LIBFT) $(NAME)
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --quiet
 
+#su Linux invertito l'ordine di $(OBJECTS) e $(LFLAGS)
 $(NAME): $(OBJ_DIR) $(OBJECTS)
-	@$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) $(OBJECTS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJECTS) $(LFLAGS) -o $(NAME)
 	@printf "(minishell) $(GREEN)Created program $(NAME)$(RESET)\n"
 
 $(OBJ_DIR):

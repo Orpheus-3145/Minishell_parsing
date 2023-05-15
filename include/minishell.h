@@ -20,31 +20,37 @@
 # include <stdbool.h>		// boolean types
 # include <stdint.h>		// cross-compiler types
 
+typedef struct s_env
+{
+    struct s_env    *next;
+    char            *key;
+    char            *value;
+}   t_env;
+
 typedef struct s_cmd
 {
-	struct s_cmd    next;
-	char            **file;
-	char            **cmd_full;
-	char            *cmd_name;
-	int             *redirect;
+    char    *cmd_name;
+    char    **cmd_full;
+    int     *redirect;
+    char    **file;
+    t_env   *env_list;
+    char    **env_arr;
 }   t_cmd;
+
 
 typedef struct s_var
 {
-	t_cmd   *cmd_data;
-	t_env   *env_list;
-	pid_t   *pid;
-	char    **env_arr;
-	int     **pipes;
-	int     size;
-	int     status;
+    t_cmd   *cmd_data;
+    int     size;
+    t_env   *env_list;
+    char    **env_arr;
+    int     **pipes;
+    pid_t   *pid;
+    int     status;
 }   t_var;
 
-typedef struct s_env
-{
-	struct s_env    *next;
-	char            *key;
-	char            *value;
-}   t_env;
+bool    check_pipes(char *cmd);
+
+bool	check_between_pipes(char *str, int32_t pos1, int32_t pos2);
 
 #endif
