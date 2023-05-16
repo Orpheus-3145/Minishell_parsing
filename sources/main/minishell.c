@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:25:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/16 20:31:36 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/16 21:17:28 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,7 @@ char	*add_cmd_to_hist(void)
 {
 	char *cmd;
 	
-	cmd = NULL;
-	while (true)
-	{
-		cmd = readline("|-> ");
-		
-	}
+	cmd = readline("|-> ");
 	if (cmd && *cmd)
 		add_history(cmd);
 	if (! ft_strncmp((const char *) cmd, "end", 3))
