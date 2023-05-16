@@ -22,35 +22,62 @@
 
 typedef struct s_env
 {
-    struct s_env    *next;
-    char            *key;
-    char            *value;
+	struct s_env	*next;
+	char			*key;
+	char			*value;
 }   t_env;
 
 typedef struct s_cmd
 {
-    char    *cmd_name;
-    char    **cmd_full;
-    int     *redirect;
-    char    **file;
-    t_env   *env_list;
-    char    **env_arr;
+	char	*cmd_name;
+	char	**cmd_full;
+	int		*redirect;
+	char	**file;
+	t_env	*env_list;
+	char	**env_arr;
 }   t_cmd;
 
+typedef struct s_raw_cmd
+{
+	struct s_raw_cmd	*next;
+	char				*cmd_input;
+	uint32_t			n_cmds;
+	t_cmd				*cmd_list;
+}   t_raw_cmd;
 
 typedef struct s_var
 {
-    t_cmd   *cmd_data;
-    int     size;
-    t_env   *env_list;
-    char    **env_arr;
-    int     **pipes;
-    pid_t   *pid;
-    int     status;
+	t_cmd	*cmd_data;
+	int		size;
+	t_env	*env_list;
+	char	**env_arr;
+	int		**pipes;
+	pid_t	*pid;
+	int		status;
 }   t_var;
 
 bool    check_pipes(char *cmd);
 
 bool	check_between_pipes(char *str, int32_t pos1, int32_t pos2);
+
+bool    check_redirections(char *str);
+
+bool	check_quotes(char *cmd);
+
+bool	check_cmd(char *cmd);
+
+bool	add_raw_cmd(t_raw_cmd **history, char *new_input);
+
+void    free_cmds(t_raw_cmd **list);
+
+void    print_cmds(t_raw_cmd *c_list);
+
+char	*add_cmd_to_hist(void);
+
+void    read_and_store(void);
+
+void 	test_pipes(void);
+
+void 	test_redirections(void);
 
 #endif
