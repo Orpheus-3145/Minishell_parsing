@@ -31,7 +31,7 @@ typedef struct s_cmd
 {
 	char	*cmd_name;
 	char	**cmd_full;
-	int		*redirect;
+	int		*redirect;			//could be list 
 	char	**file;
 	t_env	*env_list;
 	char	**env_arr;
@@ -47,13 +47,13 @@ typedef struct s_raw_cmd
 
 typedef struct s_var
 {
-	t_cmd	*cmd_data;
-	int		size;
-	t_env	*env_list;
-	char	**env_arr;
-	int		**pipes;
-	pid_t	*pid;
-	int		status;
+	t_cmd		*cmd_data;
+	uint32_t	n_cmd;
+	t_env		*env_list;
+	char		**env_arr;
+	int			**pipes;
+	pid_t		*pid;
+	int			status;
 }   t_var;
 
 bool    check_pipes(char *cmd);
@@ -79,5 +79,13 @@ void    read_and_store(void);
 void 	test_pipes(void);
 
 void 	test_redirections(void);
+
+void	test_trim(void);
+
+void	test_last_pipe(void);
+
+bool	trailing_pipe(char	*cmd);
+
+char	*malloc_str(const char *str);
 
 #endif
