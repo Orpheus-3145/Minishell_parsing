@@ -6,7 +6,7 @@
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/05/17 17:13:22 by faru          ########   odam.nl         */
+/*   Updated: 2023/05/17 17:45:42 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,15 @@ bool	trailing_pipe(char	*cmd)
 	return (cmd[len_cmd] == '|');
 }
 
+bool	heredoc(char *cmd)
+{
+	uint32_t	len_cmd;
+
+	len_cmd = ft_strlen(cmd);
+	while (len_cmd && ft_isspace(cmd[--len_cmd]))
+		;
+	return (cmd[len_cmd] == '|');
+}
 char	*add_cmd_to_hist(void)
 {
 	char	*cmd;
@@ -32,13 +41,15 @@ char	*add_cmd_to_hist(void)
 	{
 		cmd = ft_append_char(cmd, ' ');
 		if (! cmd)
-			return (NULL);
+			return (NULL);		// memory fault
 		cmd = ft_concat(cmd, readline("> "));
 		if (! cmd)
-			return (NULL);
+			return (NULL);		// memory fault
 	}
 	trimmed = ft_trim(cmd);
-	if (trimmed && *trimmed)
+	if (! trimmed)
+		return (NULL);			// memory fault
+	if (*trimmed)
 		add_history(trimmed);
 	return (trimmed);
 }
