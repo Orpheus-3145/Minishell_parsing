@@ -84,6 +84,10 @@ void	test_trim(void);
 
 void	test_last_pipe(void);
 
+void	test_next_d_red(void);
+
+void	test_eof(void);
+
 void	test_quotes(void);
 
 bool	trailing_pipe(char	*cmd);
@@ -94,7 +98,7 @@ bool	is_quote(char to_check);
 
 bool	is_arrow(char to_check);
 
-char	*find_next_d_red(char *cmd);
+int32_t	find_next_eof_pos(char *cmd);
 
 char	*find_eof(char *start);
 

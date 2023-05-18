@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:25:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/18 15:29:03 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/18 19:57:00 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ int main(int argc, char**argv, char **envp)
 	// test_pipes();
 	// test_last_pipe();
 	// test_quotes();
+	// test_trim();
+	// test_next_d_red();
+	// test_eof();
 	argc++;
 	argv++;
 	envp++;
-	// test_trim();
 	main_loop();
 	return (0);
 }

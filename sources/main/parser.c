@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:26:00 by fra               #+#    #+#             */
-/*   Updated: 2023/05/18 18:24:24 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/18 21:26:25 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,21 +71,6 @@ bool    check_pipes(char *cmd)
 	}
 	return (true);
 }
-
-// bool	check_eof(char *cmd)
-// {
-// 	while(*cmd && (ft_isspace(*cmd)))
-// 		cmd++;
-// 	if (! is_quote(*cmd))
-// 	{
-// 		if ((*cmd == '|') || (*cmd == '<') || (*cmd == '>'))
-// 			return (false);
-// 		else
-// 			return (true);
-// 	}
-// 	else
-// 		return (true);
-// }
 
 bool	check_redirections(char *str)
 {

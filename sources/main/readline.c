@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 11:03:02 by faru              #+#    #+#             */
-/*   Updated: 2023/05/18 19:09:29 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/18 21:36:50 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,23 +34,25 @@ bool	is_arrow(char to_check)
 	return ((to_check == '<') || (to_check == '>'));
 }
 
-char	*find_next_d_red(char *cmd)
+int32_t	find_next_eof_pos(char *cmd)
 {
-	bool	open_quotes;
+	uint32_t	pos;
+	bool		open_quotes;
 
+	pos = 0;
 	open_quotes = false;
-	while (*cmd)
+	while (cmd && cmd[pos] && (cmd[pos] != '\n'))
 	{
-		if (is_quote(*cmd))
+		if (is_quote(cmd[pos]))
 			open_quotes = ! open_quotes;
-		else if (*cmd == '<')
+		else if (cmd[pos] == '<')
 		{
-			if (*(cmd + 1) && (*(cmd + 1) == '<'))
-				return (cmd);
+			if (cmd[pos + 1] && (cmd[pos + 1] == '<'))
+				return (pos + 2);
 		}
-		cmd++;
+		pos++;
 	}
-	return (NULL);
+	return (-1);
 }
 
 char	*find_eof(char *start)
@@ -58,7 +60,6 @@ char	*find_eof(char *start)
 	char 		start_quote;
 	char 		*eof;
 	uint32_t	i;
-	uint32_t	j;
 
 	while(*start && (ft_isspace(*start)))
 		start++;
@@ -79,26 +80,33 @@ char	*find_eof(char *start)
 	eof = ft_calloc((i + 1), sizeof(char));
 	if (eof)
 	{
-		j = 0;
-		while (j < i)
-		{
-			eof[j] = start[j];
-			j++;
-		}
+		while (i--)
+			eof[i] = start[i];
 	}
 	return (eof);
+}
+
+char	*ft_readline(const char *prompt)
+{
+	char	*new_string;
+	char	*copy;
+
+	new_string = readline(prompt);
+	if (! new_string)					// readline failed!
+		return (NULL);
+	copy = ft_strdup(new_string);
+	return (copy);
 }
 
 char	*new_cmd(void)
 {
 	char	*cmd;
-	char	*red_stdin;
+	int32_t	eof_pos;
 	char	*new_line;
 	char	*eof;
 	char	join_char;
 
-	cmd = readline("|-> ");								// puo' ritornare NULL
-	// printf("input line: |%s|\n", cmd);
+	cmd = ft_readline("|-> ");									// puo' ritornare NULL
 	if ((! cmd) || (! *cmd))
 		return (cmd);
 	if (! check_cmd(cmd))
@@ -106,17 +114,16 @@ char	*new_cmd(void)
 		ft_printf("sintax error!\n");
 		return (cmd);
 	}
-	red_stdin = find_next_d_red(cmd);
-	if (red_stdin)
+	eof_pos = find_next_eof_pos(cmd);
+	if (eof_pos != -1)
 		join_char = '\n';
 	else
 		join_char = ' ';
-	while (red_stdin)
+	while (eof_pos != -1)
 	{
-		red_stdin += 2;
-		eof = find_eof(red_stdin);
-		new_line = readline("> ");
-		while (ft_strncmp(new_line, eof, ft_strlen(eof) + 1))
+		new_line = ft_readline("> ");							// puo' ritornare NULL
+		eof = find_eof(cmd + eof_pos);
+		while (ft_strncmp(new_line, eof, ft_strlen(eof)))
 		{
 			cmd = ft_append_char(cmd, join_char);
 			if (! cmd)
@@ -124,19 +131,20 @@ char	*new_cmd(void)
 			cmd = ft_concat(cmd, new_line);
 			if (! cmd)
 				return (NULL);								// memory fault
-			new_line = readline("> ");						// puo' ritornare NULL
+			new_line = ft_readline("> ");							// puo' ritornare NULL
 		}
+		ft_printf("str tmp: |%s|\n", cmd + eof_pos);
+		eof_pos = find_next_eof_pos(cmd + eof_pos);
 		free(new_line);
 		free(eof);
-		red_stdin = find_next_d_red(cmd);
 	}
 	while (trailing_pipe(cmd))
 	{
 		cmd = ft_append_char(cmd, join_char);
-		if (! cmd)
-			return (NULL);									// memory fault
+		if (! cmd)											// memory fault
+			return (NULL);
 		new_line = readline("> ");							// puo' ritornare NULL
-		cmd = ft_concat(cmd, readline("> "));
+		cmd = ft_concat(cmd, new_line);
 		if (! cmd)
 			return (NULL);									// memory fault
 		if (! check_cmd(new_line))
