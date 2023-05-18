@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   readline.c                                         :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: faru <faru@student.codam.nl>                 +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/05/17 17:45:42 by faru          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   readline.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/17 11:03:02 by faru              #+#    #+#             */
+/*   Updated: 2023/05/18 02:20:13 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,75 @@ bool	trailing_pipe(char	*cmd)
 	return (cmd[len_cmd] == '|');
 }
 
-bool	heredoc(char *cmd)
+char	*find_eof(char *start)
 {
-	uint32_t	len_cmd;
+	char 		*eof;
+	uint32_t	i;
+	uint32_t	j;
 
-	len_cmd = ft_strlen(cmd);
-	while (len_cmd && ft_isspace(cmd[--len_cmd]))
-		;
-	return (cmd[len_cmd] == '|');
+	while(*start && ft_isspace(*start))
+		start++;
+	i = 0;
+	if ((*start == '\'') || (*start == '\"'))
+	{
+		while (start[i] && (start[i] != *start))
+			i++;
+		i++;
+	}
+	else
+	{
+		while (start[i] && (! ft_isspace(start[i])))
+			i++;
+	}
+	eof = ft_calloc((i + 1), sizeof(char));
+	if (eof)
+	{
+		j = 0;
+		while (j < i)
+		{
+			eof[j] = start[j];
+			j++;
+		}
+	}
+	return (eof);
+	
 }
-char	*add_cmd_to_hist(void)
+
+char	*new_cmd(void)
 {
 	char	*cmd;
 	char	*trimmed;
+	char	*red_stdin;
+	char	*new_line;
+	char	*eof;
+	char	cat_char;
 	
+	cat_char = ' ';
 	cmd = readline("|-> ");
+	red_stdin = ft_strnstr(cmd, "<<", ft_strlen(cmd));		// NB bisogna verificare che l'occorrenza di '<<' non sia all'interno di apici dobbi o singoli
+	if (red_stdin)
+		cat_char = '\n';
+	while (red_stdin)
+	{
+		eof = find_eof(red_stdin);
+		new_line = readline("> ");
+		while (ft_strncmp(new_line, eof, ft_strlen(eof) + 1))
+		{
+			cmd = ft_append_char(cmd, cat_char);
+			if (! cmd)
+				return (NULL);		// memory fault
+			cmd = ft_concat(cmd, new_line);
+			if (! cmd)
+				return (NULL);		// memory fault
+			new_line = readline("> ");
+		}
+		red_stdin += 2;
+		red_stdin = ft_strnstr(red_stdin, "<<", ft_strlen(red_stdin));
+		free(eof);
+	}
 	while (trailing_pipe(cmd))
 	{
-		cmd = ft_append_char(cmd, ' ');
+		cmd = ft_append_char(cmd, cat_char);
 		if (! cmd)
 			return (NULL);		// memory fault
 		cmd = ft_concat(cmd, readline("> "));
@@ -54,7 +105,7 @@ char	*add_cmd_to_hist(void)
 	return (trimmed);
 }
 
-void	read_and_store(void)
+void	main_loop(void)
 {
 	char	*curr_cmd;
 	t_raw_cmd	*history;
@@ -62,7 +113,7 @@ void	read_and_store(void)
 	history = NULL;
 	while (true)
 	{
-		curr_cmd = add_cmd_to_hist();
+		curr_cmd = new_cmd();
 		if (! curr_cmd)
 			break;
 		if (! check_cmd(curr_cmd))

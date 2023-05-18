@@ -1,18 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: fra <fra@student.42.fr>                      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/15 21:26:00 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/17 11:03:00 by faru          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/15 21:26:00 by fra               #+#    #+#             */
+/*   Updated: 2023/05/18 01:38:15 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// it is supposed to never have a | as the trailing char
 bool    check_pipes(char *cmd)
 {
 	uint32_t	i;
@@ -41,7 +40,7 @@ bool    check_pipes(char *cmd)
 				{
 					while (ft_isspace(cmd[++last_pipe_pos]))
 						;
-					if (last_pipe_pos == (int32_t) i)
+					if ((last_pipe_pos >= (int32_t) i) || (cmd[last_pipe_pos] == '<') || (cmd[last_pipe_pos] == '>'))
 						return (false);
 				}
 
@@ -50,28 +49,25 @@ bool    check_pipes(char *cmd)
 		}
 		i++;
 	}
-	if (last_pipe_pos != -1)
-	{
-		while(ft_isspace(cmd[++last_pipe_pos]))
-			;
-		if (! cmd[last_pipe_pos])
-			return (false);
-	}
 	return (true);
 }
 
 bool	check_quotes(char *cmd)
 {
-	bool	closed_quotes;
+	bool		s_quotes_close;
+	bool		d_quotes_close;
 
-	closed_quotes = true;
-	while(*cmd)
+	s_quotes_close = true;
+	d_quotes_close = true;
+	while (*cmd)
 	{
-		if (*cmd == '\'' || *cmd == '\"')
-			closed_quotes = ! closed_quotes;
+		if (*cmd == '\'')
+			s_quotes_close = ! (d_quotes_close && s_quotes_close);
+		else if (*cmd == '\"')
+			d_quotes_close = ! (s_quotes_close && d_quotes_close);
 		cmd++;
 	}
-	return (closed_quotes);
+	return (s_quotes_close && d_quotes_close);
 }
 
 bool	check_redirections(char *str)
@@ -128,11 +124,9 @@ bool	check_redirections(char *str)
 
 bool	check_cmd(char *cmd)
 {
-	if (! cmd || ! *cmd)
+	if (! cmd)
 		return (false);
-	while (ft_isspace(*cmd))
-		cmd++;
-	if (! check_quotes(cmd))
+	else if (! check_quotes(cmd))
 		return (false);
 	else if (! check_pipes(cmd))
 		return (false);

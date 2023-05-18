@@ -72,9 +72,9 @@ void    free_cmds(t_raw_cmd **list);
 
 void    print_cmds(t_raw_cmd *c_list);
 
-char	*add_cmd_to_hist(void);
+char	*new_cmd(void);
 
-void    read_and_store(void);
+void    main_loop(void);
 
 void 	test_pipes(void);
 
@@ -83,6 +83,8 @@ void 	test_redirections(void);
 void	test_trim(void);
 
 void	test_last_pipe(void);
+
+void	test_quotes(void);
 
 bool	trailing_pipe(char	*cmd);
 

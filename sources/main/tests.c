@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   tests.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: fra <fra@student.42.fr>                      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/16 16:49:18 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/17 15:46:49 by faru          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   tests.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/16 16:49:18 by fra               #+#    #+#             */
+/*   Updated: 2023/05/18 01:30:55 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,31 @@ void	test_redirections(void)
 	printf("str: %s - status %d\n", red_str, check_redirections(red_str));
 }
 
+void	test_quotes(void)
+{
+	char *quot_str;
+
+	quot_str = "efdsdf\"asdasd\"asdasd";
+	printf("str: %s - status %d\n", quot_str, check_quotes(quot_str));
+	quot_str = "efdsdf\'asdasd\'asdasd";
+	printf("str: %s - status %d\n", quot_str, check_quotes(quot_str));
+	quot_str = "efdsdf\'asda\"sd\'asdasd";
+	printf("str: %s - status %d\n", quot_str, check_quotes(quot_str));
+	quot_str = "efdsdf\'as\'dasd\'asdasd";
+	printf("str: %s - status %d\n", quot_str, check_quotes(quot_str));
+	quot_str = "efdsdf\'as\"asdasd\"dasd\'asdasd";
+	printf("str: %s - status %d\n", quot_str, check_quotes(quot_str));
+	quot_str = "efdsdf\'as\"asdasd\"dasd\'asdasdas\'asdasd\'dasd";
+	printf("str: %s - status %d\n", quot_str, check_quotes(quot_str));
+	quot_str = "efdsdf\'as\"asdasd\"dasd\'asdasd\"asasdasddasd";
+	printf("str: %s - status %d\n", quot_str, check_quotes(quot_str));
+	quot_str = "efdsdf\'as\"asdasd\"dasd\'asdas\'das\'asdasd\'dasd";
+	printf("str: %s - status %d\n", quot_str, check_quotes(quot_str));
+	quot_str = "efdsdf\'asdasdasdasd";
+	printf("str: %s - status %d\n", quot_str, check_quotes(quot_str));
+	quot_str = "efdsdf\'as\'da\"sd\"asdasd";
+	printf("str: %s - status %d\n", quot_str, check_quotes(quot_str));
+}
 void	test_last_pipe(void)
 {
 	char *red_str;
