@@ -90,4 +90,12 @@ bool	trailing_pipe(char	*cmd);
 
 char	*malloc_str(const char *str);
 
+bool	is_quote(char to_check);
+
+bool	is_arrow(char to_check);
+
+char	*find_next_d_red(char *cmd);
+
+char	*find_eof(char *start);
+
 #endif

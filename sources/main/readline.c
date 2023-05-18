@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 11:03:02 by faru              #+#    #+#             */
-/*   Updated: 2023/05/18 02:20:13 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/18 19:09:29 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,64 @@ bool	trailing_pipe(char	*cmd)
 {
 	uint32_t	len_cmd;
 
-	len_cmd = ft_strlen(cmd);
-	while (len_cmd && ft_isspace(cmd[--len_cmd]))
-		;
+	if (*cmd == '\0')
+		return (false);
+	len_cmd = ft_strlen(cmd) - 1;
+	while (len_cmd && ft_isspace(cmd[len_cmd]))
+		len_cmd--;
 	return (cmd[len_cmd] == '|');
+}
+
+bool	is_quote(char to_check)
+{
+	return ((to_check == '\'') || (to_check == '\"'));
+}
+
+bool	is_arrow(char to_check)
+{
+	return ((to_check == '<') || (to_check == '>'));
+}
+
+char	*find_next_d_red(char *cmd)
+{
+	bool	open_quotes;
+
+	open_quotes = false;
+	while (*cmd)
+	{
+		if (is_quote(*cmd))
+			open_quotes = ! open_quotes;
+		else if (*cmd == '<')
+		{
+			if (*(cmd + 1) && (*(cmd + 1) == '<'))
+				return (cmd);
+		}
+		cmd++;
+	}
+	return (NULL);
 }
 
 char	*find_eof(char *start)
 {
+	char 		start_quote;
 	char 		*eof;
 	uint32_t	i;
 	uint32_t	j;
 
-	while(*start && ft_isspace(*start))
+	while(*start && (ft_isspace(*start)))
 		start++;
 	i = 0;
-	if ((*start == '\'') || (*start == '\"'))
+	if (is_quote(*start))
 	{
-		while (start[i] && (start[i] != *start))
+		start_quote = *start;
+		while (*start && (*start == start_quote))
+			start++;
+		while (start[i] && (start[i] != start_quote))
 			i++;
-		i++;
-	}
+	}	
 	else
 	{
-		while (start[i] && (! ft_isspace(start[i])))
+		while (start[i] && (! ft_isspace(start[i])) && (! is_arrow(start[i])) && (start[i] != '|'))
 			i++;
 	}
 	eof = ft_calloc((i + 1), sizeof(char));
@@ -53,79 +87,96 @@ char	*find_eof(char *start)
 		}
 	}
 	return (eof);
-	
 }
 
 char	*new_cmd(void)
 {
 	char	*cmd;
-	char	*trimmed;
 	char	*red_stdin;
 	char	*new_line;
 	char	*eof;
-	char	cat_char;
-	
-	cat_char = ' ';
-	cmd = readline("|-> ");
-	red_stdin = ft_strnstr(cmd, "<<", ft_strlen(cmd));		// NB bisogna verificare che l'occorrenza di '<<' non sia all'interno di apici dobbi o singoli
+	char	join_char;
+
+	cmd = readline("|-> ");								// puo' ritornare NULL
+	// printf("input line: |%s|\n", cmd);
+	if ((! cmd) || (! *cmd))
+		return (cmd);
+	if (! check_cmd(cmd))
+	{
+		ft_printf("sintax error!\n");
+		return (cmd);
+	}
+	red_stdin = find_next_d_red(cmd);
 	if (red_stdin)
-		cat_char = '\n';
+		join_char = '\n';
+	else
+		join_char = ' ';
 	while (red_stdin)
 	{
+		red_stdin += 2;
 		eof = find_eof(red_stdin);
 		new_line = readline("> ");
 		while (ft_strncmp(new_line, eof, ft_strlen(eof) + 1))
 		{
-			cmd = ft_append_char(cmd, cat_char);
+			cmd = ft_append_char(cmd, join_char);
 			if (! cmd)
-				return (NULL);		// memory fault
+				return (NULL);								// memory fault
 			cmd = ft_concat(cmd, new_line);
 			if (! cmd)
-				return (NULL);		// memory fault
-			new_line = readline("> ");
+				return (NULL);								// memory fault
+			new_line = readline("> ");						// puo' ritornare NULL
 		}
-		red_stdin += 2;
-		red_stdin = ft_strnstr(red_stdin, "<<", ft_strlen(red_stdin));
+		free(new_line);
 		free(eof);
+		red_stdin = find_next_d_red(cmd);
 	}
 	while (trailing_pipe(cmd))
 	{
-		cmd = ft_append_char(cmd, cat_char);
+		cmd = ft_append_char(cmd, join_char);
 		if (! cmd)
-			return (NULL);		// memory fault
+			return (NULL);									// memory fault
+		new_line = readline("> ");							// puo' ritornare NULL
 		cmd = ft_concat(cmd, readline("> "));
 		if (! cmd)
-			return (NULL);		// memory fault
+			return (NULL);									// memory fault
+		if (! check_cmd(new_line))
+		{
+			ft_printf("sintax error!\n");
+			return (cmd);
+		}
 	}
-	trimmed = ft_trim(cmd);
-	if (! trimmed)
-		return (NULL);			// memory fault
-	if (*trimmed)
-		add_history(trimmed);
-	return (trimmed);
+	return (cmd);
 }
 
 void	main_loop(void)
 {
-	char	*curr_cmd;
 	t_raw_cmd	*history;
+	char		*curr_cmd;
+	uint32_t	i;
 
 	history = NULL;
 	while (true)
 	{
 		curr_cmd = new_cmd();
-		if (! curr_cmd)
-			break;
-		if (! check_cmd(curr_cmd))
+		if (! curr_cmd)				// memory fault
+			break ;
+		else if (strncmp(curr_cmd, "end", 3) == 0)
 		{
-			ft_printf("sintax error!\n");
 			free(curr_cmd);
+			break ;
 		}
-		else if (! add_raw_cmd(&history, curr_cmd))
+		else
+			add_history(curr_cmd);
+		i = 0;
+		while (ft_isspace(curr_cmd[i]))
+			i++;
+		if (curr_cmd[i])
 		{
-			// memory fail -> kill program
-			break;
+			if (! add_raw_cmd(&history, curr_cmd))
+				break;				// memory fault
 		}
+		else
+			free(curr_cmd);
 	}
 	clear_history();
 	print_cmds(history);

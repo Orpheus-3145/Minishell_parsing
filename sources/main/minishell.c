@@ -6,18 +6,24 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:25:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/18 01:31:01 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/18 15:29:03 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void f(void)
+{
+	system("leaks minishell");
+}
+
 int main(int argc, char**argv, char **envp) 
 {
+	// atexit(f);
 	// test_redirections();
 	// test_pipes();
 	// test_last_pipe();
-	test_quotes();
+	// test_quotes();
 	argc++;
 	argv++;
 	envp++;

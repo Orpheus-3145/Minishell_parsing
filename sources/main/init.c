@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   init.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: fra <fra@student.42.fr>                      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/16 17:13:47 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/17 11:03:12 by faru          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/16 17:13:47 by fra               #+#    #+#             */
+/*   Updated: 2023/05/18 18:25:10 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void    print_cmds(t_raw_cmd *c_list)
 {
     while (c_list)
     {
-        ft_printf("cmd input: %s\nn cmds: %u\n\n", c_list->cmd_input, c_list->n_cmds);
+        ft_printf("cmd input: |%s|\nn cmds: %u\n\n", c_list->cmd_input, c_list->n_cmds);
         c_list = c_list->next;
     }
 }
