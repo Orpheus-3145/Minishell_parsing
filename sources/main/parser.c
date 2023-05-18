@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:26:00 by fra               #+#    #+#             */
-/*   Updated: 2023/05/18 21:26:25 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/18 23:31:28 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,39 +72,44 @@ bool    check_pipes(char *cmd)
 	return (true);
 }
 
-bool	check_redirections(char *str)
+bool	check_redirections(char *cmd)
 {
 	bool	quotes_flag;
 
 	quotes_flag = false;
-	while (*str)
+	while (*cmd)
 	{
-		if (is_quote(*str))
+		// ft_printf("\tchar: -%c-\n", *cmd);
+		if (is_quote(*cmd))
 			quotes_flag = ! quotes_flag;
-		if (! quotes_flag && is_arrow(*str))
+		if (! quotes_flag && is_arrow(*cmd))
 		{
-			if (*str == '<')
+			if (*cmd == '<')
 			{
-				str++;
-				if (*str == '>')
+				cmd++;
+				if (! *cmd || (*cmd == '>'))
 					return (false);
-				else if (*str == '<')
-					str++;
+				else if (*cmd == '<')
+					cmd++;
 			}
-			else if (*str == '>')
+			else if (*cmd == '>')
 			{
-				str++;
-				if (*str == '<')
+				cmd++;
+				if (! *cmd || (*cmd == '<'))
 					return (false);
-				else if (*str == '>')
-					str++;
+				else if (*cmd == '>')
+					cmd++;
 			}
-			while (ft_isspace(*str))
-				str++;
-			if (! is_quote(*str) && ((*str == '|') || is_arrow(*str)))
+			// if (! *cmd)
+			// 	return (false);
+			while (ft_isspace(*cmd))
+				cmd++;
+			if ((! quotes_flag) && ((*cmd == '|') || (is_arrow(*cmd)) || (! *cmd)))
 				return (false);
 		}
-		str++;
+		else
+			cmd++;
+		// ft_printf("\end iter: -%c-\n", *cmd);
 	}
 	return (true);
 }

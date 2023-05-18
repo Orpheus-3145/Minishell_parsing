@@ -10,6 +10,10 @@
 # define S_OUT_RED 3        // >
 # define D_IN_RED 4         // <<
 # define D_OUT_RED 5        // >>
+# define CMD_OK 0
+# define CMD_SIN_ERR 1
+# define CMD_MEM_ERR 2
+# define CMD_EMPTY 3
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
@@ -72,7 +76,7 @@ void    free_cmds(t_raw_cmd **list);
 
 void    print_cmds(t_raw_cmd *c_list);
 
-char	*new_cmd(void);
+int32_t	read_cmd(char **curr_cmd);
 
 void    main_loop(void);
 
@@ -98,7 +102,7 @@ bool	is_quote(char to_check);
 
 bool	is_arrow(char to_check);
 
-int32_t	find_next_eof_pos(char *cmd);
+int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos);
 
 char	*find_eof(char *start);
 

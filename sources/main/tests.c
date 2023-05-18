@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:49:18 by fra               #+#    #+#             */
-/*   Updated: 2023/05/18 21:35:25 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/18 23:54:32 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,86 +172,86 @@ void	test_trim(void)
 	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str));
 }
 
-void	test_next_d_red(void)
-{
-	char *str;
+// void	test_next_d_red(void)
+// {
+// 	char *str;
 
-	str = "asdasd << asdasd";
-	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
-	str = "asdasd <<asdasd";
-	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
-	str = "asdasd < asda<<sd";
-	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
-	str = "asdasd < as < << dasd";
-	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
-	str = "asdasd asdasd";
-	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
-	str = "<<";
-	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
-	str = "   <<";
-	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
-	str = "<< ";
-	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
-	str = "  << ";
-	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
-	str = "<< a";
-	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
-	str = "<< sdsd";
-	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
-	str = "";
-	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
-	str = NULL;
-	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
-}
+// 	str = "asdasd << asdasd";
+// 	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
+// 	str = "asdasd <<asdasd";
+// 	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
+// 	str = "asdasd < asda<<sd";
+// 	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
+// 	str = "asdasd < as < << dasd";
+// 	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
+// 	str = "asdasd asdasd";
+// 	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
+// 	str = "<<";
+// 	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
+// 	str = "   <<";
+// 	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
+// 	str = "<< ";
+// 	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
+// 	str = "  << ";
+// 	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
+// 	str = "<< a";
+// 	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
+// 	str = "<< sdsd";
+// 	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
+// 	str = "";
+// 	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
+// 	str = NULL;
+// 	ft_printf("str: |%s| - next eof pos |%d|\n", str, find_next_eof_pos(str));
+// }
 
-void	test_eof(void)
-{
-	char *str;
+// void	test_eof(void)
+// {
+// 	char *str;
 
-	str = "asd_asd << asdasd asd";
-	ft_printf("str: |%s| - starting in: |%s| = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "asdsadsdasd <<asdasd   ";
-	ft_printf("str: -%s- - starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "asdfgwfgsasd < asda<<sd\t";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "asdfghasd < as < << dasd  ";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "<<";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "   <<";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "<< ";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "  << ";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "<< a";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "<< sdsd";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "asdhjasd << asdasd|";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "aadfsdasd << asd|asd";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "as@#dasd << asda<sd";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "asda67sd << asd>asd";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "asda|sd << asda >sd";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "asdghasd << asda < sd";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "asda89sd << asda | sd";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "asda89sd asda << \"| sd\"";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "asda89sd asda <<\'| sd\'";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "asda89sd << \"asda\' sd\"";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "asda89sd << \"\"";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "asda89sd << \'\'";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-	str = "asda89sd << 'as|asd'";
-	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
-}
+// 	str = "asd_asd << asdasd asd";
+// 	ft_printf("str: |%s| - starting in: |%s| = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "asdsadsdasd <<asdasd   ";
+// 	ft_printf("str: -%s- - starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "asdfgwfgsasd < asda<<sd\t";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "asdfghasd < as < << dasd  ";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "<<";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "   <<";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "<< ";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "  << ";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "<< a";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "<< sdsd";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "asdhjasd << asdasd|";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "aadfsdasd << asd|asd";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "as@#dasd << asda<sd";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "asda67sd << asd>asd";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "asda|sd << asda >sd";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "asdghasd << asda < sd";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "asda89sd << asda | sd";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "asda89sd asda << \"| sd\"";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "asda89sd asda <<\'| sd\'";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "asda89sd << \"asda\' sd\"";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "asda89sd << \"\"";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "asda89sd << \'\'";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// 	str = "asda89sd << 'as|asd'";
+// 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str), find_eof(str + find_next_eof_pos(str)));
+// }
