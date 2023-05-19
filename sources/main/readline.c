@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 11:03:02 by faru              #+#    #+#             */
-/*   Updated: 2023/05/19 02:42:05 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/19 03:22:36 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,17 @@
 
 bool	trailing_pipe(char	*cmd)
 {
-	// uint32_t	len_cmd;
+	uint32_t	len_cmd;
 
-	// if (*cmd == '\0')
-	// 	return (false);
-	// len_cmd = ft_strlen(cmd) - 1;
-	// while (len_cmd && ft_isspace(cmd[len_cmd]))
-	// 	len_cmd--;
-	// if (len_cmd <= 1)
-	// 	return (false);
-	// else
-	// 	return ((cmd[len_cmd] == '|') && (cmd[len_cmd - 1] != '|'));
-	// ft_printf("string checked: --%s--\n", cmd);
-	while (*cmd)
-	{
-		// ft_printf("\t curr char inspectedf: %c\n", *cmd);
-		if (*cmd == '|')
-		{
-			// ft_printf("\t ->curr char inspectedf: %c\n", *cmd);
-			cmd++;
-			while (*cmd && ft_isspace(*cmd))
-			{
-				// ft_printf("\t -->curr char inspectedf: %c\n", *cmd);
-				if (*cmd == '\n')
-					return (true);
-				cmd++;
-			}
-			// ft_printf("\t --->curr char inspectedf: %c\n", *cmd);
-			if (! *cmd)
-				return (true);
-		}
-		cmd++;
-	}
-
-	return (false);
+	if (*cmd == '\0')
+		return (false);
+	len_cmd = ft_strlen(cmd) - 1;
+	while (len_cmd && ft_isspace(cmd[len_cmd]))
+		len_cmd--;
+	if (len_cmd <= 1)
+		return (false);
+	else
+		return ((cmd[len_cmd] == '|') && (cmd[len_cmd - 1] != '|'));
 }
 
 bool	is_quote(char to_check)
@@ -123,60 +100,79 @@ char	*ft_readline(const char *prompt)
 	return (copy);
 }
 
-char	*append_input(char *curr_cmd)
+int32_t	append_input(char *curr_cmd, char **input)
 {
-	int32_t	eof_pos;
 	char	*new_line;
 	char	*eof;
-
+	int32_t	eof_pos;
+	bool	keep_reading;
+	
 	eof_pos = find_next_eof_pos(curr_cmd, 0);
 	while (eof_pos != -1)
 	{
 		eof = find_eof(curr_cmd + eof_pos);
-		// ft_printf("\tnext double input is in: --%s--\n\teof: --%s--\n", curr_cmd + eof_pos, eof);
-		while (true)		// ad ogni nuova linea bisogna aggiornare la history (va aggiunto anche la sequenza eof finale)
+		keep_reading = true;
+		while (keep_reading)		// need to update history for every new line
 		{
-			new_line = ft_readline("> ");							// puo' ritornare NULL
-			if (! ft_strncmp(new_line, eof, ft_strlen(eof) + 1))
-				break ;
-			curr_cmd = ft_append_char(curr_cmd, '\n');
-			if (! curr_cmd)
-				return (NULL);
-			curr_cmd = ft_concat(curr_cmd, new_line);
-			if (! curr_cmd)
-				return (NULL);
+			new_line = ft_readline("> ");							// gives NULL if ctrl + D is pressed on empty line
+			keep_reading = ft_strncmp(new_line, eof, ft_strlen(eof) + 1);
+			*input = ft_append_char(*input, '\n');
+			if (! *input)
+				return (CMD_MEM_ERR);
+			*input = ft_concat(*input, new_line);
+			if (! *input)
+				return (CMD_MEM_ERR);
 		}
 		eof_pos = find_next_eof_pos(curr_cmd, eof_pos);
-		free(new_line);
 		free(eof);
 	}
-	return (curr_cmd);
+	return (CMD_OK);
+}
+
+int32_t	append_pipe(char *curr_cmd, char **pipe, char join_char)
+{
+	char	*new_line;
+
+	if (! trailing_pipe(curr_cmd))
+		return (CMD_OK);
+	while (true)		// need to update history for every new line
+	{
+		*pipe = ft_append_char(*pipe, join_char);
+		if (! *pipe)
+			return (CMD_MEM_ERR);
+		new_line = ft_readline("> ");							// gives NULL if ctrl + D is pressed on empty line
+		*pipe = ft_concat(*pipe, new_line);
+		if (! *pipe)
+			return (CMD_MEM_ERR);
+		else if (! check_cmd(*pipe))
+			return (CMD_SIN_ERR);
+		if (! trailing_pipe(*pipe))
+			break;
+	}
+	return (CMD_OK);
 }
 
 int32_t	read_cmd(char **curr_cmd)
 {
-	char	*new_line;
+	char	*input_to_append;
+	char	*pipe_to_append;
+	char	join_char;
 
 	if ((! *curr_cmd) || (! **curr_cmd))
 		return (CMD_EMPTY);
 	if (! check_cmd(*curr_cmd))
 		return (CMD_SIN_ERR);
-	*curr_cmd = append_input(*curr_cmd);
-	if (! *curr_cmd)
+	input_to_append = NULL;
+	if (append_input(*curr_cmd, &input_to_append) == CMD_MEM_ERR)
 		return (CMD_MEM_ERR);
-	// ft_printf("curr cmd: --%s--\n", )
-	while (trailing_pipe(*curr_cmd))		// ad ogni nuova linea bisogna aggiornare la history
-	{
-		*curr_cmd = ft_append_char(*curr_cmd, ' ');
-		if (! *curr_cmd)
-			return (CMD_MEM_ERR);
-		new_line = ft_readline("> ");							// puo' ritornare NULL
-		*curr_cmd = ft_concat(*curr_cmd, new_line);
-		if (! *curr_cmd)
-			return (CMD_MEM_ERR);
-		else if (! check_cmd(*curr_cmd))
-			return (CMD_SIN_ERR);
-	}
+	if (input_to_append)
+		join_char = '\n';
+	else
+		join_char = ' ';
+	pipe_to_append = NULL;
+	if (append_pipe(*curr_cmd, &pipe_to_append, join_char) == CMD_MEM_ERR)
+		return (CMD_MEM_ERR);
+	// ...
 	return (CMD_OK);
 }
 
@@ -189,7 +185,7 @@ void	main_loop(void)
 	history = NULL;
 	while (true)
 	{
-		curr_cmd = ft_readline("|-> ");						// puo' ritornare NULL
+		curr_cmd = ft_readline("|-> ");						// gives NULL if ctrl + D is pressed on empty line
 		if (! curr_cmd)
 			printf("orcoddio\n");
 		status = read_cmd(&curr_cmd);
@@ -211,7 +207,7 @@ void	main_loop(void)
 		else if (! add_raw_cmd(&history, curr_cmd))
 			break;											// memory fault
 	}
-	rl_clear_history();
+	clear_history();		// why rl_clear_history() doesn't work??
 	print_cmds(history);
 	free_cmds(&history);
 }

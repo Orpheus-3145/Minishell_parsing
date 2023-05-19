@@ -98,7 +98,9 @@ bool	trailing_pipe(char	*cmd);
 
 char	*malloc_str(const char *str);
 
-char	*append_input(char *curr_cmd);
+int32_t	append_input(char *curr_cmd, char **input);
+
+int32_t	append_pipe(char *curr_cmd, char **pipe, char join_char);
 
 bool	is_quote(char to_check);
 
