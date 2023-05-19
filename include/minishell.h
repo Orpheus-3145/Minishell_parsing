@@ -100,11 +100,15 @@ char	*malloc_str(const char *str);
 
 int32_t	append_input(char *curr_cmd, char **input);
 
-int32_t	append_pipe(char *curr_cmd, char **pipe, char join_char);
+int32_t	append_pipe(char *curr_cmd, char **pipe);
+
+int32_t	build_cmd(char **curr_cmd, char *input_to_append, char *pipe_to_append);
 
 bool	is_quote(char to_check);
 
 bool	is_arrow(char to_check);
+
+char	*ft_readline(const char *prompt);
 
 int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos);
 

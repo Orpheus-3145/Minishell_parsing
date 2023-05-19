@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:26:00 by fra               #+#    #+#             */
-/*   Updated: 2023/05/18 23:31:28 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/19 17:43:59 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ bool	check_redirections(char *cmd)
 	quotes_flag = false;
 	while (*cmd)
 	{
-		// ft_printf("\tchar: -%c-\n", *cmd);
 		if (is_quote(*cmd))
 			quotes_flag = ! quotes_flag;
 		if (! quotes_flag && is_arrow(*cmd))
@@ -100,8 +99,6 @@ bool	check_redirections(char *cmd)
 				else if (*cmd == '>')
 					cmd++;
 			}
-			// if (! *cmd)
-			// 	return (false);
 			while (ft_isspace(*cmd))
 				cmd++;
 			if ((! quotes_flag) && ((*cmd == '|') || (is_arrow(*cmd)) || (! *cmd)))
@@ -109,7 +106,6 @@ bool	check_redirections(char *cmd)
 		}
 		else
 			cmd++;
-		// ft_printf("\end iter: -%c-\n", *cmd);
 	}
 	return (true);
 }
