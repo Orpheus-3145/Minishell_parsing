@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 11:03:02 by faru              #+#    #+#             */
-/*   Updated: 2023/05/19 01:18:57 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/19 02:42:05 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,46 +123,51 @@ char	*ft_readline(const char *prompt)
 	return (copy);
 }
 
-int32_t	read_cmd(char **curr_cmd)
+char	*append_input(char *curr_cmd)
 {
 	int32_t	eof_pos;
 	char	*new_line;
 	char	*eof;
-	char	join_char;
 
-	if ((! *curr_cmd) || (! **curr_cmd))
-		return (CMD_EMPTY);
-	if (! check_cmd(*curr_cmd))
-		return (CMD_SIN_ERR);
-	eof_pos = find_next_eof_pos(*curr_cmd, 0);
-	if (eof_pos != -1)
-		join_char = '\n';
-	else
-		join_char = ' ';
-	append_input = NULL;
+	eof_pos = find_next_eof_pos(curr_cmd, 0);
 	while (eof_pos != -1)
 	{
-		eof = find_eof(*curr_cmd + eof_pos);
-		// ft_printf("\tnext double input is in: --%s--\n\teof: --%s--\n", *curr_cmd + eof_pos, eof);
+		eof = find_eof(curr_cmd + eof_pos);
+		// ft_printf("\tnext double input is in: --%s--\n\teof: --%s--\n", curr_cmd + eof_pos, eof);
 		while (true)		// ad ogni nuova linea bisogna aggiornare la history (va aggiunto anche la sequenza eof finale)
 		{
 			new_line = ft_readline("> ");							// puo' ritornare NULL
 			if (! ft_strncmp(new_line, eof, ft_strlen(eof) + 1))
 				break ;
-			*curr_cmd = ft_append_char(*curr_cmd, join_char);
-			if (! *curr_cmd)
-				return (CMD_MEM_ERR);
-			*curr_cmd = ft_concat(*curr_cmd, new_line);
-			if (! *curr_cmd)
-				return (CMD_MEM_ERR);
+			curr_cmd = ft_append_char(curr_cmd, '\n');
+			if (! curr_cmd)
+				return (NULL);
+			curr_cmd = ft_concat(curr_cmd, new_line);
+			if (! curr_cmd)
+				return (NULL);
 		}
-		eof_pos = find_next_eof_pos(*curr_cmd, eof_pos);
+		eof_pos = find_next_eof_pos(curr_cmd, eof_pos);
 		free(new_line);
 		free(eof);
 	}
+	return (curr_cmd);
+}
+
+int32_t	read_cmd(char **curr_cmd)
+{
+	char	*new_line;
+
+	if ((! *curr_cmd) || (! **curr_cmd))
+		return (CMD_EMPTY);
+	if (! check_cmd(*curr_cmd))
+		return (CMD_SIN_ERR);
+	*curr_cmd = append_input(*curr_cmd);
+	if (! *curr_cmd)
+		return (CMD_MEM_ERR);
+	// ft_printf("curr cmd: --%s--\n", )
 	while (trailing_pipe(*curr_cmd))		// ad ogni nuova linea bisogna aggiornare la history
 	{
-		*curr_cmd = ft_append_char(*curr_cmd, join_char);
+		*curr_cmd = ft_append_char(*curr_cmd, ' ');
 		if (! *curr_cmd)
 			return (CMD_MEM_ERR);
 		new_line = ft_readline("> ");							// puo' ritornare NULL
@@ -185,6 +190,8 @@ void	main_loop(void)
 	while (true)
 	{
 		curr_cmd = ft_readline("|-> ");						// puo' ritornare NULL
+		if (! curr_cmd)
+			printf("orcoddio\n");
 		status = read_cmd(&curr_cmd);
 		if (status == CMD_MEM_ERR)							// memory fault
 			break ;
@@ -204,7 +211,7 @@ void	main_loop(void)
 		else if (! add_raw_cmd(&history, curr_cmd))
 			break;											// memory fault
 	}
-	clear_history();
+	rl_clear_history();
 	print_cmds(history);
 	free_cmds(&history);
 }
