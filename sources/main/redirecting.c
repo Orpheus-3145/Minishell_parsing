@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 17:46:55 by fra               #+#    #+#             */
-/*   Updated: 2023/05/19 17:47:24 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/19 18:35:45 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,12 @@ int32_t	append_input(char *curr_cmd, char **input)
 	{
 		eof = find_eof(curr_cmd + eof_pos);
 		keep_reading = true;
+        // printf("eof found: %s , pos: %d\n", eof, eof_pos);
 		while (keep_reading)		// need to update history for every new line
 		{
 			new_line = ft_readline("> ");							// gives NULL if ctrl + D is pressed on empty line
 			keep_reading = ft_strncmp(new_line, eof, ft_strlen(eof) + 1);
+            // ft_printf("new input: %s, termiante: %d\n", new_line,keep_reading);
 			*input = ft_append_char(*input, '\n');
 			if (! *input)
 				return (CMD_MEM_ERR);
@@ -85,6 +87,7 @@ int32_t	append_input(char *curr_cmd, char **input)
 			if (! *input)
 				return (CMD_MEM_ERR);
 		}
+        // ft_printf("out!\n");
 		eof_pos = find_next_eof_pos(curr_cmd, eof_pos);
 		free(eof);
 	}

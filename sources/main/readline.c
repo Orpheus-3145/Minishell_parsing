@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 11:03:02 by faru              #+#    #+#             */
-/*   Updated: 2023/05/19 17:47:31 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/19 19:13:52 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,8 @@ int32_t	read_cmd(char **curr_cmd)
 {
 	char	*input_to_append;
 	char	*pipe_to_append;
+	bool	last_pipe;
 
-	input_to_append = NULL;
-	pipe_to_append = NULL;
 	*curr_cmd = ft_readline("|-> ");						// gives NULL if ctrl + D is pressed on empty line
 	if (! *curr_cmd)
 		printf("orcoddio\n");
@@ -62,14 +61,40 @@ int32_t	read_cmd(char **curr_cmd)
 		return (CMD_EMPTY);
 	if (! check_cmd(*curr_cmd))
 		return (CMD_SIN_ERR);
-	if (append_input(*curr_cmd, &input_to_append) == CMD_MEM_ERR)
-		return (CMD_MEM_ERR);
-	if (append_pipe(*curr_cmd, &pipe_to_append) == CMD_MEM_ERR)
-		return (CMD_MEM_ERR);
-	if (build_cmd(curr_cmd, input_to_append, pipe_to_append) == CMD_MEM_ERR)
-		return (CMD_MEM_ERR);
-	else
-		return (CMD_OK);
+	while (true)
+	{
+		input_to_append = NULL;
+		pipe_to_append = NULL;
+		last_pipe = ! trailing_pipe(*curr_cmd);
+		if (append_input(*curr_cmd, &input_to_append) == CMD_MEM_ERR)
+			return (CMD_MEM_ERR);
+		if (input_to_append)
+		{
+			*curr_cmd = ft_concat(*curr_cmd, input_to_append);
+			if (! *curr_cmd)
+				return (CMD_MEM_ERR);
+		}
+		if (last_pipe)
+			break ;
+		if (append_pipe(&pipe_to_append) == CMD_MEM_ERR)
+			return (CMD_MEM_ERR);
+		if (pipe_to_append)
+		{
+			if (input_to_append)
+			{
+				*curr_cmd = ft_append_char(*curr_cmd, '\n');
+				if (! *curr_cmd)
+					return (CMD_MEM_ERR);
+			}
+			*curr_cmd = ft_concat(*curr_cmd, pipe_to_append);
+			if (! *curr_cmd)
+				return (CMD_MEM_ERR);
+		}
+		if (! trailing_pipe(*curr_cmd))
+			break;
+	}
+	// ft_printf("input: %s\n", *curr_cmd);
+	return (CMD_OK);
 }
 
 void	main_loop(void)

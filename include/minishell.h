@@ -100,7 +100,7 @@ char	*malloc_str(const char *str);
 
 int32_t	append_input(char *curr_cmd, char **input);
 
-int32_t	append_pipe(char *curr_cmd, char **pipe);
+int32_t	append_pipe(char **pipe);
 
 int32_t	build_cmd(char **curr_cmd, char *input_to_append, char *pipe_to_append);
 
