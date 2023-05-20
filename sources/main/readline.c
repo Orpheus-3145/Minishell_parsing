@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 11:03:02 by faru              #+#    #+#             */
-/*   Updated: 2023/05/20 19:11:28 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/20 21:33:56 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,11 @@ t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check_sin)
 
 	new_string = readline(prompt);
 	if (! new_string)				// gives NULL if ctrl + D is pressed on empty line
-		return (CMD_NULL_INPUT);
+		return (CMD_NULL_ERR);
 	*buffer = ft_strdup(new_string);
 	free(new_string);
 	if (*buffer == NULL)
 		return (CMD_MEM_ERR);
-	else if (**buffer == '\0')
-		return (CMD_EMPTY);
 	else if (check_sin && (check_cmd(*buffer) == false))
 		return (CMD_SIN_ERR);
 	else
@@ -51,59 +49,51 @@ t_cmd_status	read_input(char **curr_cmd)
 	t_cmd_status	status;
 	bool			open_pipe;
 	char			*buffer;
-	
+
+	open_pipe = false;
 	status = ft_readline(&buffer, "-> ", true); 
 	while (status != CMD_MEM_ERR)
 	{
-		if ((status == CMD_EMPTY) && (*curr_cmd == NULL))
-			break ;
-		// else if (status == CMD_NULL_INPUT)
+		// if (status == CMD_NULL_ERR)
 		// 	// ...
-		else if (status == CMD_OK)
+		if (status == CMD_OK)
 		{
 			open_pipe = trailing_pipe(buffer);
+			if ((*buffer == '\0') && (*curr_cmd != NULL))
+				open_pipe = true;
 			buffer = read_stdin(buffer);
 			if (buffer == NULL)
 				return (CMD_MEM_ERR);
 		}
-		if ((concat_input(curr_cmd, buffer) == CMD_MEM_ERR) || (open_pipe == false))
+		// status = ;
+		if ((concat_input(curr_cmd, buffer) == CMD_MEM_ERR) || (open_pipe == false) || (status == CMD_SIN_ERR))
 			break ;
 		status = ft_readline(&buffer, "> ", true); 
 	}
 	return (status);
 }
 
-void	main_loop(void)
+void	main_loop(t_var *main_var)
 {
-	t_raw_cmd	*history;
-	char		*curr_cmd;
-	t_cmd_status		status;
+	t_cmd_status	status;
+	char			*input;
+	main_var++;
 
-	history = NULL;
-	curr_cmd = NULL;
+	input = NULL;
 	while (true)
 	{
-		status = read_input(&curr_cmd);
+		status = read_input(&input);
 		if (status == CMD_MEM_ERR)
 		{
-			if (curr_cmd)
-				free(curr_cmd);
+			if (input)
+				free(input);
 			break ;
 		}
-		else if (status == CMD_SIN_ERR)
+		if (*input != '\0')
+			add_history(input);
+		if (status == CMD_SIN_ERR)
 			ft_printf("sintax error\n");
-		if (status != CMD_EMPTY)
-			add_history(curr_cmd);
-		else
-		{
-			if (curr_cmd)
-				free(curr_cmd);
-		}
-		if ((status != CMD_SIN_ERR) && (status != CMD_EMPTY) && (! add_raw_cmd(&history, curr_cmd)))
-			break;
-		curr_cmd = NULL;
+		input = NULL;
 	}
 	clear_history();		// why rl_clear_history() doesn't work??
-	print_cmds(history);
-	free_cmds(&history);
 }

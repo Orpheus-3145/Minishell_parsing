@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 17:46:55 by fra               #+#    #+#             */
-/*   Updated: 2023/05/20 19:02:12 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/20 20:31:44 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*read_stdin(char *buffer)
 			if (status == CMD_MEM_ERR)
 				break ;
 			keep_reading = ft_strncmp(new_line, eof, ft_strlen(eof) + 1) != 0;
-			status = concat_cmds(&buffer, new_line);
+			status = concat_input(&buffer, new_line);
 			if (status == CMD_MEM_ERR)
 				break ;
 		}

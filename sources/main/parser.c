@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:26:00 by fra               #+#    #+#             */
-/*   Updated: 2023/05/20 19:10:25 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/20 21:28:16 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ bool    check_pipes(char *cmd)
 {
 	uint32_t	i;
 	int32_t		last_pipe_pos;
-	bool		quotes_flag;
+	char		quotes;
+	bool		open_quotes;
 
 	i = 0;
 	while (ft_isspace(cmd[i]))
@@ -42,31 +43,32 @@ bool    check_pipes(char *cmd)
 	if (cmd[i] == '|')
 		return (false);
 	last_pipe_pos = -1;
-	quotes_flag = false;
+	open_quotes = false;
 	while(cmd[i])
 	{
-		if (cmd[i] == '\'' || cmd[i] == '\"')
-			quotes_flag = ! quotes_flag;
-		if (! quotes_flag && (cmd[i] == '|'))
+		if (is_quote(cmd[i]))
 		{
-			if (last_pipe_pos + 1 == (int32_t) i)
-				return (false);
+			if ((open_quotes == true) && (cmd[i] == quotes))
+			{
+				quotes = '\0';
+				open_quotes = false;
+			}
+			else if (open_quotes == false)
+			{
+				quotes = cmd[i];
+				open_quotes = true;
+			}
+		}
+		else if ((open_quotes == false) && (cmd[i] == '|'))
+		{
+			if (last_pipe_pos != -1)
+			{
+				while(ft_isspace(cmd[++last_pipe_pos]))
+					;
+				if (last_pipe_pos == (int32_t) i)
+					return (false);
+			}
 			last_pipe_pos = i;
-			// if (last_pipe_pos != -1)
-			// {
-			// 	if (cmd[i - 1] == '|')
-			// 	{
-			// 		if (cmd[i + 1] && cmd[i + 1] == '|')
-			// 			return (false);
-			// 	}
-			// 	else
-			// 	{
-			// 		while (ft_isspace(cmd[++last_pipe_pos]))
-			// 			;
-			// 		if ((last_pipe_pos >= (int32_t) i) || (cmd[last_pipe_pos] == '<') || (cmd[last_pipe_pos] == '>'))
-			// 			return (false);
-			// 	}
-			// }
 		}
 		i++;
 	}
@@ -75,14 +77,26 @@ bool    check_pipes(char *cmd)
 
 bool	check_redirections(char *cmd)
 {
-	bool	quotes_flag;
+	char		quotes;
+	bool		open_quotes;
 
-	quotes_flag = false;
+	open_quotes = false;
 	while (*cmd)
 	{
 		if (is_quote(*cmd))
-			quotes_flag = ! quotes_flag;
-		if (! quotes_flag && is_arrow(*cmd))
+		{
+			if ((open_quotes == true) && (*cmd == quotes))
+			{
+				quotes = '\0';
+				open_quotes = false;
+			}
+			else if (open_quotes == false)
+			{
+				quotes = *cmd;
+				open_quotes = true;
+			}
+		}
+		if ((open_quotes == false) && is_arrow(*cmd))
 		{
 			if (*cmd == '<')
 			{
@@ -102,7 +116,7 @@ bool	check_redirections(char *cmd)
 			}
 			while (ft_isspace(*cmd))
 				cmd++;
-			if ((! quotes_flag) && ((*cmd == '|') || (is_arrow(*cmd)) || (! *cmd)))
+			if (((*cmd == '|') || (is_arrow(*cmd)) || (! *cmd)))
 				return (false);
 		}
 		else
@@ -115,11 +129,11 @@ bool	check_cmd(char *cmd)
 {
 	if (! cmd)
 		return (false);
-	else if (! check_quotes(cmd))
+	if (! check_quotes(cmd))
 		return (false);
-	else if (! check_pipes(cmd))
+	if (! check_pipes(cmd))
 		return (false);
-	else if (! check_redirections(cmd))
+	if (! check_redirections(cmd))
 		return (false);
 	else
 		return (true);

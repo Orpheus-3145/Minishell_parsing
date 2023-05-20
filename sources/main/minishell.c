@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:25:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/20 03:46:31 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/20 20:32:17 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,12 @@ void f(void)
 
 int main(int argc, char**argv, char **envp) 
 {
-	// atexit(f);
-	// test_redirections();
-	// test_pipes();
-	// test_last_pipe();
-	// test_quotes();
-	// test_trim();
-	// test_next_d_red();
-	// test_eof();
+	t_var	*main_var;
+	
 	argc++;
 	argv++;
-	envp++;
-	main_loop();
+
+	main_var = create_main(envp);
+	main_loop(main_var);
 	return (0);
 }

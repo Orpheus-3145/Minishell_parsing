@@ -25,9 +25,7 @@ typedef enum s_cmd_status
 	CMD_OK,
 	CMD_SIN_ERR,
 	CMD_MEM_ERR,
-	CMD_EMPTY,
-	CMD_OPEN_PIPE,
-	CMD_NULL_INPUT,
+	CMD_NULL_ERR,
 } t_cmd_status;
 
 typedef struct s_env
@@ -47,20 +45,20 @@ typedef struct s_cmd
 	char	**env_arr;
 }   t_cmd;
 
-typedef struct s_raw_cmd
-{
-	struct s_raw_cmd	*next;
-	char				*cmd_input;
-	uint32_t			n_cmds;
-	t_cmd				*cmd_list;
-}   t_raw_cmd;
+// typedef struct s_raw_cmd
+// {
+// 	struct s_raw_cmd	*next;
+// 	char				*cmd_input;
+// 	uint32_t			n_cmds;
+// 	t_cmd				*cmd_list;
+// }   t_raw_cmd;
 
 typedef struct s_var
 {
 	t_cmd		*cmd_data;
-	uint32_t	n_cmd;
-	t_env		*env_list;
+	// uint32_t	n_cmd;
 	char		**env_arr;
+	t_env		*env_list;
 	int			**pipes;
 	pid_t		*pid;
 	int			status;
@@ -92,11 +90,11 @@ bool	check_quotes(char *cmd);
 bool	check_cmd(char *cmd);
 
 
-bool	add_raw_cmd(t_raw_cmd **history, char *new_input);
+// bool	add_raw_cmd(t_raw_cmd **history, char *new_input);
 
-void    free_cmds(t_raw_cmd **list);
+// void    free_cmds(t_raw_cmd **list);
 
-void    print_cmds(t_raw_cmd *c_list);
+// void    print_cmds(t_raw_cmd *c_list);
 
 
 t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check);
@@ -105,8 +103,9 @@ t_cmd_status	concat_input(char **base, char *buffer);
 
 t_cmd_status	read_input(char **curr_cmd);
 
-void    main_loop(void);
+void    main_loop(t_var	*main_var);
 
+t_var   *create_main(char **envp);
 
 bool	trailing_pipe(char	*cmd);
 
