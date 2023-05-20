@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 17:46:55 by fra               #+#    #+#             */
-/*   Updated: 2023/05/19 18:35:45 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/20 04:39:13 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,34 +62,32 @@ char	*find_eof(char *start)
 	return (eof);
 }
 
-int32_t	append_input(char *curr_cmd, char **input)
+char	*read_stdin(char *buffer)
 {
 	char	*new_line;
 	char	*eof;
 	int32_t	eof_pos;
 	bool	keep_reading;
 	
-	eof_pos = find_next_eof_pos(curr_cmd, 0);
+	eof_pos = find_next_eof_pos(buffer, 0);
 	while (eof_pos != -1)
 	{
-		eof = find_eof(curr_cmd + eof_pos);
+		eof = find_eof(buffer + eof_pos);
 		keep_reading = true;
-        // printf("eof found: %s , pos: %d\n", eof, eof_pos);
-		while (keep_reading)		// need to update history for every new line
+		while (keep_reading)
 		{
-			new_line = ft_readline("> ");							// gives NULL if ctrl + D is pressed on empty line
+			if (ft_readline(&new_line, "> ", false) == CMD_MEM_ERR)
+				return (NULL);
+			buffer = ft_append_char(buffer, '\n');
+			if (! buffer)
+				return (NULL);
 			keep_reading = ft_strncmp(new_line, eof, ft_strlen(eof) + 1);
-            // ft_printf("new input: %s, termiante: %d\n", new_line,keep_reading);
-			*input = ft_append_char(*input, '\n');
-			if (! *input)
-				return (CMD_MEM_ERR);
-			*input = ft_concat(*input, new_line);
-			if (! *input)
-				return (CMD_MEM_ERR);
+			buffer = ft_concat(buffer, new_line);
+			if (! buffer)
+				return (NULL);
 		}
-        // ft_printf("out!\n");
-		eof_pos = find_next_eof_pos(curr_cmd, eof_pos);
+		eof_pos = find_next_eof_pos(buffer, eof_pos);
 		free(eof);
 	}
-	return (CMD_OK);
+	return (buffer);
 }

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:49:18 by fra               #+#    #+#             */
-/*   Updated: 2023/05/18 23:54:32 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/20 03:45:18 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ void	test_pipes(void)
 {
 	char *pipe_str;
 
+	pipe_str = "sadasd|fg";
+	ft_printf("str: %s - status %d\n", pipe_str, check_pipes(pipe_str));
+	pipe_str = "sadasds||g";
+	ft_printf("str: %s - status %d\n", pipe_str, check_pipes(pipe_str));
+	pipe_str = "sadasd|||fg";
+	ft_printf("str: %s - status %d\n", pipe_str, check_pipes(pipe_str));
 	pipe_str = "sadasdss| asdasds | awsdasd ggh | fg";
 	ft_printf("str: %s - status %d\n", pipe_str, check_pipes(pipe_str));
 	pipe_str = "sadasdss|| asdasds | awsdasd ggh | fg";

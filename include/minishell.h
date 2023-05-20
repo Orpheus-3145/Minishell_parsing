@@ -10,10 +10,6 @@
 # define S_OUT_RED 3        // >
 # define D_IN_RED 4         // <<
 # define D_OUT_RED 5        // >>
-# define CMD_OK 0
-# define CMD_SIN_ERR 1
-# define CMD_MEM_ERR 2
-# define CMD_EMPTY 3
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
@@ -23,6 +19,16 @@
 # include <fcntl.h>			// macro to open files (O_CREAT, O_WRONLY, O_RDONLY ..)
 # include <stdbool.h>		// boolean types
 # include <stdint.h>		// cross-compiler types
+
+typedef enum s_cmd_status
+{
+	CMD_OK,
+	CMD_SIN_ERR,
+	CMD_MEM_ERR,
+	CMD_EMPTY,
+	CMD_OPEN_PIPE,
+	CMD_NULL_INPUT,
+} t_cmd_status;
 
 typedef struct s_env
 {
@@ -76,7 +82,7 @@ void    free_cmds(t_raw_cmd **list);
 
 void    print_cmds(t_raw_cmd *c_list);
 
-int32_t	read_cmd(char **curr_cmd);
+t_cmd_status	single_cmd(char **curr_cmd, char *prompt);
 
 void    main_loop(void);
 
@@ -96,19 +102,19 @@ void	test_quotes(void);
 
 bool	trailing_pipe(char	*cmd);
 
-char	*malloc_str(const char *str);
+// char	*malloc_str(const char *str);
 
-int32_t	append_input(char *curr_cmd, char **input);
+char	*read_stdin(char *buffer);
 
-int32_t	append_pipe(char **pipe);
+// t_cmd_status	append_pipe(char **pipe);
 
-int32_t	build_cmd(char **curr_cmd, char *input_to_append, char *pipe_to_append);
+// t_cmd_status	build_cmd(char **curr_cmd, char *input_to_append, char *pipe_to_append);
 
 bool	is_quote(char to_check);
 
 bool	is_arrow(char to_check);
 
-char	*ft_readline(const char *prompt);
+t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check);
 
 int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos);
 

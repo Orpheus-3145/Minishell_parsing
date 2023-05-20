@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:26:00 by fra               #+#    #+#             */
-/*   Updated: 2023/05/19 17:43:59 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/20 03:45:39 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,25 @@ bool    check_pipes(char *cmd)
 			quotes_flag = ! quotes_flag;
 		if (! quotes_flag && (cmd[i] == '|'))
 		{
-			if (last_pipe_pos != -1)
-			{
-				if (cmd[i - 1] == '|')
-				{
-					if (cmd[i + 1] && cmd[i + 1] == '|')
-						return (false);
-				}
-				else
-				{
-					while (ft_isspace(cmd[++last_pipe_pos]))
-						;
-					if ((last_pipe_pos >= (int32_t) i) || (cmd[last_pipe_pos] == '<') || (cmd[last_pipe_pos] == '>'))
-						return (false);
-				}
-
-			}
+			if (last_pipe_pos + 1 == (int32_t) i)
+				return (false);
 			last_pipe_pos = i;
+			// if (last_pipe_pos != -1)
+			// {
+			// 	if (cmd[i - 1] == '|')
+			// 	{
+			// 		if (cmd[i + 1] && cmd[i + 1] == '|')
+			// 			return (false);
+			// 	}
+			// 	else
+			// 	{
+			// 		while (ft_isspace(cmd[++last_pipe_pos]))
+			// 			;
+			// 		if ((last_pipe_pos >= (int32_t) i) || (cmd[last_pipe_pos] == '<') || (cmd[last_pipe_pos] == '>'))
+			// 			return (false);
+			// 	}
+
+			// }
 		}
 		i++;
 	}
