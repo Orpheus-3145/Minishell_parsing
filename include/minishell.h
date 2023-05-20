@@ -89,14 +89,6 @@ bool	check_quotes(char *cmd);
 
 bool	check_cmd(char *cmd);
 
-
-// bool	add_raw_cmd(t_raw_cmd **history, char *new_input);
-
-// void    free_cmds(t_raw_cmd **list);
-
-// void    print_cmds(t_raw_cmd *c_list);
-
-
 t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check);
 
 t_cmd_status	concat_input(char **base, char *buffer);
@@ -119,5 +111,8 @@ int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos);
 char	*find_eof(char *start);
 
 char	*read_stdin(char *buffer);
+
+
+t_cmd	*create_cmd(char *raw_input);
 
 #endif

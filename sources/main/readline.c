@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 11:03:02 by faru              #+#    #+#             */
-/*   Updated: 2023/05/20 21:33:56 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/20 21:37:04 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ t_cmd_status	read_input(char **curr_cmd)
 			if (buffer == NULL)
 				return (CMD_MEM_ERR);
 		}
-		// status = ;
 		if ((concat_input(curr_cmd, buffer) == CMD_MEM_ERR) || (open_pipe == false) || (status == CMD_SIN_ERR))
 			break ;
 		status = ft_readline(&buffer, "> ", true); 
@@ -89,10 +88,14 @@ void	main_loop(t_var *main_var)
 				free(input);
 			break ;
 		}
+		// if (status == CMD_NULL_ERR)
+		// 	// ...
 		if (*input != '\0')
 			add_history(input);
 		if (status == CMD_SIN_ERR)
 			ft_printf("sintax error\n");
+		else
+			// tokenize command and execute it
 		input = NULL;
 	}
 	clear_history();		// why rl_clear_history() doesn't work??
