@@ -6,12 +6,13 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:13:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/18 18:25:10 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/20 16:56:27 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// it is supposed that consecutive occurrences of '|' do not exist
 uint32_t	number_cmds(char *cmd)
 {
 	uint32_t	count;
@@ -20,12 +21,7 @@ uint32_t	number_cmds(char *cmd)
 	while (*cmd)
 	{
 		if (*cmd++ == '|')
-		{
-			if (*cmd == '|')
-				cmd++;
-			else
-				count++;
-		}
+            count++;
 	}
 	return (count);
 }

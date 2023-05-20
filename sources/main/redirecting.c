@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 17:46:55 by fra               #+#    #+#             */
-/*   Updated: 2023/05/20 05:13:25 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/20 19:02:12 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,30 +64,36 @@ char	*find_eof(char *start)
 
 char	*read_stdin(char *buffer)
 {
-	char	*new_line;
-	char	*eof;
-	int32_t	eof_pos;
-	bool	keep_reading;
+	char			*new_line;
+	char			*eof;
+	int32_t			eof_pos;
+	bool			keep_reading;
+	t_cmd_status	status;
 	
 	eof_pos = find_next_eof_pos(buffer, 0);
 	while (eof_pos != -1)
 	{
 		eof = find_eof(buffer + eof_pos);
+		if (eof == NULL)
+		{
+			free(buffer);
+			return (NULL);
+		}
 		keep_reading = true;
 		while (keep_reading)
 		{
-			if (ft_readline(&new_line, "> ", false) == CMD_MEM_ERR)
-				return (NULL);
-			buffer = ft_append_char(buffer, '\n');
-			if (! buffer)
-				return (NULL);
-			keep_reading = ft_strncmp(new_line, eof, ft_strlen(eof) + 1);
-			buffer = ft_concat(buffer, new_line);
-			if (! buffer)
-				return (NULL);
+			status = ft_readline(&new_line, "> ", false);
+			if (status == CMD_MEM_ERR)
+				break ;
+			keep_reading = ft_strncmp(new_line, eof, ft_strlen(eof) + 1) != 0;
+			status = concat_cmds(&buffer, new_line);
+			if (status == CMD_MEM_ERR)
+				break ;
 		}
-		eof_pos = find_next_eof_pos(buffer, eof_pos);
 		free(eof);
+		if (status == CMD_MEM_ERR)
+			return (NULL);
+		eof_pos = find_next_eof_pos(buffer, eof_pos);
 	}
 	return (buffer);
 }

@@ -66,26 +66,6 @@ typedef struct s_var
 	int			status;
 }   t_var;
 
-bool    check_pipes(char *cmd);
-
-bool	check_between_pipes(char *str, int32_t pos1, int32_t pos2);
-
-bool    check_redirections(char *str);
-
-bool	check_quotes(char *cmd);
-
-bool	check_cmd(char *cmd);
-
-bool	add_raw_cmd(t_raw_cmd **history, char *new_input);
-
-void    free_cmds(t_raw_cmd **list);
-
-void    print_cmds(t_raw_cmd *c_list);
-
-t_cmd_status	single_cmd(char **curr_cmd, char *prompt);
-
-void    main_loop(void);
-
 void 	test_pipes(void);
 
 void 	test_redirections(void);
@@ -100,24 +80,45 @@ void	test_eof(void);
 
 void	test_quotes(void);
 
+
+bool    check_pipes(char *cmd);
+
+bool	check_between_pipes(char *str, int32_t pos1, int32_t pos2);
+
+bool    check_redirections(char *str);
+
+bool	check_quotes(char *cmd);
+
+bool	check_cmd(char *cmd);
+
+
+bool	add_raw_cmd(t_raw_cmd **history, char *new_input);
+
+void    free_cmds(t_raw_cmd **list);
+
+void    print_cmds(t_raw_cmd *c_list);
+
+
+t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check);
+
+t_cmd_status	concat_input(char **base, char *buffer);
+
+t_cmd_status	read_input(char **curr_cmd);
+
+void    main_loop(void);
+
+
 bool	trailing_pipe(char	*cmd);
-
-// char	*malloc_str(const char *str);
-
-char	*read_stdin(char *buffer);
-
-// t_cmd_status	append_pipe(char **pipe);
-
-// t_cmd_status	build_cmd(char **curr_cmd, char *input_to_append, char *pipe_to_append);
 
 bool	is_quote(char to_check);
 
 bool	is_arrow(char to_check);
 
-t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check);
 
 int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos);
 
 char	*find_eof(char *start);
+
+char	*read_stdin(char *buffer);
 
 #endif
