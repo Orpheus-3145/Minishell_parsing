@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:25:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/21 20:02:00 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/22 00:50:37 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,36 @@ void	main_loop(t_var *depo)
 				free(cmd);
 			break ;
 		}
-		// if (status == CMD_NULL_ERR)
-		// 	// ...
+		if (status == CMD_NULL_ERR)
+			break ;
 		if (*cmd != '\0')
 			add_history(cmd);
 		if (status == CMD_SIN_ERR)
 			ft_printf("sintax error\n");
 		else
 		{
+			// input++;
+			// depo++;
 			input = create_new_input(cmd, depo->env_list, depo->env_arr);
 			if (input == NULL)		// MEMORY FAULT
 			{
 				free(cmd);
 				break ;
 			}
-			append_new_cmd(depo, input);
+			append_new_input(depo, input);
 		}
 		cmd = NULL;
 	}
 	clear_history();		// why rl_clear_history() doesn't work??
+	free_depo(depo);
 }
 
 int main(int argc, char**argv, char **envp) 
 {
 	t_var	*depo;
-
+	
+	// test_isolate();
+	// test_n_words();
 	argc++;
 	argv++;
 	depo = create_depo(envp);

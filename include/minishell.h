@@ -48,6 +48,7 @@ typedef struct s_cmd
 typedef struct s_input
 {	
 	t_cmd			*cmd_data;
+	char			*raw_input;
 	uint32_t		n_cmd;
 	struct s_input	*next;
 }   t_input;
@@ -76,6 +77,9 @@ void	test_eof(void);
 
 void	test_quotes(void);
 
+void	test_isolate(void);
+
+void	test_n_words(void);
 
 
 bool    check_pipes(char *cmd);
@@ -117,19 +121,28 @@ char	*read_stdin(char *buffer);
 
 t_var   *create_depo(char **envp);
 
-void append_new_cmd(t_var *depo, t_input *new_input);
+void append_new_input(t_var *depo, t_input *new_input);
 
 t_cmd *create_new_cmd(char *input, t_env  *env_list, char	**env_arr);
 
 t_input *create_new_input(char *input, t_env  *env_list, char	**env_arr);
+
+void	free_depo(t_var *depo);
 
 
 char	*get_cmd_name(char *input);
 
 char	**get_cmd_full(char *input);
 
-char	*get_redirect(char *input);
+int		*get_redirect(char *input);
 
 char	**get_file(char *input);
+
+bool	tokenize(t_cmd *cmd_to_fill, char *to_split);
+
+
+char	*isolate_next_word(char	*string);
+
+uint32_t	n_words(char *string);
 
 #endif

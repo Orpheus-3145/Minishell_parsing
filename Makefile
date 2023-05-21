@@ -34,6 +34,7 @@ $(LIBFT):
 $(NAME): $(OBJ_DIR) $(OBJECTS)
 	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJECTS) $(LFLAGS) -o $(NAME)
 	@printf "(minishell) $(GREEN)Created program $(NAME)$(RESET)\n"
+	@clear
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
