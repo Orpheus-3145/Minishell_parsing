@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:26:00 by fra               #+#    #+#             */
-/*   Updated: 2023/05/20 21:28:16 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/21 19:56:13 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ bool    check_pipes(char *cmd)
 {
 	uint32_t	i;
 	int32_t		last_pipe_pos;
-	char		quotes;
-	bool		open_quotes;
 
 	i = 0;
 	while (ft_isspace(cmd[i]))
@@ -43,23 +41,9 @@ bool    check_pipes(char *cmd)
 	if (cmd[i] == '|')
 		return (false);
 	last_pipe_pos = -1;
-	open_quotes = false;
 	while(cmd[i])
 	{
-		if (is_quote(cmd[i]))
-		{
-			if ((open_quotes == true) && (cmd[i] == quotes))
-			{
-				quotes = '\0';
-				open_quotes = false;
-			}
-			else if (open_quotes == false)
-			{
-				quotes = cmd[i];
-				open_quotes = true;
-			}
-		}
-		else if ((open_quotes == false) && (cmd[i] == '|'))
+		if ((cmd[i] == '|') && is_outside_quotes(cmd, i))
 		{
 			if (last_pipe_pos != -1)
 			{
@@ -77,50 +61,27 @@ bool    check_pipes(char *cmd)
 
 bool	check_redirections(char *cmd)
 {
-	char		quotes;
-	bool		open_quotes;
+	uint32_t	i;
+	char		open_arrow;
 
-	open_quotes = false;
-	while (*cmd)
+	i = 0;
+	while (cmd[i] != '\0')
 	{
-		if (is_quote(*cmd))
+		if (is_arrow(cmd[i]) && is_outside_quotes(cmd, i))
 		{
-			if ((open_quotes == true) && (*cmd == quotes))
-			{
-				quotes = '\0';
-				open_quotes = false;
-			}
-			else if (open_quotes == false)
-			{
-				quotes = *cmd;
-				open_quotes = true;
-			}
-		}
-		if ((open_quotes == false) && is_arrow(*cmd))
-		{
-			if (*cmd == '<')
-			{
-				cmd++;
-				if (! *cmd || (*cmd == '>'))
-					return (false);
-				else if (*cmd == '<')
-					cmd++;
-			}
-			else if (*cmd == '>')
-			{
-				cmd++;
-				if (! *cmd || (*cmd == '<'))
-					return (false);
-				else if (*cmd == '>')
-					cmd++;
-			}
-			while (ft_isspace(*cmd))
-				cmd++;
-			if (((*cmd == '|') || (is_arrow(*cmd)) || (! *cmd)))
+			open_arrow = cmd[i];
+			i++;
+			if (cmd[i] == open_arrow)
+				i++;
+			else if ((cmd[i] != '\0') || (cmd[i] != open_arrow))
+				return (false);
+			while (ft_isspace(cmd[i]))
+				i++;
+			if (((cmd[i] == '|') || (is_arrow(cmd[i])) || (cmd[i] == '\0')))
 				return (false);
 		}
 		else
-			cmd++;
+			i++;
 	}
 	return (true);
 }

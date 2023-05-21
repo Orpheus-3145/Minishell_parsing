@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:49:18 by fra               #+#    #+#             */
-/*   Updated: 2023/05/20 21:37:29 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/21 19:59:25 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,21 +137,21 @@ void	test_last_pipe(void)
 	char *red_str;
 
 	red_str = "asdadsd |";
-	ft_printf("str: %s - status %d\n", red_str, trailing_pipe(red_str));
+	ft_printf("str: %s - status %d\n", red_str, has_trailing_pipe(red_str));
 	red_str = "asdadsd |   ";
-	ft_printf("str: %s - status %d\n", red_str, trailing_pipe(red_str));
+	ft_printf("str: %s - status %d\n", red_str, has_trailing_pipe(red_str));
 	red_str = "asdadsd ";
-	ft_printf("str: %s - status %d\n", red_str, trailing_pipe(red_str));
+	ft_printf("str: %s - status %d\n", red_str, has_trailing_pipe(red_str));
 	red_str = "|";
-	ft_printf("str: %s - status %d\n", red_str, trailing_pipe(red_str));
+	ft_printf("str: %s - status %d\n", red_str, has_trailing_pipe(red_str));
 	red_str = "|  ";
-	ft_printf("str: %s - status %d\n", red_str, trailing_pipe(red_str));
+	ft_printf("str: %s - status %d\n", red_str, has_trailing_pipe(red_str));
 	red_str = " |   ";
-	ft_printf("str: %s - status %d\n", red_str, trailing_pipe(red_str));
+	ft_printf("str: %s - status %d\n", red_str, has_trailing_pipe(red_str));
 	red_str = "    ";
-	ft_printf("str: %s - status %d\n", red_str, trailing_pipe(red_str));
+	ft_printf("str: %s - status %d\n", red_str, has_trailing_pipe(red_str));
 	red_str = "";
-	ft_printf("str: %s - status %d\n", red_str, trailing_pipe(red_str));
+	ft_printf("str: %s - status %d\n", red_str, has_trailing_pipe(red_str));
 }
 
 void	test_trim(void)

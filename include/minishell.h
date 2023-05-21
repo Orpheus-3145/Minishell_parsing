@@ -45,20 +45,18 @@ typedef struct s_cmd
 	char	**env_arr;
 }   t_cmd;
 
-// typedef struct s_raw_cmd
-// {
-// 	struct s_raw_cmd	*next;
-// 	char				*cmd_input;
-// 	uint32_t			n_cmds;
-// 	t_cmd				*cmd_list;
-// }   t_raw_cmd;
+typedef struct s_input
+{	
+	t_cmd			*cmd_data;
+	uint32_t		n_cmd;
+	struct s_input	*next;
+}   t_input;
 
 typedef struct s_var
 {
-	t_cmd		*cmd_data;
-	// uint32_t	n_cmd;
-	char		**env_arr;
+	t_input		*input_list;
 	t_env		*env_list;
+	char		**env_arr;
 	int			**pipes;
 	pid_t		*pid;
 	int			status;
@@ -79,6 +77,7 @@ void	test_eof(void);
 void	test_quotes(void);
 
 
+
 bool    check_pipes(char *cmd);
 
 bool	check_between_pipes(char *str, int32_t pos1, int32_t pos2);
@@ -89,17 +88,20 @@ bool	check_quotes(char *cmd);
 
 bool	check_cmd(char *cmd);
 
+
 t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check);
 
 t_cmd_status	concat_input(char **base, char *buffer);
 
 t_cmd_status	read_input(char **curr_cmd);
 
+
 void    main_loop(t_var	*main_var);
 
-t_var   *create_main(char **envp);
 
-bool	trailing_pipe(char	*cmd);
+bool	is_outside_quotes(char *string, uint32_t pos_to_check);
+
+bool	has_trailing_pipe(char	*cmd);
 
 bool	is_quote(char to_check);
 
@@ -113,6 +115,21 @@ char	*find_eof(char *start);
 char	*read_stdin(char *buffer);
 
 
-t_cmd	*create_cmd(char *raw_input);
+t_var   *create_depo(char **envp);
+
+void append_new_cmd(t_var *depo, t_input *new_input);
+
+t_cmd *create_new_cmd(char *input, t_env  *env_list, char	**env_arr);
+
+t_input *create_new_input(char *input, t_env  *env_list, char	**env_arr);
+
+
+char	*get_cmd_name(char *input);
+
+char	**get_cmd_full(char *input);
+
+char	*get_redirect(char *input);
+
+char	**get_file(char *input);
 
 #endif
