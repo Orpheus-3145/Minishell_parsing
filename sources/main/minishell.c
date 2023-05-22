@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:25:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/22 00:50:37 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/22 03:10:21 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,7 @@ void	main_loop(t_var *depo)
 			// depo++;
 			input = create_new_input(cmd, depo->env_list, depo->env_arr);
 			if (input == NULL)		// MEMORY FAULT
-			{
-				free(cmd);
 				break ;
-			}
 			append_new_input(depo, input);
 		}
 		cmd = NULL;

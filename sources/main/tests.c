@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:49:18 by fra               #+#    #+#             */
-/*   Updated: 2023/05/22 00:50:06 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/22 03:34:01 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,121 +262,121 @@ void	test_eof(void)
 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str, 0), find_eof(str + find_next_eof_pos(str, 0)));
 }
 
-void	test_isolate(void)
-{
-	char *to_isolate;
-	char *isolated;
+// void	test_isolate(void)
+// {
+// 	char *to_isolate;
+// 	char *isolated;
 
-	to_isolate = "asdadasd adadasd";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "asdadasd adadasd";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "sadasdss>asd";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "sadasdss>asd";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "''";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "''";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "\"\"";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "\"\"";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "ada sda";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "ada sda";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = " \'asd\' asd";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = " \'asd\' asd";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "  a  dsdf";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "  a  dsdf";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "asdasd\"asdasd\"asdasd sdfsf";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "asdasd\"asdasd\"asdasd sdfsf";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "sdfsdf \"asdf\"asd sadasd";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "sdfsdf \"asdf\"asd sadasd";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "   'dasd' asd";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "   'dasd' asd";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "asdad asd'asdd'";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "asdad asd'asdd'";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "asdasd \"adad\"";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "asdasd \"adad\"";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "   asdad\"asd asd\"asd asd ";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "   asdad\"asd asd\"asd asd ";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "  asdfasd''asdasd dff";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "  asdfasd''asdasd dff";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "  asdfasd''as\"\"dasd asd dff";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "  asdfasd''as\"\"dasd asd dff";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "  asdf ''asd''as\"\" dasd asd dff";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "  asdf ''asd''as\"\" dasd asd dff";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 	
-	to_isolate = "  asdf''asd ''as\"\" dasd asd dff";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "  asdf''asd ''as\"\" dasd asd dff";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 
-	to_isolate = "  asdf\"\"asd''as\"\" dasd asd dff";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "  asdf\"\"asd''as\"\" dasd asd dff";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 
-	to_isolate = "  asdf'hthgf' asd''as\"\" dasd asd dff";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = "  asdf'hthgf' asd''as\"\" dasd asd dff";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 
-	to_isolate = " ''asd'jsda'as\"\" dasd asd dff";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
+// 	to_isolate = " ''asd'jsda'as\"\" dasd asd dff";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
 
-	to_isolate = " ''asd'jsda' as\"\" dasd asd dff";
-	isolated = isolate_next_word(to_isolate);
-	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-	free(isolated);
-}
+// 	to_isolate = " ''asd'jsda' as\"\" dasd asd dff";
+// 	isolated = isolate_next_word(to_isolate);
+// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
+// 	free(isolated);
+// }
 
 void	test_n_words(void)
 {

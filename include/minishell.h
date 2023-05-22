@@ -77,7 +77,7 @@ void	test_eof(void);
 
 void	test_quotes(void);
 
-void	test_isolate(void);
+// void	test_isolate(void);
 
 void	test_n_words(void);
 
@@ -123,7 +123,7 @@ t_var   *create_depo(char **envp);
 
 void append_new_input(t_var *depo, t_input *new_input);
 
-t_cmd *create_new_cmd(char *input, t_env  *env_list, char	**env_arr);
+t_cmd *create_new_cmd(char *input, uint32_t n_cmds, t_env  *env_list, char	**env_arr);
 
 t_input *create_new_input(char *input, t_env  *env_list, char	**env_arr);
 
@@ -141,8 +141,14 @@ char	**get_file(char *input);
 bool	tokenize(t_cmd *cmd_to_fill, char *to_split);
 
 
-char	*isolate_next_word(char	*string);
+// char	*isolate_next_word(char	*string);
+
+uint32_t	n_cmds(char *string);
 
 uint32_t	n_words(char *string);
+
+char	**split_into_cmds(char *input_cmd);
+
+char	**split_into_words(char *input_cmd);
 
 #endif
