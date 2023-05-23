@@ -46,9 +46,20 @@ typedef struct s_env
 	bool			has_value;
 }   t_env;
 
+
+typedef struct s_token
+{
+	struct s_token	*prev;
+	struct s_token	*next;
+	char			*word;
+	t_type_token	type;
+}	t_token;
+
 typedef struct s_cmd
 {
+	t_token	*tokens;
 	char	*cmd_name;
+	char	*_cmd;
 	char	**cmd_full;
 	bool	redirections;
 	int		*redirect;			//could be list 
@@ -73,14 +84,6 @@ typedef struct s_var
 	int			status;
 }   t_var;
 
-typedef struct s_token
-{
-	struct s_token	*prev;
-	struct s_token	*next;
-	char			*word;
-	t_type_token	type;
-}	t_token;
-
 void 	test_pipes(void);
 
 void 	test_redirections(void);
@@ -97,9 +100,7 @@ void	test_quotes(void);
 
 void	test_split_cmd(void);
 
-// void	test_isolate(void);
-
-void	test_n_words(void);
+// void	test_n_words(void);
 
 void	test_n_cmds(void);
 
@@ -139,6 +140,10 @@ bool 	is_valid_arrow(char *string, uint32_t pos_to_check);
 
 bool 	is_valid_quote(char *string, uint32_t pos_to_check);
 
+bool	is_valid_space(char *string, uint32_t pos_to_check);
+
+bool	is_not_symbol(char *string, uint32_t pos);
+
 
 int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos);
 
@@ -158,22 +163,10 @@ t_input *create_new_input(char *input);
 void	free_depo(t_var *depo);
 
 
-char	*get_cmd_name(char *input);
-
-char	**get_cmd_full(char *input);
-
-int		*get_redirect(char *input);
-
-char	**get_file(char *input);
-
-
 uint32_t	n_cmds(char *string);
-
-uint32_t	n_words(char *string);
 
 char	**split_into_cmds(char *input_cmd);
 
-char	**split_into_words(char *input_cmd);
 
 
 t_token *new_token(char *word, t_type_token type);
@@ -181,5 +174,11 @@ t_token *new_token(char *word, t_type_token type);
 void	append_token(t_token **token_list, t_token *new_token);
 
 t_token *tokenize(char *input);
+
+void	drop_token(t_token **token_list, char *word);
+
+void	free_tokens(t_token *token_list);
+
+void	print_tokens(t_var *depo);
 
 #endif

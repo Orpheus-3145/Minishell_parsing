@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: fra <fra@student.42.fr>                      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/15 21:25:47 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/23 17:04:27 by faru          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/15 21:25:47 by fra               #+#    #+#             */
+/*   Updated: 2023/05/24 01:25:25 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ void	main_loop(t_var *depo)
 		}
 		cmd = NULL;
 	}
+	print_tokens(depo);
 	clear_history();		// why rl_clear_history() doesn't work??
-	free_depo(depo);
+	// free_depo(depo);
 }
 
 int main(int argc, char**argv, char **envp) 

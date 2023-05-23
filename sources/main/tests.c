@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   tests.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: fra <fra@student.42.fr>                      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/16 16:49:18 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/23 16:15:52 by faru          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   tests.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/16 16:49:18 by fra               #+#    #+#             */
+/*   Updated: 2023/05/24 01:19:55 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,46 +264,46 @@ void	test_eof(void)
 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str, 0), find_eof(str + find_next_eof_pos(str, 0)));
 }
 
-void	test_n_words(void)
-{
-	char *string;
+// void	test_n_words(void)
+// {
+// 	char *string;
 
-	string = "asdadasd adadasd";
-	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
+// 	string = "asdadasd adadasd";
+// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
 
-	string = "asdasd  ASDASD D ada A adas ";
-	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
+// 	string = "asdasd  ASDASD D ada A adas ";
+// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
 
-	string = "     ";
-	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
+// 	string = "     ";
+// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
 
-	// string = NULL;
-	// ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
+// 	// string = NULL;
+// 	// ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
 
-	string = "'' asdsd";
-	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
+// 	string = "'' asdsd";
+// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
 
-	string = "asd\"  \"adasd adadasd";
-	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
+// 	string = "asd\"  \"adasd adadasd";
+// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
 
-	string = "asdad 'a    'sd adadasd";
-	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
+// 	string = "asdad 'a    'sd adadasd";
+// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
 
-	string = "  adadasd";
-	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
+// 	string = "  adadasd";
+// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
 
-	string = "  a dasd gh g ad a ";
-	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
+// 	string = "  a dasd gh g ad a ";
+// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
 
-	string = "aasdasd   ";
-	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
+// 	string = "aasdasd   ";
+// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
 
-	string = "asdasd'' dfgdf '' asdf asd";
-	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
+// 	string = "asdasd'' dfgdf '' asdf asd";
+// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
 
-	string = " asdsad  ";
-	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
-}
+// 	string = " asdsad  ";
+// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
+// }
 
 void	test_n_cmds(void)
 {
