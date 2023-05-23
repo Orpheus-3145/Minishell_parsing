@@ -26,23 +26,33 @@ typedef enum s_cmd_status
 	CMD_SIN_ERR,
 	CMD_MEM_ERR,
 	CMD_NULL_ERR,
-} t_cmd_status;
+}	t_cmd_status;
+
+typedef enum s_type_token
+{
+	TOK_CMD_NAME,
+	TOK_CMD_OPTIONS,
+	TOK_CMD_ARG,
+	TOK_RED_SYMBOL,
+	TOK_RED_FILE,
+	TOK_ERROR,
+}	t_type_token;
 
 typedef struct s_env
 {
 	struct s_env	*next;
 	char			*key;
 	char			*value;
+	bool			has_value;
 }   t_env;
 
 typedef struct s_cmd
 {
 	char	*cmd_name;
 	char	**cmd_full;
+	bool	redirections;
 	int		*redirect;			//could be list 
 	char	**file;
-	t_env	*env_list;
-	char	**env_arr;
 }   t_cmd;
 
 typedef struct s_input
@@ -63,6 +73,14 @@ typedef struct s_var
 	int			status;
 }   t_var;
 
+typedef struct s_token
+{
+	struct s_token	*prev;
+	struct s_token	*next;
+	char			*word;
+	t_type_token	type;
+}	t_token;
+
 void 	test_pipes(void);
 
 void 	test_redirections(void);
@@ -77,9 +95,13 @@ void	test_eof(void);
 
 void	test_quotes(void);
 
+void	test_split_cmd(void);
+
 // void	test_isolate(void);
 
 void	test_n_words(void);
+
+void	test_n_cmds(void);
 
 
 bool    check_pipes(char *cmd);
@@ -111,6 +133,12 @@ bool	is_quote(char to_check);
 
 bool	is_arrow(char to_check);
 
+bool 	is_valid_pipe(char *string, uint32_t pos_to_check);
+
+bool 	is_valid_arrow(char *string, uint32_t pos_to_check);
+
+bool 	is_valid_quote(char *string, uint32_t pos_to_check);
+
 
 int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos);
 
@@ -123,9 +151,9 @@ t_var   *create_depo(char **envp);
 
 void append_new_input(t_var *depo, t_input *new_input);
 
-t_cmd *create_new_cmd(char *input, uint32_t n_cmds, t_env  *env_list, char	**env_arr);
+t_cmd *create_new_cmd(char *input, uint32_t n_cmds);
 
-t_input *create_new_input(char *input, t_env  *env_list, char	**env_arr);
+t_input *create_new_input(char *input);
 
 void	free_depo(t_var *depo);
 
@@ -138,10 +166,6 @@ int		*get_redirect(char *input);
 
 char	**get_file(char *input);
 
-bool	tokenize(t_cmd *cmd_to_fill, char *to_split);
-
-
-// char	*isolate_next_word(char	*string);
 
 uint32_t	n_cmds(char *string);
 
@@ -150,5 +174,12 @@ uint32_t	n_words(char *string);
 char	**split_into_cmds(char *input_cmd);
 
 char	**split_into_words(char *input_cmd);
+
+
+t_token *new_token(char *word, t_type_token type);
+
+void	append_token(t_token **token_list, t_token *new_token);
+
+t_token *tokenize(char *input);
 
 #endif

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/15 21:25:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/22 03:10:21 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   minishell.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/15 21:25:47 by fra           #+#    #+#                 */
+/*   Updated: 2023/05/23 17:04:27 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,7 @@ void	main_loop(t_var *depo)
 			ft_printf("sintax error\n");
 		else
 		{
-			// input++;
-			// depo++;
-			input = create_new_input(cmd, depo->env_list, depo->env_arr);
+			input = create_new_input(cmd);
 			if (input == NULL)		// MEMORY FAULT
 				break ;
 			append_new_input(depo, input);
@@ -60,6 +58,8 @@ int main(int argc, char**argv, char **envp)
 	
 	// test_isolate();
 	// test_n_words();
+	// test_trim();
+	test_split_cmd();
 	argc++;
 	argv++;
 	depo = create_depo(envp);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 17:13:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/22 03:29:55 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   init.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/16 17:13:47 by fra           #+#    #+#                 */
+/*   Updated: 2023/05/23 13:57:42 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void append_new_input(t_var *depo, t_input *new_input)
 	}
 }
 
-t_cmd *create_new_cmd(char *input, uint32_t n_cmds, t_env  *env_list, char	**env_arr)
+t_cmd *create_new_cmd(char *input, uint32_t n_cmds)
 {
 	t_cmd       *new_cmd;
 	char        **str_cmds;
@@ -76,30 +76,27 @@ t_cmd *create_new_cmd(char *input, uint32_t n_cmds, t_env  *env_list, char	**env
 		// 	free(new_cmd);
 		// 	return (ft_free_double((void ***) &str_cmds, -1));
 		// }
-		new_cmd[i].env_list = env_list;
-		new_cmd[i].env_arr = env_arr;
 		i++;
 	}
 	ft_free_double((void ***) &str_cmds, -1);
 	return (new_cmd);
 }
 
-t_input *create_new_input(char *input, t_env  *env_list, char	**env_arr)
+t_input *create_new_input(char *input)
 {
 	t_input *new_input;
 
 	new_input = malloc(sizeof(t_input));
 	if (new_input != NULL)
 	{
-		new_input->raw_input = ft_trim(input);
-		free(input);
+		new_input->raw_input = ft_trim(input, true);
 		if (new_input->raw_input == NULL)
 		{
 			free(new_input);
 			return (NULL);
 		}
 		new_input->n_cmd = n_cmds(new_input->raw_input);
-		new_input->cmd_data = create_new_cmd(new_input->raw_input, new_input->n_cmd, env_list, env_arr);
+		new_input->cmd_data = create_new_cmd(new_input->raw_input, new_input->n_cmd);
 		if (new_input->cmd_data == NULL)
 		{
 			free(new_input->raw_input);

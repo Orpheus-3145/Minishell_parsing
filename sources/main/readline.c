@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   readline.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/17 11:03:02 by faru              #+#    #+#             */
-/*   Updated: 2023/05/21 19:55:52 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   readline.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
+/*   Updated: 2023/05/23 16:23:24 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ t_cmd_status	read_input(char **curr_cmd)
 	status = ft_readline(&buffer, "-> ", true); 
 	while (status != CMD_MEM_ERR)
 	{
-		// if (status == CMD_NULL_ERR)
-		// 	// ...
+		if (status == CMD_NULL_ERR)
+			break ;
 		if (status == CMD_OK)
 		{
 			open_pipe = has_trailing_pipe(buffer);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tests.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 16:49:18 by fra               #+#    #+#             */
-/*   Updated: 2023/05/22 03:34:01 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   tests.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/16 16:49:18 by fra           #+#    #+#                 */
+/*   Updated: 2023/05/23 16:15:52 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,23 +159,25 @@ void	test_trim(void)
 	char *red_str;
 
 	red_str = "asdadsd";
-	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str));
+	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str, false));
 	red_str = "   asdadsd   ";
-	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str));
+	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str, false));
 	red_str = "\tasdadsd\n";
-	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str));
+	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str, false));
 	red_str = "\nasdadsd";
-	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str));
+	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str, false));
 	red_str = "   ";
-	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str));
+	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str, false));
 	red_str = "";
-	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str));
+	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str, false));
 	red_str = NULL;
-	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str));
+	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str, false));
 	red_str = " 0 ";
-	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str));
+	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str, false));
 	red_str = " sf   ";
-	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str));
+	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str, false));
+	red_str = "'|' asdsd";
+	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str, false));
 }
 
 void	test_next_d_red(void)
@@ -262,122 +264,6 @@ void	test_eof(void)
 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str, 0), find_eof(str + find_next_eof_pos(str, 0)));
 }
 
-// void	test_isolate(void)
-// {
-// 	char *to_isolate;
-// 	char *isolated;
-
-// 	to_isolate = "asdadasd adadasd";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "sadasdss>asd";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "''";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "\"\"";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "ada sda";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = " \'asd\' asd";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "  a  dsdf";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "asdasd\"asdasd\"asdasd sdfsf";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "sdfsdf \"asdf\"asd sadasd";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "   'dasd' asd";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "asdad asd'asdd'";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "asdasd \"adad\"";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "   asdad\"asd asd\"asd asd ";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "  asdfasd''asdasd dff";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "  asdfasd''as\"\"dasd asd dff";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "  asdf ''asd''as\"\" dasd asd dff";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-	
-// 	to_isolate = "  asdf''asd ''as\"\" dasd asd dff";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-
-// 	to_isolate = "  asdf\"\"asd''as\"\" dasd asd dff";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-
-// 	to_isolate = "  asdf'hthgf' asd''as\"\" dasd asd dff";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-
-// 	to_isolate = " ''asd'jsda'as\"\" dasd asd dff";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-
-// 	to_isolate = " ''asd'jsda' as\"\" dasd asd dff";
-// 	isolated = isolate_next_word(to_isolate);
-// 	ft_printf("str: |%s| - isolated |%s|\n", to_isolate, isolated);
-// 	free(isolated);
-// }
-
 void	test_n_words(void)
 {
 	char *string;
@@ -417,4 +303,74 @@ void	test_n_words(void)
 
 	string = " asdsad  ";
 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
+}
+
+void	test_n_cmds(void)
+{
+	char *string;
+
+	string = "asd\"asdsadasd\"adasd | adadasd";
+	ft_printf("str: %%%s%% - n cmds: %u\n", string, n_cmds(string));
+
+	string = "asdasd | AS'DA'SD | |D ada A adas ";
+	ft_printf("str: %%%s%% - n cmds: %u\n", string, n_cmds(string));
+
+	string = "     ";
+	ft_printf("str: %%%s%% - n cmds: %u\n", string, n_cmds(string));
+
+	string = "'|' asdsd";
+	ft_printf("str: %%%s%% - n cmds: %u\n", string, n_cmds(string));
+
+	string = "asd\" | \"a|dasd a|dada| sd";
+	ft_printf("str: %%%s%% - n cmds: %u\n", string, n_cmds(string));
+
+	string = "asdad |'a |   '|sd ada|dasd";
+	ft_printf("str: %%%s%% - n cmds: %u\n", string, n_cmds(string));
+
+	string = "  ada| dasd";
+	ft_printf("str: %%%s%% - n cmds: %u\n", string, n_cmds(string));
+
+	string = "  a d|asd gh g| ad a ";
+	ft_printf("str: %%%s%% - n cmds: %u\n", string, n_cmds(string));
+
+	string = "aasd| |asd  | ";
+	ft_printf("str: %%%s%% - n cmds: %u\n", string, n_cmds(string));
+
+	string = "asdasd'' dfgdf '' asdf asd|";
+	ft_printf("str: %%%s%% - n cmds: %u\n", string, n_cmds(string));
+
+	string = "| asdsad  ";
+	ft_printf("str: %%%s%% - n cmds: %u\n", string, n_cmds(string));
+	
+	string = "|";
+	ft_printf("str: %%%s%% - n cmds: %u\n", string, n_cmds(string));
+}
+
+void	helper(char *to_split)
+{
+	ft_printf("to split: %%%s%%, n cmds; %u\n", to_split, n_cmds(to_split));
+	char **str = split_into_cmds(to_split);
+	char **tmp = str;
+	while (*str)
+		ft_printf("\t%%%s%%\n", *str++);
+	ft_printf("\n");
+	free(tmp);
+}
+void	test_split_cmd(void)
+{
+	helper("a\"sdad\"asd | adadasd");
+	helper("asdasd | ASD'Adsasdasd'SD | |D ada A adas ");
+	helper("     ");
+	helper("'|' asdsd");
+	helper("asd\" | \"a|dasd a|dada| sd");
+	helper("asdad |'a |   '|sd ada|dasd");
+	helper("  ada| dasd");
+	helper("  a d|asd gh g| ad a ");
+	helper("aasd| |asd  | ");
+	helper("asdasd'' dfgdf '' asdf asd|");
+	helper("| asdsad  ");
+	helper("|");
+	helper("asdad ada  sd | adad sdf asd");
+	helper("asd'asd | ad' adasd | adadasd");
+	helper("as|dada|sd | ad|a|dasd");
 }
