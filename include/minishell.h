@@ -25,6 +25,7 @@ typedef enum s_cmd_status
 	CMD_OK,
 	CMD_SIN_ERR,
 	CMD_MEM_ERR,
+	CMD_EMPTY,
 	CMD_NULL_ERR,
 }	t_cmd_status;
 
@@ -142,7 +143,9 @@ bool 	is_valid_quote(char *string, uint32_t pos_to_check);
 
 bool	is_valid_space(char *string, uint32_t pos_to_check);
 
-bool	is_not_symbol(char *string, uint32_t pos);
+bool	is_not_symbol(char *string, uint32_t pos_to_check);
+
+bool	is_only_spaces(char	*to_check);
 
 
 int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos);
@@ -168,7 +171,6 @@ uint32_t	n_cmds(char *string);
 char	**split_into_cmds(char *input_cmd);
 
 
-
 t_token *new_token(char *word, t_type_token type);
 
 void	append_token(t_token **token_list, t_token *new_token);
@@ -180,5 +182,7 @@ void	drop_token(t_token **token_list, char *word);
 void	free_tokens(t_token *token_list);
 
 void	print_tokens(t_var *depo);
+
+void	print_tks(t_token *tokens);
 
 #endif

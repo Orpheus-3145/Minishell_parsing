@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 17:13:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/24 01:24:19 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   init.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/16 17:13:47 by fra           #+#    #+#                 */
+/*   Updated: 2023/05/24 16:03:53 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,27 @@ void append_new_input(t_var *depo, t_input *new_input)
 	}
 }
 
+t_input	*create_new_input(char *input)
+{
+	t_input *new_input;
+
+	new_input = malloc(sizeof(t_input));
+	if (new_input != NULL)
+	{
+		new_input->raw_input = input;
+		new_input->n_cmd = n_cmds(new_input->raw_input);
+		new_input->cmd_data = create_new_cmd(new_input->raw_input, new_input->n_cmd);
+		if (new_input->cmd_data == NULL)
+		{
+			free(new_input->raw_input);
+			free(new_input);
+			return (NULL);
+		}
+		new_input->next = NULL;
+	}
+	return (new_input);
+}
+
 t_cmd	*create_new_cmd(char *input, uint32_t n_cmds)
 {
 	t_cmd       *new_cmd;
@@ -81,34 +102,9 @@ t_cmd	*create_new_cmd(char *input, uint32_t n_cmds)
 		// 	return (ft_free_double((void ***) &str_cmds, -1));
 		// }
 		new_cmd++;
+		i++;
 	}
-	free(str_cmds[i]);
+	new_cmd -= n_cmds;
 	free(str_cmds);
 	return (new_cmd);
-}
-
-t_input	*create_new_input(char *input)
-{
-	t_input *new_input;
-
-	new_input = malloc(sizeof(t_input));
-	if (new_input != NULL)
-	{
-		new_input->raw_input = ft_trim(input, true);
-		if (new_input->raw_input == NULL)
-		{
-			free(new_input);
-			return (NULL);
-		}
-		new_input->n_cmd = n_cmds(new_input->raw_input);
-		new_input->cmd_data = create_new_cmd(new_input->raw_input, new_input->n_cmd);
-		if (new_input->cmd_data == NULL)
-		{
-			free(new_input->raw_input);
-			free(new_input);
-			return (NULL);
-		}
-		new_input->next = NULL;
-	}
-	return (new_input);
 }

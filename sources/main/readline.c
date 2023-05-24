@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/05/23 16:23:24 by faru          ########   odam.nl         */
+/*   Updated: 2023/05/24 14:21:41 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_cmd_status	read_input(char **curr_cmd)
 	{
 		if (status == CMD_NULL_ERR)
 			break ;
-		if (status == CMD_OK)
+		else if (status == CMD_OK)
 		{
 			open_pipe = has_trailing_pipe(buffer);
 			if ((*buffer == '\0') && (*curr_cmd != NULL))
@@ -65,9 +65,16 @@ t_cmd_status	read_input(char **curr_cmd)
 			if (buffer == NULL)
 				return (CMD_MEM_ERR);
 		}
-		if ((concat_input(curr_cmd, buffer) == CMD_MEM_ERR) || (open_pipe == false) || (status == CMD_SIN_ERR))
+		concat_input(curr_cmd, buffer);
+		if (*curr_cmd == NULL)
+			status = CMD_MEM_ERR;
+		else if ((open_pipe == false) || (status == CMD_SIN_ERR))
 			break ;
-		status = ft_readline(&buffer, "> ", true); 
+		else
+			status = ft_readline(&buffer, "> ", true); 
 	}
-	return (status);
+	if ((status == CMD_OK) && (**curr_cmd == '\0'))
+		return (CMD_EMPTY);
+	else
+		return (status);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tools.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/20 19:09:49 by fra               #+#    #+#             */
-/*   Updated: 2023/05/24 00:55:55 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   tools.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/20 19:09:49 by fra           #+#    #+#                 */
+/*   Updated: 2023/05/24 16:05:10 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	**split_into_cmds(char *input_cmd)
 	char		**cmds;
 	uint32_t	i;
 	uint32_t	len;
+	char	*tmp;
 
 	cmds = ft_calloc(n_cmds(input_cmd) + 1, sizeof(char *));
 	if (! cmds)
@@ -47,7 +48,8 @@ char	**split_into_cmds(char *input_cmd)
 				break ;
 			len++;
 		}
-		cmds[i] = ft_trim(ft_substr(input_cmd, 0, len), true);
+		tmp = ft_substr(input_cmd, 0, len);
+		cmds[i] = ft_trim(tmp, true);
 		if (cmds[i] == NULL)
 			return (ft_free_double((void ***) &cmds, i));
 		i++;

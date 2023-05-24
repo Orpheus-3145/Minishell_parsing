@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   check.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 00:55:08 by fra               #+#    #+#             */
-/*   Updated: 2023/05/24 01:25:47 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   check.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/24 00:55:08 by fra           #+#    #+#                 */
+/*   Updated: 2023/05/24 17:44:57 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,6 @@ bool	is_valid_quote(char *string, uint32_t pos_to_check)
 	else
 		return (is_outside_quotes(string, pos_to_check));
 }
-
-// bool	is_valid_symbol(char *string, uint32_t pos_to_check)
-// {
-// 	if (string[pos_to_check] != '|' && (! is_arrow(string[pos_to_check])) && (! is_quote(string[pos_to_check])))
-// 		return (false);
-// 	else
-// 		return (is_outside_quotes(string, pos_to_check));
-// }
 
 bool	is_outside_quotes(char *string, uint32_t pos_to_check)
 {
@@ -108,8 +100,29 @@ bool	is_arrow(char to_check)
 
 bool	is_not_symbol(char *string, uint32_t pos)
 {
-	if (is_quote(string[pos]) || is_arrow(string[pos]) || ft_isspace(string[pos]) || (string[pos] == '|'))
+	char	tmp;
+
+	if (is_arrow(string[pos]) || ft_isspace(string[pos]) || (string[pos] == '|'))
 		return (! is_outside_quotes(string, pos));
+	else if (is_quote(string[pos]))
+	{
+		if (is_outside_quotes(string, pos))
+			return (false);
+		else
+		{
+			tmp = string[pos];
+			while (! is_quote(string[pos]))
+				pos--;
+			return (string[pos] != tmp);
+		}
+	}
 	else
 		return (true);
+}
+
+bool	is_only_spaces(char	*to_check)
+{
+	while (ft_isspace(*to_check))
+		to_check++;
+	return (*to_check == '\0');
 }

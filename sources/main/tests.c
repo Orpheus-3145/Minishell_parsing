@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tests.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 16:49:18 by fra               #+#    #+#             */
-/*   Updated: 2023/05/24 01:19:55 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   tests.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/16 16:49:18 by fra           #+#    #+#                 */
+/*   Updated: 2023/05/24 14:57:33 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void	test_trim(void)
 	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str, false));
 	red_str = "\tasdadsd\n";
 	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str, false));
-	red_str = "\nasdadsd";
+	red_str = "\nasd dfdsf adasdadsd";
 	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str, false));
 	red_str = "   ";
 	ft_printf("str: |%s| - trimmed |%s|\n", red_str, ft_trim(red_str, false));

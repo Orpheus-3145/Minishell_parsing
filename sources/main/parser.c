@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/15 21:26:00 by fra               #+#    #+#             */
-/*   Updated: 2023/05/21 19:56:13 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   parser.c                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/15 21:26:00 by fra           #+#    #+#                 */
+/*   Updated: 2023/05/24 14:42:36 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,10 @@ bool	check_redirections(char *cmd)
 	{
 		if (is_arrow(cmd[i]) && is_outside_quotes(cmd, i))
 		{
-			open_arrow = cmd[i];
-			i++;
+			open_arrow = cmd[i++];
 			if (cmd[i] == open_arrow)
 				i++;
-			else if ((cmd[i] != '\0') || (cmd[i] != open_arrow))
+			else if (is_arrow(cmd[i]) && (cmd[i] != open_arrow))
 				return (false);
 			while (ft_isspace(cmd[i]))
 				i++;
