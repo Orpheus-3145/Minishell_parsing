@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 19:09:49 by fra               #+#    #+#             */
-/*   Updated: 2023/05/25 18:48:55 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/26 01:05:14 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ uint32_t	skip_redirect_chars(char *cmd, uint32_t pos)
 		pos += is_arrow(cmd[pos]);
 		while (ft_isspace(cmd[pos]))
 			pos++;
-		while (! is_valid_space(cmd, pos) && (! is_valid_arrow(cmd, pos)))
+		while (! is_valid_space(cmd, pos) && (! is_valid_arrow(cmd, pos)) && cmd[pos])
 			pos++;
 	}
 	return (pos - start_pos);

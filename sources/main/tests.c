@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:49:18 by fra               #+#    #+#             */
-/*   Updated: 2023/05/25 18:56:56 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/26 01:03:51 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -379,4 +379,32 @@ void	test_char_skip(void)
 
 	str = "asd >asdasd<<fgh >def asd";
 	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 4 + skip_redirect_chars(str, 4));
+
+
+	str = "asd>asdasd<<fgh >def asd";
+	ft_printf("\nstr: |%s| - starting in: |%s|\n", str, str + 3 + skip_redirect_chars(str, 3));
+
+	str = "asd>>asdasd<<fgh >def asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 3 + skip_redirect_chars(str, 3));
+
+	str = "asd> asdasd<<fgh >def asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 3 + skip_redirect_chars(str, 3));
+
+	str = "asd > asdasd<<fgh >def asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 4 + skip_redirect_chars(str, 4));
+
+	str = "asd << asdasd<<fgh >def asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 4 + skip_redirect_chars(str, 4));
+
+	str = "asd >' asasd <<' dasd<<fgh >def asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 4 + skip_redirect_chars(str, 4));
+
+	str = "<<sdf";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + skip_redirect_chars(str, 0));
+
+	str = ">dasda ";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + skip_redirect_chars(str, 0));
+
+	str = " > asdad";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 1 + skip_redirect_chars(str, 1));
 }
