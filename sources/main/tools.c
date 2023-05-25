@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   tools.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: fra <fra@student.42.fr>                      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/20 19:09:49 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/24 16:05:10 by faru          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   tools.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/20 19:09:49 by fra               #+#    #+#             */
+/*   Updated: 2023/05/25 18:48:55 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,48 @@ char	**split_into_cmds(char *input_cmd)
 		input_cmd += len + (input_cmd[len] != 0);
 	}
 	return (cmds);
+}
+
+char	**append_string(char **old_matrix, char *to_append)
+{
+	char		**new_matrix;
+	uint32_t	n_words;
+	uint32_t	i;
+
+	if (! to_append)
+		return (old_matrix);
+	n_words = 0;
+	while (old_matrix && old_matrix[n_words])
+		n_words++;
+	new_matrix = ft_calloc((n_words + 2), sizeof(char *));
+	if (new_matrix)
+	{
+		i = 0;
+		while (old_matrix && i < n_words)
+		{
+			new_matrix[i] = old_matrix[i];
+			i++;
+		}
+		new_matrix[i++] = to_append;
+	}
+	if (old_matrix)
+		free(old_matrix);
+	return (new_matrix);
+}
+
+uint32_t	skip_redirect_chars(char *cmd, uint32_t pos)
+{
+	uint32_t	start_pos;
+
+	start_pos = pos;
+	while (is_valid_arrow(cmd, pos))
+	{
+		pos++;
+		pos += is_arrow(cmd[pos]);
+		while (ft_isspace(cmd[pos]))
+			pos++;
+		while (! is_valid_space(cmd, pos) && (! is_valid_arrow(cmd, pos)))
+			pos++;
+	}
+	return (pos - start_pos);
 }

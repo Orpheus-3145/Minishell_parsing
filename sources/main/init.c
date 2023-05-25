@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   init.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: fra <fra@student.42.fr>                      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/16 17:13:47 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/24 16:03:53 by faru          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/16 17:13:47 by fra               #+#    #+#             */
+/*   Updated: 2023/05/25 18:23:52 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	free_depo(t_var *depo)
 
 	while (depo->input_list)
 	{
-		free_tokens(depo->input_list->cmd_data->tokens);
+		// free_tokens(depo->input_list->cmd_data->tokens);
+		ft_free_double((void ***) &depo->input_list->cmd_data->cmd_full, -1);
 		free(depo->input_list->cmd_data->_cmd);
 		free(depo->input_list->cmd_data);
 		free(depo->input_list->raw_input);
@@ -95,7 +96,7 @@ t_cmd	*create_new_cmd(char *input, uint32_t n_cmds)
 	while (i < n_cmds)
 	{
 		new_cmd->_cmd = str_cmds[i];
-		new_cmd->tokens = tokenize(str_cmds[i]);
+		new_cmd->cmd_full = tokenize(str_cmds[i]);
 		// if (new_cmd->tokens == NULL)
 		// {
 		// 	free(new_cmd);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   tests.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: fra <fra@student.42.fr>                      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/16 16:49:18 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/24 14:57:33 by faru          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   tests.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/16 16:49:18 by fra               #+#    #+#             */
+/*   Updated: 2023/05/25 18:56:56 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,47 +264,6 @@ void	test_eof(void)
 	ft_printf("str: -%s- = starting in: -%s- = next eof pos: -%d-\n", str, find_next_eof_pos(str, 0), find_eof(str + find_next_eof_pos(str, 0)));
 }
 
-// void	test_n_words(void)
-// {
-// 	char *string;
-
-// 	string = "asdadasd adadasd";
-// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
-
-// 	string = "asdasd  ASDASD D ada A adas ";
-// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
-
-// 	string = "     ";
-// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
-
-// 	// string = NULL;
-// 	// ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
-
-// 	string = "'' asdsd";
-// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
-
-// 	string = "asd\"  \"adasd adadasd";
-// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
-
-// 	string = "asdad 'a    'sd adadasd";
-// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
-
-// 	string = "  adadasd";
-// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
-
-// 	string = "  a dasd gh g ad a ";
-// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
-
-// 	string = "aasdasd   ";
-// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
-
-// 	string = "asdasd'' dfgdf '' asdf asd";
-// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
-
-// 	string = " asdsad  ";
-// 	ft_printf("str: |%s| - n words: %u\n", string, n_words(string));
-// }
-
 void	test_n_cmds(void)
 {
 	char *string;
@@ -373,4 +332,51 @@ void	test_split_cmd(void)
 	helper("asdad ada  sd | adad sdf asd");
 	helper("asd'asd | ad' adasd | adadasd");
 	helper("as|dada|sd | ad|a|dasd");
+}
+
+void	test_char_skip(void)
+{
+	char *str;
+
+	str = "asd_asd << asdasd asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 8 + skip_redirect_chars(str, 8));
+
+	str = "asd_asd <<asdasd asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 8 +  skip_redirect_chars(str, 8));
+
+	str = "asd_asd < asdasd asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 8 + skip_redirect_chars(str, 8));
+
+	str = "asd_asd <asdasd asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 8 + skip_redirect_chars(str, 8));
+
+	str = "<< asdasd asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + skip_redirect_chars(str, 0));
+
+	str = "asd <<asdasd asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 4 + skip_redirect_chars(str, 4));
+
+	str = "asd <asdasd asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 4 + skip_redirect_chars(str, 4));
+
+	str = "asd >asdasd asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 4 + skip_redirect_chars(str, 4));
+	
+	str = "asd <<asdasd<asd prov";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 4 + skip_redirect_chars(str, 4));
+	
+	str = "asd >asdasd>fra asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 4 + skip_redirect_chars(str, 4));
+	
+	str = "asd >asdasd<<fgh<def asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 4 + skip_redirect_chars(str, 4));
+
+	str = "asd >asdasd<<fgh,d ef asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 4 + skip_redirect_chars(str, 4));
+
+	str = "asd >asda'sd<<f'gh,def asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 4 + skip_redirect_chars(str, 4));
+
+	str = "asd >asdasd<<fgh >def asd";
+	ft_printf("str: |%s| - starting in: |%s|\n", str, str + 4 + skip_redirect_chars(str, 4));
 }

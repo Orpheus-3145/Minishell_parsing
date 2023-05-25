@@ -5,11 +5,7 @@
 # define YEL   "\x1B[33m"
 # define BLU   "\x1B[34m"
 # define MAG   "\x1B[35m"
-# define RESET "\x1B[0m"
-# define S_IN_RED 2         // <
-# define S_OUT_RED 3        // >
-# define D_IN_RED 4         // <<
-# define D_OUT_RED 5        // >>
+# define RESET "\x1B[0m"     
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
@@ -29,15 +25,13 @@ typedef enum s_cmd_status
 	CMD_NULL_ERR,
 }	t_cmd_status;
 
-typedef enum s_type_token
+typedef enum s_red_type
 {
-	TOK_CMD_NAME,
-	TOK_CMD_OPTIONS,
-	TOK_CMD_ARG,
-	TOK_RED_SYMBOL,
-	TOK_RED_FILE,
-	TOK_ERROR,
-}	t_type_token;
+	S_IN_RED,		// <
+	S_OUT_RED,		// >
+	D_IN_RED,		// <<
+	D_OUT_RED,		// >>
+}	t_red_type;
 
 typedef struct s_env
 {
@@ -47,25 +41,33 @@ typedef struct s_env
 	bool			has_value;
 }   t_env;
 
+// typedef struct s_redirect_token
+// {
+// 	struct s_redirect_token	*prev;
+// 	struct s_redirect_token	*next;
+// 	t_redirect_type			type;
+// 	char					*file;
+// }	t_redirect_type;
 
-typedef struct s_token
-{
-	struct s_token	*prev;
-	struct s_token	*next;
-	char			*word;
-	t_type_token	type;
-}	t_token;
+// typedef struct s_word_token
+// {
+// 	struct s_word_token	*prev;
+// 	struct s_word_token	*next;
+// 	char				*word;
+// }	t_word_token;
 
 typedef struct s_cmd
 {
-	t_token	*tokens;
-	char	*cmd_name;
-	char	*_cmd;
-	char	**cmd_full;
-	bool	redirections;
-	int		*redirect;			//could be list 
-	char	**file;
-}   t_cmd;
+	// t_word_token		*tokens;
+	// t_redirect_token	*redirections;
+	char				*_cmd;
+	char				*cmd_name;
+	char				**cmd_full;
+	t_red_type			*redirect;			//could be list 
+	char				**file;
+	int32_t				fd_in;
+	int32_t				fd_out;
+}	t_cmd;
 
 typedef struct s_input
 {	
@@ -78,11 +80,12 @@ typedef struct s_input
 typedef struct s_var
 {
 	t_input		*input_list;
-	t_env		*env_list;
-	char		**env_arr;
-	int			**pipes;
-	pid_t		*pid;
-	int			status;
+	t_env       *env_list;
+	char        **env_arr;
+	char        **paths;
+	int         **pipes;
+	pid_t       *pid;
+	int         status;
 }   t_var;
 
 void 	test_pipes(void);
@@ -102,6 +105,8 @@ void	test_quotes(void);
 void	test_split_cmd(void);
 
 void	test_n_cmds(void);
+
+void	test_char_skip(void);
 
 
 bool    check_pipes(char *cmd);
@@ -166,19 +171,25 @@ uint32_t	n_cmds(char *string);
 
 char	**split_into_cmds(char *input_cmd);
 
+char	**append_string(char **old_matrix, char *to_append);
 
-t_token *new_token(char *word);
+uint32_t	skip_redirect_chars(char *cmd, uint32_t pos);
 
-void	append_token(t_token **token_list, t_token *new_token);
 
-t_token *tokenize(char *input);
+// t_token *new_token(char *word);
 
-void	drop_token(t_token **token_list, char *word);
+// void	append_token(t_token **token_list, t_token *new_token);
 
-void	free_tokens(t_token *token_list);
+// t_token *tokenize_ll(char *input);
+
+char	**tokenize(char *input);
+
+// void	drop_token(t_token **token_list, char *word);
+
+// void	free_tokens(t_token *token_list);
 
 void	print_tokens(t_var *depo);
 
-void	print_tks(t_token *tokens);
+void	print_tks(char **words);
 
 #endif
