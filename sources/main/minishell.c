@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:25:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/25 18:55:12 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/26 01:08:38 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,12 @@ int main(int argc, char**argv, char **envp)
 	// test_n_words();
 	// test_trim();
 	// test_split_cmd();
-	test_char_skip();
+	// test_char_skip();
 	argc++;
 	argv++;
 	depo = create_depo(envp);
 	if (depo == NULL)
 		return (EXIT_FAILURE);
-	// main_loop(depo);
-	// char *tmp = ft_strdup("prova a splittare");
-	// printf("tokening: %s\n", tmp);
-	// tokenize(tmp);
+	main_loop(depo);
 	return (0);
 }

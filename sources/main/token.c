@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:56:10 by faru              #+#    #+#             */
-/*   Updated: 2023/05/25 18:31:10 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/26 01:08:20 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,13 +203,15 @@ char	**tokenize(char *input)
 				len++;
 			else if (is_valid_space(input, len))
 			{
-				while (is_valid_space(input, len))
+				while (ft_isspace(input[len]))
 					len++;
 				end_word = true;
 			}
 			else if (is_valid_arrow(input, len))
 			{
 				len += skip_redirect_chars(input, len);
+				while (ft_isspace(input[len]))
+					len++;
 				end_word = true;
 			}
 			else
