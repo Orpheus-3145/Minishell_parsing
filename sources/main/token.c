@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   token.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: fra <fra@student.42.fr>                      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/23 13:56:10 by faru          #+#    #+#                 */
-/*   Updated: 2023/05/24 18:24:20 by faru          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   token.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/23 13:56:10 by faru              #+#    #+#             */
+/*   Updated: 2023/05/25 02:50:10 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token *new_token(char *word, t_type_token type)
+t_token *new_token(char *word)
 {
 	t_token	*new_ele;
 
@@ -21,8 +21,16 @@ t_token *new_token(char *word, t_type_token type)
 	{
 		new_ele->next = NULL;
 		new_ele->prev = NULL;
-		new_ele->word = word;
-		new_ele->type = type;
+		if (! is_only_spaces(word))
+		{
+			new_ele->word = ft_trim(word, true);
+			if (new_ele->word == NULL)
+			{
+				free(new_ele);
+				return (NULL);
+			}
+		}
+		new_ele->type = TOK_CMD_NAME;
 	}
 	return (new_ele);
 }
@@ -92,10 +100,10 @@ void	print_tokens(t_var *depo)
 	while (depo->input_list)
 	{
 		i = 0;
-		ft_printf("full input: %s\n", depo->input_list->raw_input);
+		ft_printf("full input: >>>%s<<<\n", depo->input_list->raw_input);
 		while (i < depo->input_list->n_cmd)
 		{
-			ft_printf("%u) cmd: %s\n", i + 1, depo->input_list->cmd_data[i]._cmd);
+			ft_printf("%u) cmd: >>>%s<<<\n", i + 1, depo->input_list->cmd_data[i]._cmd);
 			print_tks(depo->input_list->cmd_data[i].tokens);
 			i++;
 		}
@@ -108,7 +116,7 @@ void	print_tks(t_token *tokens)
 {
 	while (tokens)
 	{
-		ft_printf("word: %s\n", tokens->word);
+		ft_printf("\ttoken: >>>%s<<<\n", tokens->word);
 		tokens = tokens->next;
 	}
 }
@@ -118,31 +126,38 @@ t_token	*tokenize(char *input)
 	t_token			*token_list;
 	t_token			*new_node;
 	char			*new_word;
-	t_type_token	type;
+	// int			save_arrow;
 	bool        	end_token;
-	// uint32_t		i;
-	uint32_t		cnt;
 	uint32_t    	len;
 
-	// i = 0;
-	cnt = 0;
 	token_list = NULL;
 	while (*input)
 	{
-		cnt++;
-		if (cnt == 20)
-			break;
 		len = 0;
 		end_token = false;
-		type = TOK_CMD_NAME;
 		new_word = NULL;
-		// while (ft_isspace(*input) && is_outside_quotes(input, 0))
-		// 	input++;
+		// save_arrow = 0;
 		while (! end_token)
 		{
 			// ft_printf("curr word: %s\n", new_word);
 			// ft_printf("curr char: %c\n", input[len]);
-			if (is_not_symbol(input , len))
+			if (input[len] == '\0')
+				end_token = true;
+			else if (is_valid_quote(input, len))
+				len++;
+			else if (is_valid_space(input, len))
+			{
+				while (is_valid_space(input, len))
+					len++;
+				end_token = true;
+			}
+			// else if (is_valid_arrow(input, len))
+			// {
+			// 	save_arrow++;
+			// 	save_arrow += (is_arrow(input[len]) == true) + 1;
+			// 	end_token = true;
+			// }
+			else
 			{
 				new_word = ft_append_char(new_word, input[len]);
 				if (new_word == NULL)
@@ -153,21 +168,8 @@ t_token	*tokenize(char *input)
 				len++;
 				end_token = input[len] == '\0';
 			}
-			// else if (is_valid_quote(input, len))
-			// 	len++;
-			else if (is_valid_space(input, len))
-			{
-				input++;
-				end_token = true;
-			}
-			// else if (is_valid_arrow(input, len))
-			// {
-			// 	// if (is_arrow(input[len + 1]))
-
-			// 	end_token = true;
-			// }
 		}
-		new_node = new_token(new_word, type);
+		new_node = new_token(new_word);
 		if (new_node == NULL)
 		{
 			free_tokens(token_list);
@@ -175,9 +177,7 @@ t_token	*tokenize(char *input)
 		}
 		append_token(&token_list, new_node);
 		input += len;
-		// ft_printf("new node created! starting now from: %%%s%%, len %u\n", input, len);
 	}
-	// print_tks(token_list);
 	return (token_list);
 }
 

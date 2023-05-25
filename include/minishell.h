@@ -101,8 +101,6 @@ void	test_quotes(void);
 
 void	test_split_cmd(void);
 
-// void	test_n_words(void);
-
 void	test_n_cmds(void);
 
 
@@ -143,8 +141,6 @@ bool 	is_valid_quote(char *string, uint32_t pos_to_check);
 
 bool	is_valid_space(char *string, uint32_t pos_to_check);
 
-bool	is_not_symbol(char *string, uint32_t pos_to_check);
-
 bool	is_only_spaces(char	*to_check);
 
 
@@ -171,7 +167,7 @@ uint32_t	n_cmds(char *string);
 char	**split_into_cmds(char *input_cmd);
 
 
-t_token *new_token(char *word, t_type_token type);
+t_token *new_token(char *word);
 
 void	append_token(t_token **token_list, t_token *new_token);
 
