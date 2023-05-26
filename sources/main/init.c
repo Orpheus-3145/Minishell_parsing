@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/16 17:13:47 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/26 09:53:40 by faru          ########   odam.nl         */
+/*   Updated: 2023/05/26 18:02:25 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_cmd	*create_new_cmd(char *input, uint32_t n_cmds)
 	t_cmd       *new_cmd;
 	char        **str_cmds;
 	t_token		*cmd_tokens;
-	t_token		*redirect_tokens;
+	// t_token		*redirect_tokens;
 	uint32_t    i;
 
 	str_cmds = split_into_cmds(input);
@@ -98,28 +98,13 @@ t_cmd	*create_new_cmd(char *input, uint32_t n_cmds)
 	while (i < n_cmds)
 	{
 		new_cmd->_cmd = str_cmds[i];
-		cmd_tokens = tokenize_cmd(str_cmds[i]);
+		cmd_tokens = tokenize(str_cmds[i]);
 		if (cmd_tokens == NULL)
 		{
 			free(new_cmd);
 			return (ft_free_double((void ***) &str_cmds, -1));
 		}
-		// from tokens to char **
-		if (ft_strchr(input, '<') || ft_strchr(input, '>'))
-		{
-			redirect_tokens = tokenize_redirect(str_cmds[i]);
-			if (cmd_tokens == NULL)
-			{
-				free(new_cmd);
-				return (ft_free_double((void ***) &str_cmds, -1));
-			}
-			// from tokens to char **
-		}
-		else
-		{
-			new_cmd->redirect == NULL;
-			new_cmd->file = NULL;
-		}
+		new_cmd->tokens = cmd_tokens;
 		new_cmd++;
 		i++;
 	}

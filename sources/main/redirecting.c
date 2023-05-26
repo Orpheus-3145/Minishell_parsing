@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   redirecting.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/19 17:46:55 by fra               #+#    #+#             */
-/*   Updated: 2023/05/20 20:31:44 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   redirecting.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
+/*   Updated: 2023/05/26 17:59:15 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,31 @@
 
 int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos)
 {
-	bool		open_quotes;
-
-	open_quotes = false;
 	while (cmd && cmd[start_pos] && (cmd[start_pos] != '\n'))
 	{
-		if (is_quote(cmd[start_pos]))
-			open_quotes = ! open_quotes;
-		else if (cmd[start_pos] == '<')
+		if (cmd[start_pos] == '<' && is_outside_quotes(cmd, start_pos))
 		{
-			if (cmd[start_pos + 1] && (cmd[start_pos + 1] == '<'))
-				return (start_pos + 2);
+			start_pos++;
+			if (cmd[start_pos] == '<')
+			{
+				start_pos++;
+				while (ft_isspace(cmd[start_pos]))
+					start_pos++;
+				return (start_pos);
+			}
 		}
-		start_pos++;
+		else
+			start_pos++;
 	}
 	return (-1);
 }
 
-char	*find_eof(char *start)
+char	*isolate_eof(char *start)
 {
 	char 		start_quote;
 	char 		*eof;
 	uint32_t	i;
 
-	while(*start && (ft_isspace(*start)))
-		start++;
 	i = 0;
 	if (is_quote(*start))
 	{
@@ -73,7 +73,7 @@ char	*read_stdin(char *buffer)
 	eof_pos = find_next_eof_pos(buffer, 0);
 	while (eof_pos != -1)
 	{
-		eof = find_eof(buffer + eof_pos);
+		eof = isolate_eof(buffer + eof_pos);
 		if (eof == NULL)
 		{
 			free(buffer);

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/15 21:26:00 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/24 14:42:36 by faru          ########   odam.nl         */
+/*   Updated: 2023/05/26 17:47:12 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ bool	check_redirections(char *cmd)
 	i = 0;
 	while (cmd[i] != '\0')
 	{
-		if (is_arrow(cmd[i]) && is_outside_quotes(cmd, i))
+		if (is_valid_arrow(cmd, i))
 		{
 			open_arrow = cmd[i++];
 			if (cmd[i] == open_arrow)

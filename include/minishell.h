@@ -51,7 +51,7 @@ typedef struct s_token
 typedef struct s_cmd
 {
 	t_token				*tokens;
-	// t_redirect_token	*redirections;
+	// t_token				*redirect_tokens;
 	char				*_cmd;
 	char				*cmd_name;
 	char				**cmd_full;
@@ -103,7 +103,7 @@ void	test_char_skip(void);
 
 bool    check_pipes(char *cmd);
 
-bool	check_between_pipes(char *str, int32_t pos1, int32_t pos2);
+// bool	check_between_pipes(char *str, int32_t pos1, int32_t pos2);
 
 bool    check_redirections(char *str);
 
@@ -143,7 +143,7 @@ bool	is_only_spaces(char	*to_check);
 
 int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos);
 
-char	*find_eof(char *start);
+char	*isolate_eof(char *start);
 
 char	*read_stdin(char *buffer);
 
@@ -172,11 +172,11 @@ t_token *create_new_token(char *word);
 
 void	append_token(t_token **token_list, t_token *new_token);
 
-// t_token *tokenize_ll(char *input);
+// t_token	*tokenize_cmd(char *input);
 
-t_token	*tokenize_cmd(char *input);
+// t_token	*tokenize_redirect(char *input);
 
-t_token	*tokenize_redirect(char *input);
+t_token	*tokenize(char *input);
 
 // void	drop_token(t_token **token_list, char *word);
 

@@ -6,13 +6,13 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/05/24 14:21:41 by faru          ########   odam.nl         */
+/*   Updated: 2023/05/26 17:46:19 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check_sin)
+t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check_sintax)
 {
 	char	*new_string;
 
@@ -23,7 +23,7 @@ t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check_sin)
 	free(new_string);
 	if (*buffer == NULL)
 		return (CMD_MEM_ERR);
-	else if (check_sin && (check_cmd(*buffer) == false))
+	else if (check_sintax && (check_cmd(*buffer) == false))
 		return (CMD_SIN_ERR);
 	else
 		return (CMD_OK);
