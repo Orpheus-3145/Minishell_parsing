@@ -41,24 +41,16 @@ typedef struct s_env
 	bool			has_value;
 }   t_env;
 
-// typedef struct s_redirect_token
-// {
-// 	struct s_redirect_token	*prev;
-// 	struct s_redirect_token	*next;
-// 	t_redirect_type			type;
-// 	char					*file;
-// }	t_redirect_type;
-
-// typedef struct s_word_token
-// {
-// 	struct s_word_token	*prev;
-// 	struct s_word_token	*next;
-// 	char				*word;
-// }	t_word_token;
+typedef struct s_token
+{
+	struct s_token	*prev;
+	struct s_token	*next;
+	char			*word;
+}	t_token;
 
 typedef struct s_cmd
 {
-	// t_word_token		*tokens;
+	t_token				*tokens;
 	// t_redirect_token	*redirections;
 	char				*_cmd;
 	char				*cmd_name;
@@ -176,20 +168,22 @@ char	**append_string(char **old_matrix, char *to_append);
 uint32_t	skip_redirect_chars(char *cmd, uint32_t pos);
 
 
-// t_token *new_token(char *word);
+t_token *create_new_token(char *word);
 
-// void	append_token(t_token **token_list, t_token *new_token);
+void	append_token(t_token **token_list, t_token *new_token);
 
 // t_token *tokenize_ll(char *input);
 
-char	**tokenize(char *input);
+t_token	*tokenize_cmd(char *input);
+
+t_token	*tokenize_redirect(char *input);
 
 // void	drop_token(t_token **token_list, char *word);
 
-// void	free_tokens(t_token *token_list);
+void	free_tokens(t_token *token_list);
 
 void	print_tokens(t_var *depo);
 
-void	print_tks(char **words);
+void	print_tks(t_token *tks);
 
 #endif

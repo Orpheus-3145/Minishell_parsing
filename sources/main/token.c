@@ -1,73 +1,72 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 13:56:10 by faru              #+#    #+#             */
-/*   Updated: 2023/05/26 01:08:20 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   token.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/23 13:56:10 by faru          #+#    #+#                 */
+/*   Updated: 2023/05/26 12:30:50 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// t_token *new_token(char *word)
-// {
-// 	t_token	*new_ele;
+t_token *create_new_token(char *word)
+{
+	t_token	*new_ele;
 
-// 	new_ele = ft_calloc(1, sizeof(t_token));
-// 	if (new_ele)
-// 	{
-// 		new_ele->next = NULL;
-// 		new_ele->prev = NULL;
-// 		if (! is_only_spaces(word))
-// 		{
-// 			new_ele->word = ft_trim(word, true);
-// 			if (new_ele->word == NULL)
-// 			{
-// 				free(new_ele);
-// 				return (NULL);
-// 			}
-// 		}
-// 		new_ele->type = TOK_CMD_NAME;
-// 	}
-// 	return (new_ele);
-// }
+	new_ele = ft_calloc(1, sizeof(t_token));
+	if (new_ele)
+	{
+		new_ele->next = NULL;
+		new_ele->prev = NULL;
+		if (! is_only_spaces(word))
+		{
+			new_ele->word = ft_trim(word, true);
+			if (new_ele->word == NULL)
+			{
+				free(new_ele);
+				return (NULL);
+			}
+		}
+	}
+	return (new_ele);
+}
 
-// void	append_token(t_token **token_list, t_token *new_token)
-// {
-// 	t_token	*tmp;
+void	append_token(t_token **token_list, t_token *new_token)
+{
+	t_token	*tmp;
 
-// 	if (*token_list == NULL)
-// 		*token_list = new_token;
-// 	else
-// 	{
-// 		tmp = *token_list;
-// 		while (tmp->next)
-// 			tmp = tmp->next;
-// 		tmp->next = new_token;
-// 		new_token->prev = tmp;
-// 	}
-// }
+	if (*token_list == NULL)
+		*token_list = new_token;
+	else
+	{
+		tmp = *token_list;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new_token;
+		new_token->prev = tmp;
+	}
+}
 
-// void	free_tokens(t_token *token_list)
-// {
-// 	t_token	*to_free;
+void	free_tokens(t_token *token_list)
+{
+	t_token	*to_free;
 
-// 	while (token_list)
-// 	{
-// 		to_free = token_list;
-// 		token_list = token_list->next;
-// 		free(to_free->word);
-// 		free(to_free);
-// 	}
-// }
+	while (token_list)
+	{
+		to_free = token_list;
+		token_list = token_list->next;
+		free(to_free->word);
+		free(to_free);
+	}
+}
 
 // void	drop_token(t_token **token_list, char *word)
 // {
 // 	t_token *tmp;
-
+//
 // 	tmp = *token_list;
 // 	while(tmp)
 // 	{
@@ -104,7 +103,7 @@ void	print_tokens(t_var *depo)
 		while (i < depo->input_list->n_cmd)
 		{
 			ft_printf("%u) cmd: >>>%s<<<\n", i + 1, depo->input_list->cmd_data[i]._cmd);
-			print_tks(depo->input_list->cmd_data[i].cmd_full);
+			print_tks(depo->input_list->cmd_data[i].tokens);
 			i++;
 		}
 		ft_printf("--\n");
@@ -112,84 +111,24 @@ void	print_tokens(t_var *depo)
 	}
 }
 
-void	print_tks(char **words)
+void	print_tks(t_token *tks)
 {
-	while (*words)
+	while (tks)
 	{
-		ft_printf("\ttoken: >>>%s<<<\n", *words);
-		words++;
+		ft_printf("\ttoken: >>>%s<<<\n", tks->word);
+		tks = tks->next;
 	}
 }
 
-// t_token	*tokenize_ll(char *input)
-// {
-// 	t_token			*token_list;
-// 	t_token			*new_node;
-// 	char			*new_word;
-// 	// int			save_arrow;
-// 	bool        	end_token;
-// 	uint32_t    	len;
-
-// 	token_list = NULL;
-// 	while (*input)
-// 	{
-// 		len = 0;
-// 		end_token = false;
-// 		new_word = NULL;
-// 		// save_arrow = 0;
-// 		while (! end_token)
-// 		{
-// 			// ft_printf("curr word: %s\n", new_word);
-// 			// ft_printf("curr char: %c\n", input[len]);
-// 			if (input[len] == '\0')
-// 				end_token = true;
-// 			else if (is_valid_quote(input, len))
-// 				len++;
-// 			else if (is_valid_space(input, len))
-// 			{
-// 				while (is_valid_space(input, len))
-// 					len++;
-// 				end_token = true;
-// 			}
-// 			// else if (is_valid_arrow(input, len))
-// 			// {
-// 			// 	save_arrow++;
-// 			// 	save_arrow += (is_arrow(input[len]) == true) + 1;
-// 			// 	end_token = true;
-// 			// }
-// 			else
-// 			{
-// 				new_word = ft_append_char(new_word, input[len]);
-// 				if (new_word == NULL)
-// 				{
-// 					free_tokens(token_list);
-// 					return (NULL);
-// 				}
-// 				len++;
-// 				end_token = input[len] == '\0';
-// 			}
-// 		}
-// 		new_node = new_token(new_word);
-// 		if (new_node == NULL)
-// 		{
-// 			free_tokens(token_list);
-// 			return (NULL);
-// 		}
-// 		append_token(&token_list, new_node);
-// 		input += len;
-// 	}
-// 	return (token_list);
-// }
-
-
-char	**tokenize(char *input)
+t_token	*tokenize_cmd(char *input)
 {
 	char			*new_word;
-	char			**words_list;
+	t_token			*tokens;
+	t_token			*new_token;
 	bool        	end_word;
 	uint32_t    	len;
 
-	words_list = NULL;
+	tokens = NULL;
 	while (*input)
 	{
 		len = 0;
@@ -218,16 +157,90 @@ char	**tokenize(char *input)
 			{
 				new_word = ft_append_char(new_word, input[len]);
 				if (new_word == NULL)
-					return (ft_free_double((void ***) &words_list, -1));
+				{
+					free_tokens(tokens);
+					return (NULL);
+				}
 				len++;
 				end_word = input[len] == '\0';
 			}
 		}
-		words_list = append_string(words_list, new_word);
-		if (words_list == NULL)
-			return (ft_free_double((void ***) &words_list, -1));
+		new_token = create_new_token(new_word);
+		if (! new_token)
+		{
+			free_tokens(tokens);
+			return (NULL);
+		}
+		append_token(&tokens, new_token);
 		input += len;
 	}
-	return (words_list);
+	return (tokens);
 }
 
+t_token	*tokenize_redirect(char *input)
+{
+	char			*new_word;
+	t_token			*tokens;
+	t_token			*new_token;
+	bool        	end_word;
+	uint32_t    	len;
+	uint32_t		i;
+
+	i = 0;
+	tokens = NULL;
+	while (input[i])
+	{
+		if (is_valid_arrow(input, i))
+		{
+			len = 0;
+			end_word = false;
+			new_word = NULL;
+			while (! end_word)
+			{
+				if (input[len] == '\0')
+					end_word = true;
+					
+			}
+		}
+		while (! end_word)
+		{
+			if (input[len] == '\0')
+				end_word = true;
+			else if (is_valid_quote(input, len))
+				len++;
+			else if (is_valid_space(input, len))
+			{
+				while (ft_isspace(input[len]))
+					len++;
+				end_word = true;
+			}
+			else if (is_valid_arrow(input, len))
+			{
+				len += skip_redirect_chars(input, len);
+				while (ft_isspace(input[len]))
+					len++;
+				end_word = true;
+			}
+			else
+			{
+				new_word = ft_append_char(new_word, input[len]);
+				if (new_word == NULL)
+				{
+					free_tokens(tokens);
+					return (NULL);
+				}
+				len++;
+				end_word = input[len] == '\0';
+			}
+		}
+		new_token = create_new_token(new_word);
+		if (! new_token)
+		{
+			free_tokens(tokens);
+			return (NULL);
+		}
+		append_token(&tokens, new_token);
+		input += len;
+	}
+	return (tokens);
+}
