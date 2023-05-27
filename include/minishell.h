@@ -51,9 +51,10 @@ typedef struct s_token
 typedef struct s_cmd
 {
 	char				*cmd_name;
+	uint32_t			n_words;
 	char				**full_cmd;
 	uint32_t			n_redirect;
-	t_red_type			*redirections;			//could be list 
+	t_red_type			*redirections;
 	char				**files;
 	int32_t				fd_in;
 	int32_t				fd_out;
@@ -78,30 +79,34 @@ typedef struct s_var
 	int         status;
 }   t_var;
 
-void 	test_pipes(void);
+bool	is_quote(char to_check);
 
-void 	test_redirections(void);
+bool	is_arrow(char to_check);
 
-void	test_trim(void);
+bool 	is_valid_pipe(char *string, uint32_t pos_to_check);
 
-void	test_last_pipe(void);
+bool 	is_valid_arrow(char *string, uint32_t pos_to_check);
 
-void	test_next_d_red(void);
+bool 	is_valid_quote(char *string, uint32_t pos_to_check);
 
-void	test_eof(void);
+bool	is_valid_space(char *string, uint32_t pos_to_check);
 
-void	test_quotes(void);
 
-void	test_split_cmd(void);
+t_var   *create_depo(char **envp);
 
-void	test_n_cmds(void);
+t_input *create_new_input(char *input);
 
-void	test_char_skip(void);
+void	append_new_input(t_var *depo, t_input *new_input);
+
+void	free_input_list(t_input *input_list);
+
+t_cmd	*create_new_cmd(char *input, uint32_t n_cmds);
+
+
+void    main_loop(t_var	*main_var);
 
 
 bool    check_pipes(char *cmd);
-
-// bool	check_between_pipes(char *str, int32_t pos1, int32_t pos2);
 
 bool    check_redirections(char *str);
 
@@ -117,28 +122,6 @@ t_cmd_status	concat_input(char **base, char *buffer);
 t_cmd_status	read_input(char **curr_cmd);
 
 
-void    main_loop(t_var	*main_var);
-
-
-bool	is_outside_quotes(char *string, uint32_t pos_to_check);
-
-bool	has_trailing_pipe(char	*cmd);
-
-bool	is_quote(char to_check);
-
-bool	is_arrow(char to_check);
-
-bool 	is_valid_pipe(char *string, uint32_t pos_to_check);
-
-bool 	is_valid_arrow(char *string, uint32_t pos_to_check);
-
-bool 	is_valid_quote(char *string, uint32_t pos_to_check);
-
-bool	is_valid_space(char *string, uint32_t pos_to_check);
-
-bool	is_only_spaces(char	*to_check);
-
-
 int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos);
 
 char	*isolate_eof(char *start);
@@ -146,17 +129,47 @@ char	*isolate_eof(char *start);
 char	*read_stdin(char *buffer);
 
 
-t_var   *create_depo(char **envp);
+uint32_t	count_words(t_token *tokens);
 
-void	free_depo(t_var *depo);
+uint32_t	count_redirections(t_token *tokens);
 
-t_input *create_new_input(char *input);
+bool		get_cmd(t_token *tokens, t_cmd *cmd);
 
-void append_new_input(t_var *depo, t_input *new_input);
+bool		get_redirections(t_token *tokens, t_cmd *cmd);
 
-t_cmd *create_new_cmd(char *input, uint32_t n_cmds);
+bool		split_input(t_cmd *cmd, char *input);
 
-bool	get_token_info(t_cmd *cmd, char *input);
+
+// void 	test_pipes(void);
+
+// void 	test_redirections(void);
+
+// void	test_trim(void);
+
+// void	test_last_pipe(void);
+
+// void	test_next_d_red(void);
+
+// void	test_eof(void);
+
+// void	test_quotes(void);
+
+// void	test_split_cmd(void);
+
+// void	test_n_cmds(void);
+
+// void	test_char_skip(void);
+
+
+t_token *create_new_token(char *word);
+
+void	append_token(t_token **token_list, t_token *new_token);
+
+void	free_tokens(t_token *token_list);
+
+void	print_tokens(t_var *depo);
+
+t_token	*tokenize(char *input);
 
 
 uint32_t	n_cmds(char *string);
@@ -167,35 +180,10 @@ char	**append_string(char **old_matrix, char *to_append);
 
 uint32_t	skip_redirect_chars(char *cmd, uint32_t pos);
 
+bool	is_only_spaces(char	*to_check);
 
-t_token *create_new_token(char *word);
+bool	is_outside_quotes(char *string, uint32_t pos_to_check);
 
-void	append_token(t_token **token_list, t_token *new_token);
-
-// t_token	*tokenize_cmd(char *input);
-
-// t_token	*tokenize_redirect(char *input);
-
-// void	drop_token(t_token **token_list, char *word);
-
-void	free_tokens(t_token *token_list);
-
-void	print_tokens(t_var *depo);
-
-// void	print_tks(t_token *tks);
-
-t_token	*tokenize(char *input);
-
-int32_t	count_words(t_token *tokens);
-
-uint32_t	count_redirections(t_token *tokens);
-
-t_red_type	*fill_red_type(t_token *tokens, uint32_t n_redirect);
-
-char	**fill_red_files(t_token *tokens, uint32_t n_redirect);
-
-char	*get_cmd_name(t_token *tokens);
-
-char	**get_full_cmd(t_token *tokens, uint32_t n_words);
+bool	has_trailing_pipe(char	*cmd);
 
 #endif

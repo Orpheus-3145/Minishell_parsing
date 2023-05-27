@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 19:09:49 by fra               #+#    #+#             */
-/*   Updated: 2023/05/27 02:31:23 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/27 19:40:48 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	**split_into_cmds(char *input_cmd)
 			len++;
 		}
 		tmp = ft_substr(input_cmd, 0, len);
-		cmds[i] = ft_trim(tmp, true);
+		cmds[i] = ft_trim(tmp);
 		if (cmds[i] == NULL)
 			return (ft_free_double((void **) cmds, i));
 		i++;
@@ -80,8 +80,7 @@ char	**append_string(char **old_matrix, char *to_append)
 		}
 		new_matrix[i++] = to_append;
 	}
-	if (old_matrix)
-		free(old_matrix);
+	ft_free(old_matrix);
 	return (new_matrix);
 }
 
@@ -100,4 +99,54 @@ uint32_t	skip_redirect_chars(char *cmd, uint32_t pos)
 			pos++;
 	}
 	return (pos - start_pos);
+}
+
+bool	is_only_spaces(char	*to_check)
+{
+	while (ft_isspace(*to_check))
+		to_check++;
+	return (*to_check == '\0');
+}
+
+bool	has_trailing_pipe(char	*cmd)
+{
+	uint32_t	len_cmd;
+
+	if (! cmd || (*cmd == '\0'))
+		return (false);
+	len_cmd = ft_strlen(cmd) - 1;
+	while (len_cmd && ft_isspace(cmd[len_cmd]))
+		len_cmd--;
+	if (len_cmd <= 1)
+		return (false);
+	else
+		return (cmd[len_cmd] == '|');
+}
+
+bool	is_outside_quotes(char *string, uint32_t pos_to_check)
+{
+	uint32_t	i;
+	char		quotes;
+	bool		open_quotes;
+
+	i = 0;
+	open_quotes = false;
+	while (string[i] && (i < pos_to_check))
+	{
+		if (is_quote(string[i]))
+		{
+			if ((open_quotes == true) && (string[i] == quotes))
+			{
+				quotes = '\0';
+				open_quotes = false;
+			}
+			else if (open_quotes == false)
+			{
+				quotes = string[i];
+				open_quotes = true;
+			}
+		}
+		i++;
+	}
+	return (! open_quotes);
 }

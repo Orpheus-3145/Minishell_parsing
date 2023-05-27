@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:56:10 by faru              #+#    #+#             */
-/*   Updated: 2023/05/27 04:35:41 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/27 19:40:17 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,9 @@ t_token *create_new_token(char *word)
 		new_ele->next = NULL;
 		if (! is_only_spaces(word))
 		{
-			new_ele->word = ft_trim(word, true);
+			new_ele->word = ft_trim(word);
 			if (new_ele->word == NULL)
-			{
-				free(new_ele);
-				return (NULL);
-			}
+				return (ft_free(new_ele));
 		}
 	}
 	return (new_ele);
@@ -56,21 +53,9 @@ void	free_tokens(t_token *token_list)
 	{
 		to_free = token_list;
 		token_list = token_list->next;
-		free(to_free->word);
-		free(to_free);
+		ft_free(to_free->word);
+		ft_free(to_free);
 	}
-}
-
-char	*from_code_to_str(t_red_type type)
-{
-	if (type == RED_IN_SINGLE)
-		return ("<");
-	else if (type == RED_OUT_SINGLE)
-		return (">");
-	else if (type == RED_IN_DOUBLE)
-		return ("<<");
-	else 
-		return (">>");
 }
 
 void	print_tokens(t_var *depo)
@@ -91,13 +76,22 @@ void	print_tokens(t_var *depo)
 			ft_printf("%u) COMMAND\n\tcmd name: %s\n", i + 1, inputs->cmd_data[i].cmd_name);
 			while (*full_cmd)
 				ft_printf("\t\targ: %s\n", *full_cmd++);
-			j = 0;
 			if (inputs->cmd_data[i].n_redirect > 0)
-				ft_printf("\tn. redirections: %u\n", inputs->cmd_data[i].n_redirect);
-			while (j < inputs->cmd_data[i].n_redirect)
 			{
-				ft_printf("\t\tred type: %s file: %s\n", from_code_to_str(inputs->cmd_data[i].redirections[j]), inputs->cmd_data[i].files[j]);
-				j++;
+				ft_printf("\tn. redirections: %u\n", inputs->cmd_data[i].n_redirect);
+				j = 0;
+				while (j < inputs->cmd_data[i].n_redirect)
+				{
+					if (inputs->cmd_data[i].redirections[j] == RED_IN_SINGLE)
+						ft_printf("\t\tred type: %s file: %s\n", "<", inputs->cmd_data[i].files[j]);
+					else if (inputs->cmd_data[i].redirections[j] == RED_OUT_SINGLE)
+						ft_printf("\t\tred type: %s file: %s\n", ">", inputs->cmd_data[i].files[j]);
+					else if (inputs->cmd_data[i].redirections[j] == RED_IN_DOUBLE)
+						ft_printf("\t\tred type: %s file: %s\n", "<<", inputs->cmd_data[i].files[j]);
+					else if (inputs->cmd_data[i].redirections[j] == RED_OUT_DOUBLE)
+						ft_printf("\t\tred type: %s file: %s\n", ">>", inputs->cmd_data[i].files[j]);
+					j++;
+				}
 			}
 			i++;
 		}
@@ -161,137 +155,4 @@ t_token	*tokenize(char *input)
 		input += len;
 	}
 	return (tokens);
-}
-
-int32_t	count_words(t_token *tokens)
-{
-	uint32_t	cnt;
-
-	cnt = 0;
-	while (tokens)
-	{
-		if (is_arrow(*(tokens->word)))
-			tokens = tokens->next;
-		else
-			cnt++;
-		tokens = tokens->next;
-	}
-	return (cnt);
-}
-
-uint32_t	count_redirections(t_token *tokens)
-{
-	uint32_t	cnt;
-
-	cnt = 0;
-	while (tokens)
-	{
-		if (is_arrow(*(tokens->word)))
-			cnt++;
-		tokens = tokens->next;
-	}
-	return (cnt);
-}
-
-t_red_type	*fill_red_type(t_token *tokens, uint32_t n_redirect)
-{
-	t_red_type	*redirections;
-	uint32_t	i;
-
-	redirections = ft_calloc(n_redirect, sizeof(t_red_type));
-	if (redirections)
-	{
-		i = 0;
-		while (tokens)
-		{
-			if (is_arrow(*(tokens->word)))
-			{
-				if (! ft_strncmp(tokens->word, "<", 1))
-					redirections[i] = RED_IN_SINGLE;
-				else if (! ft_strncmp(tokens->word, ">", 1))
-					redirections[i] = RED_OUT_SINGLE;
-				else if (! ft_strncmp(tokens->word, "<<", 2))
-					redirections[i] = RED_IN_DOUBLE;
-				else if (! ft_strncmp(tokens->word, ">>", 2))
-					redirections[i] = RED_OUT_DOUBLE;
-				i++;
-			}
-			tokens = tokens->next;
-		}
-	}
-	return (redirections);
-}
-
-char	**fill_red_files(t_token *tokens, uint32_t n_redirect)
-{
-	char		**files;
-	uint32_t	i;
-
-	files = ft_calloc(n_redirect + 1, sizeof(char *));
-	if (files)
-	{
-		i = 0;
-		while (tokens)
-		{
-			if (is_arrow(*(tokens->word)))
-			{
-				tokens = tokens->next;
-				files[i] = ft_strdup(tokens->word);
-				if (files[i] == NULL)
-				{
-					free(files);
-					return (NULL);
-				}
-				i++;
-			}
-			tokens = tokens->next;
-		}
-	}
-	return (files);
-}
-
-char	*get_cmd_name(t_token *tokens)
-{
-	while (tokens)
-	{
-		if (is_arrow(*(tokens->word)))
-			tokens = tokens->next;
-		else
-			return (ft_strdup(tokens->word));
-		tokens = tokens->next;
-	}
-	return (NULL);
-}
-
-char	**get_full_cmd(t_token *tokens, uint32_t n_words)
-{
-	char		**full_cmd;
-	uint32_t	i;
-
-	full_cmd = ft_calloc(n_words + 1, sizeof(char *));
-	if (full_cmd)
-	{
-		i = 0;
-		while (tokens)
-		{
-			// ft_printf("checking word: #%s#\n", tokens->word);
-			if (is_arrow(*(tokens->word)))
-				tokens = tokens->next;
-			else
-			{
-				if (is_quote(*(tokens->word)))
-					full_cmd[i] = ft_substr(tokens->word, 1, ft_strlen(tokens->word) - 1);
-				else
-					full_cmd[i] = ft_strdup(tokens->word);
-				if (full_cmd[i] == NULL)
-				{
-					free(full_cmd);
-					return (NULL);
-				}
-				i++;
-			}
-			tokens = tokens->next;
-		}
-	}
-	return (full_cmd);
 }

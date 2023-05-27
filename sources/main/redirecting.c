@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   redirecting.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: fra <fra@student.42.fr>                      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/26 17:59:15 by faru          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   redirecting.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/19 17:46:55 by fra               #+#    #+#             */
+/*   Updated: 2023/05/27 17:53:28 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,7 @@ char	*read_stdin(char *buffer)
 	{
 		eof = isolate_eof(buffer + eof_pos);
 		if (eof == NULL)
-		{
-			free(buffer);
-			return (NULL);
-		}
+			return (ft_free(buffer));
 		keep_reading = true;
 		while (keep_reading)
 		{
@@ -90,7 +87,7 @@ char	*read_stdin(char *buffer)
 			if (status == CMD_MEM_ERR)
 				break ;
 		}
-		free(eof);
+		ft_free(eof);
 		if (status == CMD_MEM_ERR)
 			return (NULL);
 		eof_pos = find_next_eof_pos(buffer, eof_pos);
