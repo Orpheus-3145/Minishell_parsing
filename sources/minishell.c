@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:25:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/27 19:42:05 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/27 19:52:33 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,7 @@ void	main_loop(t_var *depo)
 int main(int argc, char**argv, char **envp) 
 {
 	t_var	*depo;
-	ft_printf("prova a stampare dei numeri: %d\n", 12345678);
-	ft_printf("prova a stampare dei numeri: %d\n", 34);
-	ft_printf("prova a stampare dei numeri: %d\n", 0);
-	ft_printf("prova a stampare dei numeri: %d\n", -3245);
-	ft_printf("prova a stampare dei numeri: %d\n", -3);
-	// test_isolate();
-	// test_n_words();
-	// test_trim();
-	// test_split_cmd();
-	// test_char_skip();
+	
 	argc++;
 	argv++;
 	depo = create_depo(envp);
