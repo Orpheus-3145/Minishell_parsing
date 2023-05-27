@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   init.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: fra <fra@student.42.fr>                      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/16 17:13:47 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/26 18:02:25 by faru          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/16 17:13:47 by fra               #+#    #+#             */
+/*   Updated: 2023/05/27 02:30:37 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	free_depo(t_var *depo)
 
 	while (depo->input_list)
 	{
-		// free_tokens(depo->input_list->cmd_data->tokens);
-		ft_free_double((void ***) &depo->input_list->cmd_data->cmd_full, -1);
-		free(depo->input_list->cmd_data->_cmd);
+		ft_free_double((void **) depo->input_list->cmd_data->redirections, depo->input_list->cmd_data->n_redirect);
+		ft_free_double((void **) depo->input_list->cmd_data->files, -1);
+		ft_free_double((void **) depo->input_list->cmd_data->cmd_full, -1);
 		free(depo->input_list->cmd_data);
 		free(depo->input_list->raw_input);
 		to_free = depo->input_list;
@@ -44,7 +44,7 @@ void	free_depo(t_var *depo)
 	free(depo);
 }
 
-void append_new_input(t_var *depo, t_input *new_input)
+void	append_new_input(t_var *depo, t_input *new_input)
 {
 	t_input *tmp;
 
@@ -84,8 +84,6 @@ t_cmd	*create_new_cmd(char *input, uint32_t n_cmds)
 {
 	t_cmd       *new_cmd;
 	char        **str_cmds;
-	t_token		*cmd_tokens;
-	// t_token		*redirect_tokens;
 	uint32_t    i;
 
 	str_cmds = split_into_cmds(input);
@@ -93,22 +91,71 @@ t_cmd	*create_new_cmd(char *input, uint32_t n_cmds)
 		return (NULL);
 	new_cmd = ft_calloc(n_cmds, sizeof(t_cmd));
 	if (new_cmd == NULL)
-		return (ft_free_double((void ***) &str_cmds, -1));
+		return (ft_free_double((void **) str_cmds, -1));
 	i = 0;
 	while (i < n_cmds)
 	{
-		new_cmd->_cmd = str_cmds[i];
-		cmd_tokens = tokenize(str_cmds[i]);
-		if (cmd_tokens == NULL)
+		new_cmd->fd_in = 0;
+		new_cmd->fd_out = 1;
+		if (get_token_info(new_cmd, str_cmds[i]) == false)
 		{
 			free(new_cmd);
-			return (ft_free_double((void ***) &str_cmds, -1));
+			return (ft_free_double((void **) str_cmds, -1));
 		}
-		new_cmd->tokens = cmd_tokens;
 		new_cmd++;
 		i++;
 	}
 	new_cmd -= n_cmds;
-	free(str_cmds);
+	ft_free_double((void **) str_cmds, -1);
 	return (new_cmd);
+}
+
+bool	get_token_info(t_cmd *cmd, char *input)
+{
+	t_token		*tokens;
+
+	tokens = tokenize(input);
+	if (tokens == NULL)
+		return (false);
+	cmd->cmd_name = get_cmd_name(tokens);
+	if (cmd->cmd_name == NULL)
+	{
+		free_tokens(tokens);
+		return (false);
+	}
+	cmd->cmd_full = get_full_cmd(tokens, count_words(tokens));
+	if (cmd->cmd_full == NULL)
+	{
+		free(cmd->cmd_name);
+		free_tokens(tokens);
+		return (false);
+	}
+	cmd->n_redirect = count_redirections(tokens);
+	if (cmd->n_redirect > 0)
+	{
+		cmd->redirections = fill_red_type(tokens, cmd->n_redirect);
+		if (cmd->redirections == NULL)
+		{
+			free(cmd->cmd_full);
+			free(cmd->cmd_name);
+			free_tokens(tokens);
+			return (false);
+		}
+		cmd->files = fill_red_files(tokens, cmd->n_redirect);
+		if (cmd->files == NULL)
+		{
+			free(cmd->redirections);
+			free(cmd->cmd_full);
+			free(cmd->cmd_name);
+			free_tokens(tokens);
+			return (false);
+		}
+	}
+	else
+	{
+		cmd->redirections = NULL;
+		cmd->files = NULL;
+	}
+	free_tokens(tokens);
+	return (true);
 }

@@ -27,10 +27,11 @@ typedef enum s_cmd_status
 
 typedef enum s_red_type
 {
-	S_IN_RED,		// <
-	S_OUT_RED,		// >
-	D_IN_RED,		// <<
-	D_OUT_RED,		// >>
+	RED_IN_SINGLE,		// <
+	RED_OUT_SINGLE,		// >
+	RED_IN_DOUBLE,		// <<
+	RED_OUT_DOUBLE,		// >>
+	RED_ERROR,
 }	t_red_type;
 
 typedef struct s_env
@@ -50,13 +51,11 @@ typedef struct s_token
 
 typedef struct s_cmd
 {
-	t_token				*tokens;
-	// t_token				*redirect_tokens;
-	char				*_cmd;
 	char				*cmd_name;
 	char				**cmd_full;
-	t_red_type			*redirect;			//could be list 
-	char				**file;
+	uint32_t			n_redirect;
+	t_red_type			*redirections;			//could be list 
+	char				**files;
 	int32_t				fd_in;
 	int32_t				fd_out;
 }	t_cmd;
@@ -150,13 +149,15 @@ char	*read_stdin(char *buffer);
 
 t_var   *create_depo(char **envp);
 
+void	free_depo(t_var *depo);
+
+t_input *create_new_input(char *input);
+
 void append_new_input(t_var *depo, t_input *new_input);
 
 t_cmd *create_new_cmd(char *input, uint32_t n_cmds);
 
-t_input *create_new_input(char *input);
-
-void	free_depo(t_var *depo);
+bool	get_token_info(t_cmd *cmd, char *input);
 
 
 uint32_t	n_cmds(char *string);
@@ -176,14 +177,26 @@ void	append_token(t_token **token_list, t_token *new_token);
 
 // t_token	*tokenize_redirect(char *input);
 
-t_token	*tokenize(char *input);
-
 // void	drop_token(t_token **token_list, char *word);
 
 void	free_tokens(t_token *token_list);
 
 void	print_tokens(t_var *depo);
 
-void	print_tks(t_token *tks);
+// void	print_tks(t_token *tks);
+
+t_token	*tokenize(char *input);
+
+int32_t	count_words(t_token *tokens);
+
+uint32_t	count_redirections(t_token *tokens);
+
+t_red_type	*fill_red_type(t_token *tokens, uint32_t n_redirect);
+
+char	**fill_red_files(t_token *tokens, uint32_t n_redirect);
+
+char	*get_cmd_name(t_token *tokens);
+
+char	**get_full_cmd(t_token *tokens, uint32_t n_words);
 
 #endif

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   token.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: fra <fra@student.42.fr>                      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/23 13:56:10 by faru          #+#    #+#                 */
-/*   Updated: 2023/05/26 18:02:54 by faru          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   token.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/23 13:56:10 by faru              #+#    #+#             */
+/*   Updated: 2023/05/27 02:51:25 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,38 +63,26 @@ void	free_tokens(t_token *token_list)
 	}
 }
 
-// void	drop_token(t_token **token_list, char *word)
-// {
-// 	t_token *tmp;
-//
-// 	tmp = *token_list;
-// 	while(tmp)
-// 	{
-// 		if (! ft_strncmp(tmp->word, word, ft_strlen(word)))
-// 		{
-// 			if (tmp == *token_list)
-// 			{
-// 				*token_list = (*token_list)->next;
-// 				(*token_list)->prev = NULL;
-// 			}
-// 			else if (tmp->next == NULL)
-// 				tmp->prev->next = NULL;
-// 			else
-// 			{
-// 				tmp->prev->next = tmp->next;
-// 				tmp->next->prev = tmp->prev;
-// 			}
-// 			free(tmp->word);
-// 			free(tmp);
-// 			break;
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// }
+char	*from_code_to_str(t_red_type type)
+{
+	if (type == RED_IN_SINGLE)
+		return ("<");
+	else if (type == RED_OUT_SINGLE)
+		return (">");
+	else if (type == RED_IN_DOUBLE)
+		return ("<<");
+	else 
+		return (">>");
+}
 
 void	print_tokens(t_var *depo)
 {
 	uint32_t	i;
+	uint32_t	j;
+	char		**cmd_name;
+	char		**full_cmd;
+	char		**redirections;
+	char		**files;
 
 	while (depo->input_list)
 	{
@@ -102,143 +90,25 @@ void	print_tokens(t_var *depo)
 		ft_printf("full input: ###%s###\n", depo->input_list->raw_input);
 		while (i < depo->input_list->n_cmd)
 		{
-			ft_printf("%u) cmd: ###%s###\ncmd tokens:\n", i + 1, depo->input_list->cmd_data[i]._cmd);
-			print_tks(depo->input_list->cmd_data[i].tokens);
-			// ft_printf("redirect tokens:\n");
-			// print_tks(depo->input_list->cmd_data[i].redirect_tokens);
+			cmd_name = depo->input_list->cmd_data[i].cmd_name;
+			full_cmd = depo->input_list->cmd_data[i].full_cmd;
+			redirections = depo->input_list->cmd_data[i].redirections;
+			files = depo->input_list->cmd_data[i].files;
+			ft_printf("%u) single cmd, n. redirections: %u\n\tcmd name: %s\n", i + 1, depo->input_list->cmd_data[i].n_redirect, cmd_name);
+			while (*full_cmd)
+				ft_printf("\t##%s##\n", *full_cmd++)
+			j = 0;
+			while (j < depo->input_list->n_cmd.n_redirect)
+			{
+				ft_printf("\tred type: %s file: ##%s##\n", from_code_to_str(depo->input_list->cmd_data[i].redirections[j]), depo->input_list->cmd_data[i].files[j]);
+				j++;
+			}
 			i++;
 		}
 		ft_printf("--\n");
 		depo->input_list = depo->input_list->next;
 	}
 }
-
-void	print_tks(t_token *tks)
-{
-	while (tks)
-	{
-		ft_printf("\ttoken: ###%s###\n", tks->word);
-		tks = tks->next;
-	}
-}
-
-// t_token	*tokenize_cmd(char *input)
-// {
-// 	char			*new_word;
-// 	t_token			*tokens;
-// 	t_token			*new_token;
-// 	bool        	end_word;
-// 	uint32_t    	len;
-//
-// 	tokens = NULL;
-// 	while (*input)
-// 	{
-// 		len = 0;
-// 		end_word = false;
-// 		new_word = NULL;
-// 		while (! end_word)
-// 		{
-// 			if (input[len] == '\0')
-// 				end_word = true;
-// 			else if (is_valid_quote(input, len))
-// 				len++;
-// 			else if (is_valid_space(input, len))
-// 			{
-// 				while (ft_isspace(input[len]))
-// 					len++;
-// 				end_word = true;
-// 			}
-// 			else if (is_valid_arrow(input, len))
-// 			{
-// 				len += skip_redirect_chars(input, len);
-// 				while (ft_isspace(input[len]))
-// 					len++;
-// 				end_word = true;
-// 			}
-// 			else
-// 			{
-// 				new_word = ft_append_char(new_word, input[len]);
-// 				if (new_word == NULL)
-// 				{
-// 					free_tokens(tokens);
-// 					return (NULL);
-// 				}
-// 				len++;
-// 				end_word = input[len] == '\0';
-// 			}
-// 		}
-// 		if (new_word)
-// 		{
-// 			new_token = create_new_token(new_word);
-// 			if (! new_token)
-// 			{
-// 				free_tokens(tokens);
-// 				return (NULL);
-// 			}
-// 			append_token(&tokens, new_token);
-// 		}
-// 		input += len;
-// 	}
-// 	return (tokens);
-// }
-
-// t_token	*tokenize_redirect(char *input)
-// {
-// 	char			*new_word;
-// 	t_token			*tokens;
-// 	t_token			*new_token;
-// 	bool        	end_word;
-// 	uint32_t    	len;
-// 	uint32_t		i;
-//
-// 	i = 0;
-// 	tokens = NULL;
-// 	while (input[i])
-// 	{
-// 		if (is_valid_arrow(input, i))
-// 		{
-// 			len = 0;
-// 			end_word = false;
-// 			new_word = NULL;
-// 			while (! end_word)
-// 			{
-// 				if (input[i + len] == '\0')
-// 					end_word = true;
-// 				else if (is_valid_space(input, i + len))
-// 				{
-// 					while (ft_isspace(input[i + len]))
-// 						len++;
-// 					end_word = true;
-// 				}
-// 				else
-// 				{
-// 					new_word = ft_append_char(new_word, input[i + len]);
-// 					if (new_word == NULL)
-// 					{
-// 						free_tokens(tokens);
-// 						return (NULL);
-// 					}
-// 					len++;
-// 					if (is_valid_arrow(input, i + len - 1) && (! is_valid_arrow(input, i + len)))
-// 						end_word = true;
-// 					else
-// 						end_word = input[len] == '\0';
-// 				}
-// 			}
-// 			new_token = create_new_token(new_word);
-// 			if (! new_token)
-// 			{
-// 				free_tokens(tokens);
-// 				return (NULL);
-// 			}
-// 			append_token(&tokens, new_token);
-// 			input += len;
-// 		}
-// 		else
-// 			i++;
-// 	}
-// 	return (tokens);
-// }
 
 t_token	*tokenize(char *input)
 {
@@ -258,8 +128,8 @@ t_token	*tokenize(char *input)
 		{
 			if (input[len] == '\0')
 				end_word = true;
-			else if (is_valid_quote(input, len))
-				len++;
+			// else if (is_valid_quote(input, len))
+			// 	len++;
 			else if (is_valid_space(input, len))
 			{
 				while (ft_isspace(input[len]))
@@ -295,4 +165,132 @@ t_token	*tokenize(char *input)
 		input += len;
 	}
 	return (tokens);
+}
+
+
+int32_t	count_words(t_token *tokens)
+{
+	uint32_t	cnt;
+
+	cnt = 0;
+	while (tokens)
+	{
+		if (is_arrow(*(tokens->word)))
+			tokens = tokens->next;
+		else
+			cnt++;
+		tokens = tokens->next;
+	}
+	return (cnt);
+}
+
+uint32_t	count_redirections(t_token *tokens)
+{
+	uint32_t	cnt;
+
+	cnt = 0;
+	while (tokens)
+	{
+		if (is_arrow(*(tokens->word)))
+			cnt++;
+		tokens = tokens->next;
+	}
+	return (cnt);
+}
+
+t_red_type	*fill_red_type(t_token *tokens, uint32_t n_redirect)
+{
+	t_red_type	*redirections;
+	uint32_t	i;
+
+	redirections = ft_calloc(n_redirect, sizeof(t_red_type));
+	if (redirections)
+	{
+		i = 0;
+		while (tokens)
+		{
+			if (is_arrow(*(tokens->word)))
+			{
+				if (ft_strncmp(tokens->word, "<", 1))
+					redirections[i] = RED_IN_SINGLE;
+				else if (ft_strncmp(tokens->word, ">", 1))
+					redirections[i] = RED_OUT_SINGLE;
+				else if (ft_strncmp(tokens->word, "<<", 1))
+					redirections[i] = RED_IN_DOUBLE;
+				else if (ft_strncmp(tokens->word, ">>", 1))
+					redirections[i] = RED_OUT_DOUBLE;
+				i++;
+			}
+			tokens = tokens->next;
+		}
+	}
+	return (redirections);
+}
+
+char	**fill_red_files(t_token *tokens, uint32_t n_redirect)
+{
+	char		**files;
+	uint32_t	i;
+
+	files = ft_calloc(n_redirect, sizeof(char *));
+	if (files)
+	{
+		i = 0;
+		while (tokens)
+		{
+			if (is_arrow(*(tokens->word)))
+			{
+				tokens = tokens->next;
+				files[i] = ft_strdup(tokens->word);
+				if (files[i] == NULL)
+				{
+					free(files);
+					return (NULL);
+				}
+				i++;
+			}
+			tokens = tokens->next;
+		}
+	}
+	return (files);
+}
+
+char	*get_cmd_name(t_token *tokens)
+{
+	while (tokens)
+	{
+		if (! is_arrow(*(tokens->word)))
+			return (ft_strdup(tokens->word));
+		tokens = tokens->next;
+	}
+	return (NULL);
+}
+
+char	**get_full_cmd(t_token *tokens, uint32_t n_words)
+{
+	char		**full_cmd;
+	uint32_t	i;
+
+	full_cmd = ft_calloc(n_words, sizeof(char *));
+	if (full_cmd)
+	{
+		i = 0;
+		while (tokens)
+		{
+			if (! is_arrow(*(tokens->word)))
+				tokens = tokens->next;
+			else
+			{
+				full_cmd[i] = ft_strdup(tokens->word);
+				if (full_cmd[i] == NULL)
+				{
+					free(full_cmd);
+					return (NULL);
+				}
+				i++;
+			}
+			tokens = tokens->next;
+		}
+	}
+	return (full_cmd);
 }

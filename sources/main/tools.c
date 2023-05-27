@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 19:09:49 by fra               #+#    #+#             */
-/*   Updated: 2023/05/26 01:05:14 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/27 02:31:23 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	**split_into_cmds(char *input_cmd)
 		tmp = ft_substr(input_cmd, 0, len);
 		cmds[i] = ft_trim(tmp, true);
 		if (cmds[i] == NULL)
-			return (ft_free_double((void ***) &cmds, i));
+			return (ft_free_double((void **) cmds, i));
 		i++;
 		input_cmd += len + (input_cmd[len] != 0);
 	}
