@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:56:10 by faru              #+#    #+#             */
-/*   Updated: 2023/05/27 02:51:25 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/27 02:55:38 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,7 +281,10 @@ char	**get_full_cmd(t_token *tokens, uint32_t n_words)
 				tokens = tokens->next;
 			else
 			{
-				full_cmd[i] = ft_strdup(tokens->word);
+				if (is_quote(*(tokens->word)))
+					full_cmd[i] = ft_substr(tokens->word, 1, ft_strlen(tokens->word) - 1);
+				else
+					full_cmd[i] = ft_strdup(tokens->word);
 				if (full_cmd[i] == NULL)
 				{
 					free(full_cmd);
