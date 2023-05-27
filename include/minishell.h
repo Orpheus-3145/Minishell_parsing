@@ -44,7 +44,6 @@ typedef struct s_env
 
 typedef struct s_token
 {
-	struct s_token	*prev;
 	struct s_token	*next;
 	char			*word;
 }	t_token;
@@ -52,7 +51,7 @@ typedef struct s_token
 typedef struct s_cmd
 {
 	char				*cmd_name;
-	char				**cmd_full;
+	char				**full_cmd;
 	uint32_t			n_redirect;
 	t_red_type			*redirections;			//could be list 
 	char				**files;

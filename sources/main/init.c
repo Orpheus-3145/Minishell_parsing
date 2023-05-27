@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:13:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/27 02:51:56 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/27 04:11:14 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,20 @@ t_var   *create_depo(char **envp)
 
 void	free_depo(t_var *depo)
 {
-	t_input *to_free;
+	t_input 	*to_free;
+	uint32_t	i;
 
 	while (depo->input_list)
 	{
-		ft_free_double((void **) depo->input_list->cmd_data->redirections, depo->input_list->cmd_data->n_redirect);
-		ft_free_double((void **) depo->input_list->cmd_data->files, -1);
-		ft_free_double((void **) depo->input_list->cmd_data->cmd_full, -1);
+		i = 0;
+		while (i < depo->input_list->n_cmd)
+		{
+			free(depo->input_list->cmd_data[i].cmd_name);
+			ft_free_double((void **) depo->input_list->cmd_data[i].full_cmd, -1);
+			free(depo->input_list->cmd_data[i].redirections);
+			ft_free_double((void **) depo->input_list->cmd_data[i].files, -1);
+			i++;
+		}
 		free(depo->input_list->cmd_data);
 		free(depo->input_list->raw_input);
 		to_free = depo->input_list;
@@ -63,7 +70,7 @@ t_input	*create_new_input(char *input)
 {
 	t_input *new_input;
 
-	new_input = malloc(sizeof(t_input));
+	new_input = ft_calloc(1, sizeof(t_input));
 	if (new_input != NULL)
 	{
 		new_input->raw_input = input;
@@ -71,7 +78,6 @@ t_input	*create_new_input(char *input)
 		new_input->cmd_data = create_new_cmd(new_input->raw_input, new_input->n_cmd);
 		if (new_input->cmd_data == NULL)
 		{
-			free(new_input->raw_input);
 			free(new_input);
 			return (NULL);
 		}
@@ -110,6 +116,16 @@ t_cmd	*create_new_cmd(char *input, uint32_t n_cmds)
 	return (new_cmd);
 }
 
+// void	print_tks(t_token *tks)
+// {
+// 	while (tks)
+// 	{
+// 		ft_printf("\ttoken: ###%s###\n", tks->word);
+// 		tks = tks->next;
+// 	}
+// 	ft_printf("\n");
+// }
+
 bool	get_token_info(t_cmd *cmd, char *input)
 {
 	t_token		*tokens;
@@ -117,14 +133,15 @@ bool	get_token_info(t_cmd *cmd, char *input)
 	tokens = tokenize(input);
 	if (tokens == NULL)
 		return (false);
+	// print_tks(tokens);
 	cmd->cmd_name = get_cmd_name(tokens);
 	if (cmd->cmd_name == NULL)
 	{
 		free_tokens(tokens);
 		return (false);
 	}
-	cmd->cmd_full = get_full_cmd(tokens, count_words(tokens));
-	if (cmd->cmd_full == NULL)
+	cmd->full_cmd = get_full_cmd(tokens, count_words(tokens));
+	if (cmd->full_cmd == NULL)
 	{
 		free(cmd->cmd_name);
 		free_tokens(tokens);
@@ -136,7 +153,7 @@ bool	get_token_info(t_cmd *cmd, char *input)
 		cmd->redirections = fill_red_type(tokens, cmd->n_redirect);
 		if (cmd->redirections == NULL)
 		{
-			free(cmd->cmd_full);
+			free(cmd->full_cmd);
 			free(cmd->cmd_name);
 			free_tokens(tokens);
 			return (false);
@@ -145,7 +162,7 @@ bool	get_token_info(t_cmd *cmd, char *input)
 		if (cmd->files == NULL)
 		{
 			free(cmd->redirections);
-			free(cmd->cmd_full);
+			free(cmd->full_cmd);
 			free(cmd->cmd_name);
 			free_tokens(tokens);
 			return (false);

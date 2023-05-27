@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:56:10 by faru              #+#    #+#             */
-/*   Updated: 2023/05/27 02:55:38 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/27 04:35:41 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ t_token *create_new_token(char *word)
 	if (new_ele)
 	{
 		new_ele->next = NULL;
-		new_ele->prev = NULL;
 		if (! is_only_spaces(word))
 		{
 			new_ele->word = ft_trim(word, true);
@@ -46,7 +45,6 @@ void	append_token(t_token **token_list, t_token *new_token)
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = new_token;
-		new_token->prev = tmp;
 	}
 }
 
@@ -79,34 +77,32 @@ void	print_tokens(t_var *depo)
 {
 	uint32_t	i;
 	uint32_t	j;
-	char		**cmd_name;
 	char		**full_cmd;
-	char		**redirections;
-	char		**files;
+	t_input		*inputs;
 
-	while (depo->input_list)
+	inputs = depo->input_list;
+	while (inputs)
 	{
 		i = 0;
-		ft_printf("full input: ###%s###\n", depo->input_list->raw_input);
-		while (i < depo->input_list->n_cmd)
+		ft_printf("full input: ###%s###\n", inputs->raw_input);
+		while (i < inputs->n_cmd)
 		{
-			cmd_name = depo->input_list->cmd_data[i].cmd_name;
-			full_cmd = depo->input_list->cmd_data[i].full_cmd;
-			redirections = depo->input_list->cmd_data[i].redirections;
-			files = depo->input_list->cmd_data[i].files;
-			ft_printf("%u) single cmd, n. redirections: %u\n\tcmd name: %s\n", i + 1, depo->input_list->cmd_data[i].n_redirect, cmd_name);
+			full_cmd = inputs->cmd_data[i].full_cmd;
+			ft_printf("%u) COMMAND\n\tcmd name: %s\n", i + 1, inputs->cmd_data[i].cmd_name);
 			while (*full_cmd)
-				ft_printf("\t##%s##\n", *full_cmd++)
+				ft_printf("\t\targ: %s\n", *full_cmd++);
 			j = 0;
-			while (j < depo->input_list->n_cmd.n_redirect)
+			if (inputs->cmd_data[i].n_redirect > 0)
+				ft_printf("\tn. redirections: %u\n", inputs->cmd_data[i].n_redirect);
+			while (j < inputs->cmd_data[i].n_redirect)
 			{
-				ft_printf("\tred type: %s file: ##%s##\n", from_code_to_str(depo->input_list->cmd_data[i].redirections[j]), depo->input_list->cmd_data[i].files[j]);
+				ft_printf("\t\tred type: %s file: %s\n", from_code_to_str(inputs->cmd_data[i].redirections[j]), inputs->cmd_data[i].files[j]);
 				j++;
 			}
 			i++;
 		}
 		ft_printf("--\n");
-		depo->input_list = depo->input_list->next;
+		inputs = inputs->next;
 	}
 }
 
@@ -167,7 +163,6 @@ t_token	*tokenize(char *input)
 	return (tokens);
 }
 
-
 int32_t	count_words(t_token *tokens)
 {
 	uint32_t	cnt;
@@ -211,13 +206,13 @@ t_red_type	*fill_red_type(t_token *tokens, uint32_t n_redirect)
 		{
 			if (is_arrow(*(tokens->word)))
 			{
-				if (ft_strncmp(tokens->word, "<", 1))
+				if (! ft_strncmp(tokens->word, "<", 1))
 					redirections[i] = RED_IN_SINGLE;
-				else if (ft_strncmp(tokens->word, ">", 1))
+				else if (! ft_strncmp(tokens->word, ">", 1))
 					redirections[i] = RED_OUT_SINGLE;
-				else if (ft_strncmp(tokens->word, "<<", 1))
+				else if (! ft_strncmp(tokens->word, "<<", 2))
 					redirections[i] = RED_IN_DOUBLE;
-				else if (ft_strncmp(tokens->word, ">>", 1))
+				else if (! ft_strncmp(tokens->word, ">>", 2))
 					redirections[i] = RED_OUT_DOUBLE;
 				i++;
 			}
@@ -232,7 +227,7 @@ char	**fill_red_files(t_token *tokens, uint32_t n_redirect)
 	char		**files;
 	uint32_t	i;
 
-	files = ft_calloc(n_redirect, sizeof(char *));
+	files = ft_calloc(n_redirect + 1, sizeof(char *));
 	if (files)
 	{
 		i = 0;
@@ -259,7 +254,9 @@ char	*get_cmd_name(t_token *tokens)
 {
 	while (tokens)
 	{
-		if (! is_arrow(*(tokens->word)))
+		if (is_arrow(*(tokens->word)))
+			tokens = tokens->next;
+		else
 			return (ft_strdup(tokens->word));
 		tokens = tokens->next;
 	}
@@ -271,13 +268,14 @@ char	**get_full_cmd(t_token *tokens, uint32_t n_words)
 	char		**full_cmd;
 	uint32_t	i;
 
-	full_cmd = ft_calloc(n_words, sizeof(char *));
+	full_cmd = ft_calloc(n_words + 1, sizeof(char *));
 	if (full_cmd)
 	{
 		i = 0;
 		while (tokens)
 		{
-			if (! is_arrow(*(tokens->word)))
+			// ft_printf("checking word: #%s#\n", tokens->word);
+			if (is_arrow(*(tokens->word)))
 				tokens = tokens->next;
 			else
 			{

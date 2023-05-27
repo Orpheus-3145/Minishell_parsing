@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:25:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/27 02:31:51 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/27 04:12:53 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,10 @@ void	main_loop(t_var *depo)
 				break ;
 			input = create_new_input(cmd);
 			if (input == NULL)		// MEMORY FAULT
+			{
+				free(cmd);
 				break ;
+			}
 			append_new_input(depo, input);
 		}
 		cmd = NULL;
