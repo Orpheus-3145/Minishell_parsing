@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/28 17:55:12 by faru          ########   odam.nl         */
+/*   Updated: 2023/05/28 18:27:06 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ char	*sub_var(char *input, t_env *env_vars)
 				return (ft_free(var_name));
 			ft_free(input);
 			input = exp_input;
-			if (var_name == NULL)
-				i = end + 1;
+			if (var_value != NULL)
+				i += ft_strlen(var_name) + 1;
 			else
-				i += ft_strlen(var_name) = 1;
-			ft_printf("new str: >%s<\nstarting now at: >%s<\n", input, input + i);
+				i--;
+			// ft_printf("new str: >%s<\nstarting now at: >%c<\n", input, input[i]);
 		}
 		else
 			i++;

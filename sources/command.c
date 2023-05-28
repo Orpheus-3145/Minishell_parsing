@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/16 17:13:47 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/28 16:14:51 by faru          ########   odam.nl         */
+/*   Updated: 2023/05/28 18:36:07 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,16 @@ t_input	*create_new_input(char *input, t_env *env_vars)
 	new_input = ft_calloc(1, sizeof(t_input));
 	if (new_input != NULL)
 	{
-		new_input->raw_input = input;
-		new_input->n_cmd = n_cmds(new_input->raw_input);
-		new_input->cmd_data = create_new_cmd(new_input->raw_input, env_vars, new_input->n_cmd);
-		if (new_input->cmd_data == NULL)
+		new_input->raw_input = sub_var(input, env_vars);
+		if (new_input->raw_input == NULL)
 			return (ft_free(new_input));
+		new_input->n_cmd = n_cmds(new_input->raw_input);
+		new_input->cmd_data = create_new_cmd(new_input->raw_input, new_input->n_cmd);
+		if (new_input->cmd_data == NULL)
+		{
+			ft_free(new_input->raw_input);
+			return (ft_free(new_input));
+		}
 		new_input->next = NULL;
 	}
 	return (new_input);
@@ -80,7 +85,7 @@ void	free_input_list(t_input *input_list)
 	}
 }
 
-t_cmd	*create_new_cmd(char *input, t_env *env_vars, uint32_t n_cmds)
+t_cmd	*create_new_cmd(char *input, uint32_t n_cmds)
 {
 	t_cmd       *new_cmd;
 	char        **str_cmds;
@@ -90,7 +95,6 @@ t_cmd	*create_new_cmd(char *input, t_env *env_vars, uint32_t n_cmds)
 	str_cmds = split_into_cmds(input);
 	if (str_cmds == NULL)
 		return (NULL);
-	sub_var(input, env_vars);
 	new_cmd = ft_calloc(n_cmds, sizeof(t_cmd));
 	if (new_cmd == NULL)
 		return (ft_free_double((void **) str_cmds, -1));

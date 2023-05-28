@@ -104,7 +104,7 @@ void	append_new_input(t_var *depo, t_input *new_input);
 
 void	free_input_list(t_input *input_list);
 
-t_cmd	*create_new_cmd(char *input, t_env *env_vars, uint32_t n_cmds);
+t_cmd	*create_new_cmd(char *input, uint32_t n_cmds);
 
 
 void    main_loop(t_var	*main_var);
