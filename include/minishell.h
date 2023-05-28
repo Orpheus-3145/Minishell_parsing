@@ -79,6 +79,8 @@ typedef struct s_var
 	int         status;
 }   t_var;
 
+void	fill_list(t_env **list);
+
 bool	is_quote(char to_check);
 
 bool	is_arrow(char to_check);
@@ -142,11 +144,13 @@ bool		get_redirections(t_token *tokens, t_cmd *cmd);
 bool		split_input(t_cmd *cmd, char *input);
 
 
-void	sub_var(char *input, t_env *env_vars);
+char	*sub_var(char *input, t_env *env_vars);
 
 char	*get_var_value(t_env *env_vars, char *var_name);
 
-bool	var_exists(t_env *env_vars, char *var_name);
+// bool	var_exists(t_env *env_vars, char *var_name);
+
+char	*insert_var(char *input, char *var_value, uint32_t start, uint32_t end);
 
 
 // void 	test_pipes(void);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   command.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 17:13:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/28 03:21:38 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   command.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/16 17:13:47 by fra           #+#    #+#                 */
+/*   Updated: 2023/05/28 16:14:51 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@ t_var   *create_depo(char **envp)
 		return (NULL);
 	depo->env_arr = envp;
 	depo->input_list = NULL;
-	// ...
+	fill_list(&depo->env_list);
 	return (depo);
-	
 }
 
 t_input	*create_new_input(char *input, t_env *env_vars)
