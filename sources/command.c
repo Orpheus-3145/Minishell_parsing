@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   command.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: fra <fra@student.42.fr>                      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/16 17:13:47 by fra           #+#    #+#                 */
-/*   Updated: 2023/05/28 18:36:07 by faru          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   command.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/16 17:13:47 by fra               #+#    #+#             */
+/*   Updated: 2023/05/28 23:14:37 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,15 @@ t_input	*create_new_input(char *input, t_env *env_vars)
 	new_input = ft_calloc(1, sizeof(t_input));
 	if (new_input != NULL)
 	{
-		new_input->raw_input = sub_var(input, env_vars);
-		if (new_input->raw_input == NULL)
+		new_input->raw_input = input;
+		new_input->exp_input = expand_vars(new_input->raw_input, env_vars);
+		if (new_input->exp_input == NULL)
 			return (ft_free(new_input));
-		new_input->n_cmd = n_cmds(new_input->raw_input);
-		new_input->cmd_data = create_new_cmd(new_input->raw_input, new_input->n_cmd);
+		new_input->n_cmd = n_cmds(new_input->exp_input);
+		new_input->cmd_data = create_new_cmd(new_input->exp_input, new_input->n_cmd);
 		if (new_input->cmd_data == NULL)
 		{
-			ft_free(new_input->raw_input);
+			ft_free(new_input->exp_input);
 			return (ft_free(new_input));
 		}
 		new_input->next = NULL;
@@ -79,6 +80,7 @@ void	free_input_list(t_input *input_list)
 		}
 		ft_free(input_list->cmd_data);
 		ft_free(input_list->raw_input);
+		ft_free(input_list->exp_input);
 		to_free = input_list;
 		input_list = input_list->next;
 		ft_free(to_free);

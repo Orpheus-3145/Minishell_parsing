@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:56:10 by faru              #+#    #+#             */
-/*   Updated: 2023/05/27 19:40:17 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/28 23:16:33 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	print_tokens(t_var *depo)
 	{
 		i = 0;
 		ft_printf("full input: ###%s###\n", inputs->raw_input);
+		ft_printf("exp input: ###%s###\n", inputs->exp_input);
 		while (i < inputs->n_cmd)
 		{
 			full_cmd = inputs->cmd_data[i].full_cmd;

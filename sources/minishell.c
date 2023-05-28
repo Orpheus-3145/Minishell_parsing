@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:25:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/28 03:19:21 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/28 23:22:09 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	main_loop(t_var *depo)
 	print_tokens(depo);
 	clear_history();		// why rl_clear_history() doesn't work??
 	free_input_list(depo->input_list);
+	free_list(depo->env_list);
 	ft_free(depo);
 }
 

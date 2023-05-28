@@ -64,6 +64,7 @@ typedef struct s_input
 {	
 	t_cmd			*cmd_data;
 	char			*raw_input;
+	char			*exp_input;
 	uint32_t		n_cmd;
 	struct s_input	*next;
 }   t_input;
@@ -80,6 +81,7 @@ typedef struct s_var
 }   t_var;
 
 void	fill_list(t_env **list);
+void	free_list(t_env *list);
 
 bool	is_quote(char to_check);
 
@@ -144,11 +146,9 @@ bool		get_redirections(t_token *tokens, t_cmd *cmd);
 bool		split_input(t_cmd *cmd, char *input);
 
 
-char	*sub_var(char *input, t_env *env_vars);
+char	*expand_vars(char *input, t_env *env_vars);
 
 char	*get_var_value(t_env *env_vars, char *var_name);
-
-// bool	var_exists(t_env *env_vars, char *var_name);
 
 char	*insert_var(char *input, char *var_value, uint32_t start, uint32_t end);
 
