@@ -85,6 +85,8 @@ bool	is_arrow(char to_check);
 
 bool 	is_valid_pipe(char *string, uint32_t pos_to_check);
 
+bool	is_valid_d_sign(char *string, uint32_t pos_to_check);
+
 bool 	is_valid_arrow(char *string, uint32_t pos_to_check);
 
 bool 	is_valid_quote(char *string, uint32_t pos_to_check);
@@ -94,13 +96,13 @@ bool	is_valid_space(char *string, uint32_t pos_to_check);
 
 t_var   *create_depo(char **envp);
 
-t_input *create_new_input(char *input);
+t_input	*create_new_input(char *input, t_env *env_vars);
 
 void	append_new_input(t_var *depo, t_input *new_input);
 
 void	free_input_list(t_input *input_list);
 
-t_cmd	*create_new_cmd(char *input, uint32_t n_cmds);
+t_cmd	*create_new_cmd(char *input, t_env *env_vars, uint32_t n_cmds);
 
 
 void    main_loop(t_var	*main_var);
@@ -138,6 +140,13 @@ bool		get_cmd(t_token *tokens, t_cmd *cmd);
 bool		get_redirections(t_token *tokens, t_cmd *cmd);
 
 bool		split_input(t_cmd *cmd, char *input);
+
+
+void	sub_var(char *input, t_env *env_vars);
+
+char	*get_var_value(t_env *env_vars, char *var_name);
+
+bool	var_exists(t_env *env_vars, char *var_name);
 
 
 // void 	test_pipes(void);

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 21:25:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/27 19:52:33 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/28 03:19:21 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	main_loop(t_var *depo)
 			cmd = ft_trim(cmd);
 			if (cmd == NULL)			// MEMORY FAULT
 				break ;
-			input = create_new_input(cmd);
+			input = create_new_input(cmd, depo->env_list);
 			if (input == NULL)		// MEMORY FAULT
 			{
 				ft_free(cmd);

@@ -30,7 +30,6 @@ all: $(LIBFT) $(NAME)
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --quiet
 
-#su Linux invertito l'ordine di $(OBJECTS) e $(LFLAGS)
 $(NAME): $(OBJ_DIR) $(OBJECTS)
 	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJECTS) $(LFLAGS) -o $(NAME)
 	@printf "(minishell) $(GREEN)Created program $(NAME)$(RESET)\n"

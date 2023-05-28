@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:13:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/27 18:15:14 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/28 03:21:38 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_var   *create_depo(char **envp)
 	
 }
 
-t_input	*create_new_input(char *input)
+t_input	*create_new_input(char *input, t_env *env_vars)
 {
 	t_input *new_input;
 
@@ -35,7 +35,7 @@ t_input	*create_new_input(char *input)
 	{
 		new_input->raw_input = input;
 		new_input->n_cmd = n_cmds(new_input->raw_input);
-		new_input->cmd_data = create_new_cmd(new_input->raw_input, new_input->n_cmd);
+		new_input->cmd_data = create_new_cmd(new_input->raw_input, env_vars, new_input->n_cmd);
 		if (new_input->cmd_data == NULL)
 			return (ft_free(new_input));
 		new_input->next = NULL;
@@ -81,7 +81,7 @@ void	free_input_list(t_input *input_list)
 	}
 }
 
-t_cmd	*create_new_cmd(char *input, uint32_t n_cmds)
+t_cmd	*create_new_cmd(char *input, t_env *env_vars, uint32_t n_cmds)
 {
 	t_cmd       *new_cmd;
 	char        **str_cmds;
@@ -91,6 +91,7 @@ t_cmd	*create_new_cmd(char *input, uint32_t n_cmds)
 	str_cmds = split_into_cmds(input);
 	if (str_cmds == NULL)
 		return (NULL);
+	sub_var(input, env_vars);
 	new_cmd = ft_calloc(n_cmds, sizeof(t_cmd));
 	if (new_cmd == NULL)
 		return (ft_free_double((void **) str_cmds, -1));

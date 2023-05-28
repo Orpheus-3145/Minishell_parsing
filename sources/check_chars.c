@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 00:55:08 by fra               #+#    #+#             */
-/*   Updated: 2023/05/27 19:53:13 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/28 03:34:04 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,25 @@ bool	is_valid_arrow(char *string, uint32_t pos_to_check)
 		return (is_outside_quotes(string, pos_to_check));
 }
 
+bool	is_valid_d_sign(char *string, uint32_t pos_to_check)
+{
+	uint32_t	i;
+	bool		open_quotes;
+	
+	if (string[pos_to_check] != '$')
+		return (false);
+	if ((string[pos_to_check + 1] == '\0' ) || ft_isspace(string[pos_to_check + 1]))
+		return (false);
+	i = 0;
+	open_quotes = false;
+	while (i < pos_to_check)
+	{
+		if (string[i] == '\'')
+			open_quotes = ! open_quotes;
+		i++;
+	}
+	return (! open_quotes);
+}
 bool	is_quote(char to_check)
 {
 	return ((to_check == '\'') || (to_check == '\"'));
@@ -46,3 +65,4 @@ bool	is_arrow(char to_check)
 {
 	return ((to_check == '<') || (to_check == '>'));
 }
+
