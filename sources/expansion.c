@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 01:49:19 by fra               #+#    #+#             */
-/*   Updated: 2023/05/29 00:19:49 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/29 15:39:16 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*insert_var(char *input, char *var, uint32_t start, uint32_t end)
 		ft_strlcpy(tmp, input, start);
 		tmp += start - 1;
 		ft_strlcpy(tmp, var, var_len + 1);
-		tmp += len_var;
+		tmp += var_len;
 		ft_strlcpy(tmp, input + end, old_len - end + 1);
 		ft_free(input);
 	}

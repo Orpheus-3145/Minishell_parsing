@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:56:10 by faru              #+#    #+#             */
-/*   Updated: 2023/05/28 23:16:33 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/29 16:22:56 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,4 +156,20 @@ t_token	*tokenize(char *input)
 		input += len;
 	}
 	return (tokens);
+}
+
+bool	clear_quotes(t_token *tokens)
+{
+	char	*free_of_quotes;
+
+	while (tokens)
+	{
+		if (ft_strchr(tokens, '\'') || ft_strchr(tokens, '\"'))
+
+	}
+}
+
+char	*clear_str(char *to_clear)
+{
+
 }

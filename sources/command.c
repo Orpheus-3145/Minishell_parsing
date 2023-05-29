@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:13:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/28 23:14:37 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/29 15:46:25 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ t_cmd	*create_new_cmd(char *input, uint32_t n_cmds)
 	{
 		new_cmd->fd_in = 0;
 		new_cmd->fd_out = 1;
+		// ft_printf("splitting: %s\n", str_cmds[i]);
 		cmd_status = split_input(new_cmd, str_cmds[i]);
 		if (cmd_status == false)
 		{
