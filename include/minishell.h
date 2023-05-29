@@ -65,6 +65,7 @@ typedef struct s_input
 {	
 	t_cmd			*cmd_data;
 	char			*raw_input;
+	char			*here_doc_input;
 	char			*exp_input;
 	uint32_t		n_cmd;
 	struct s_input	*next;
@@ -84,9 +85,6 @@ typedef struct s_var
 void	fill_list(t_env **list);
 void	free_list(t_env *list);
 
-bool	is_quote(char to_check);
-
-bool	is_arrow(char to_check);
 
 bool 	is_valid_pipe(char *string, uint32_t pos_to_check);
 
@@ -136,6 +134,9 @@ char	*isolate_eof(char *start);
 char	*read_stdin(char *buffer);
 
 
+char	*modify(char *input);
+
+
 uint32_t	count_words(t_token *tokens);
 
 uint32_t	count_redirections(t_token *tokens);
@@ -178,7 +179,7 @@ char	*insert_var(char *input, char *var_value, uint32_t start, uint32_t end);
 
 // void	test_char_skip(void);
 
-void    test_clear_quotes(void);
+// void    test_clear_quotes(void);
 
 
 t_token *create_new_token(char *word);
@@ -204,10 +205,15 @@ uint32_t	skip_redirect_chars(char *cmd, uint32_t pos);
 
 bool	is_only_spaces(char	*to_check);
 
-char	*clear_str(char *to_clear);
+char	*remove_quotes(char *to_clear);
 
 bool	is_outside_quotes(char *string, uint32_t pos_to_check);
 
 bool	has_trailing_pipe(char	*cmd);
+
+bool	is_quote(char to_check);
+
+bool	is_arrow(char to_check);
+
 
 #endif

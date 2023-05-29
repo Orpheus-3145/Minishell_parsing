@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:20:39 by fra               #+#    #+#             */
-/*   Updated: 2023/05/29 18:56:14 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/29 19:22:01 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,12 @@ bool	get_cmd(t_token *tokens, t_cmd *cmd)
 			tokens = tokens->next;
 		else
 		{
-			cmd->full_cmd[i] = clear_str(tokens->word);
+			cmd->full_cmd[i] = remove_quotes(tokens->word);
 			if (cmd->full_cmd[i] == NULL)
-				return (ft_free(cmd->full_cmd));
+			{
+				ft_free(cmd->full_cmd);
+				return (false);
+			}
 			i++;
 		}
 		tokens = tokens->next;
@@ -86,12 +89,15 @@ bool	get_redirections(t_token *tokens, t_cmd *cmd)
 		{
 			cmd->redirections[i] = get_type_redirection(tokens->word);
 			tokens = tokens->next;
-			cmd->files[i] = clear_str(tokens->word);
-			if (cmd->files[i] == NULL)
+			if (cmd->redirections[i] != RED_IN_DOUBLE)
 			{
-				ft_free(cmd->redirections);
-				ft_free(cmd->files);
-				return (false);
+				cmd->files[i] = remove_quotes(tokens->word);
+				if (cmd->files[i] == NULL)
+				{
+					ft_free(cmd->redirections);
+					ft_free(cmd->files);
+					return (false);
+				}
 			}
 			i++;
 		}

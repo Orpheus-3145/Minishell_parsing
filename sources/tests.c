@@ -6,23 +6,55 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:49:18 by fra               #+#    #+#             */
-/*   Updated: 2023/05/29 17:18:12 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/29 19:17:36 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	test_clear_quotes(void)
-{
-	char *string;
+// void	test_clear_quotes(void)
+// {
+// 	char *string;
 
-	string = "\'asd\'";
-	ft_printf("str: %s - trimmed %s\n", string, clear_str(string));
-	string = "\"asd\"";
-	ft_printf("str: %s - trimmed %s\n", string, clear_str(string));
-	string = "asd";
-	ft_printf("str: %s - trimmed %s\n", string, clear_str(string));
-}
+// 	string = "asd";
+// 	ft_printf("str: >%s< - trimmed >%s<\n", string, clear_str(string));
+
+// 	string = "\'asd\'";
+// 	ft_printf("str: >%s< - trimmed >%s<\n", string, clear_str(string));
+
+// 	string = "\"asd\"";
+// 	ft_printf("str: >%s< - trimmed >%s<\n", string, clear_str(string));
+
+// 	string = "";
+// 	ft_printf("str: >%s< - trimmed >%s<\n", string, clear_str(string));
+
+// 	string = "\'";
+// 	ft_printf("str: >%s< - trimmed >%s<\n", string, clear_str(string));
+
+// 	string = "\"";
+// 	ft_printf("str: >%s< - trimmed >%s<\n", string, clear_str(string));
+
+// 	string = "as\'d";
+// 	ft_printf("str: >%s< - trimmed >%s<\n", string, clear_str(string));
+
+// 	string = "as\"d";
+// 	ft_printf("str: >%s< - trimmed >%s<\n", string, clear_str(string));
+
+// 	string = "as\'ASD\'ed";
+// 	ft_printf("str: >%s< - trimmed >%s<\n", string, clear_str(string));
+
+// 	string = "\'asd\'ASD";
+// 	ft_printf("str: >%s< - trimmed >%s<\n", string, clear_str(string));
+
+// 	string = "asd\"ASD\"";
+// 	ft_printf("str: >%s< - trimmed >%s<\n", string, clear_str(string));
+	
+// 	string = "a\"ASD\"a";
+// 	ft_printf("str: >%s< - trimmed >%s<\n", string, clear_str(string));
+	
+// 	string = "asd\"ASD";
+// 	ft_printf("str: >%s< - trimmed >%s<\n", string, clear_str(string));
+// }
 
 // void	test_pipes(void)
 // {

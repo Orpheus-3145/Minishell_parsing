@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 01:49:19 by fra               #+#    #+#             */
-/*   Updated: 2023/05/29 15:39:16 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/29 19:35:13 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*expand_vars(char *input, t_env *env_vars)
 		if (is_valid_d_sign(exp_input, i++))
 		{
 			end = i;
-			while (exp_input[end] && (! ft_isspace(exp_input[end])) && (exp_input[end] != '|'))
+			while (exp_input[end] && (! ft_isspace(exp_input[end])) && (exp_input[end] != '|') && (! is_quote(exp_input[end])))
 				end++;
 			var_name = ft_substr(exp_input, i, end - i);
 			if (var_name == NULL)

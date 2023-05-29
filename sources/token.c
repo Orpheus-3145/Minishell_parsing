@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:56:10 by faru              #+#    #+#             */
-/*   Updated: 2023/05/29 18:00:04 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/29 19:36:54 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,6 @@ t_token	*tokenize(char *input)
 		{
 			if (input[len] == '\0')
 				end_word = true;
-			// else if (is_valid_quote(input, len))
-			// 	len++;
 			else if (is_valid_space(input, len))
 			{
 				while (ft_isspace(input[len]))

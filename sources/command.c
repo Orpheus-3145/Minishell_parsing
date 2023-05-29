@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:13:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/29 15:46:25 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/29 20:04:13 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,22 @@ t_input	*create_new_input(char *input, t_env *env_vars)
 	if (new_input != NULL)
 	{
 		new_input->raw_input = input;
-		new_input->exp_input = expand_vars(new_input->raw_input, env_vars);
-		if (new_input->exp_input == NULL)
+		new_input->here_doc_input = modify(input);		// re-arranging here-doc input
+		if (new_input->here_doc_input == NULL)
 			return (ft_free(new_input));
+		new_input->exp_input = expand_vars(new_input->raw_input, env_vars);	// expanding variables
+		
+		if (new_input->exp_input == NULL)
+		{
+			ft_free(new_input->here_doc_input);
+			return (ft_free(new_input));
+		}
 		new_input->n_cmd = n_cmds(new_input->exp_input);
 		new_input->cmd_data = create_new_cmd(new_input->exp_input, new_input->n_cmd);
 		if (new_input->cmd_data == NULL)
 		{
 			ft_free(new_input->exp_input);
+			ft_free(new_input->here_doc_input);
 			return (ft_free(new_input));
 		}
 		new_input->next = NULL;
