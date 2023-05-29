@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 19:09:49 by fra               #+#    #+#             */
-/*   Updated: 2023/05/27 19:54:17 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/29 19:00:22 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,37 @@ bool	is_only_spaces(char	*to_check)
 	while (ft_isspace(*to_check))
 		to_check++;
 	return (*to_check == '\0');
+}
+
+char	*clear_str(char *to_clear)
+{
+	char		*cleaned_str;
+	uint32_t	len;
+	uint32_t	i;
+	
+	if ((! ft_strchr(to_clear, '\'')) && (! ft_strchr(to_clear, '\"')))
+		return (ft_strdup(to_clear));
+	else
+	{
+		len = ft_strlen(to_clear);
+		i = 0;
+		while (to_clear[i])
+		{
+			if (is_val)
+		}
+		cleaned_str = ft_calloc(len + 1, sizeof(char));
+		if (cleaned_str)
+		{
+			i = 0;
+			while (*to_clear)
+			{
+				if (! is_quote(*to_clear))
+					cleaned_str[i++] = *to_clear;
+				to_clear++;
+			}
+		}
+		return (cleaned_str);
+	}
 }
 
 bool	has_trailing_pipe(char	*cmd)

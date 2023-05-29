@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:56:10 by faru              #+#    #+#             */
-/*   Updated: 2023/05/29 16:22:56 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/29 18:00:04 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_token *create_new_token(char *word)
 	if (new_ele)
 	{
 		new_ele->next = NULL;
+		new_ele->used = false;
 		if (! is_only_spaces(word))
 		{
 			new_ele->word = ft_trim(word);
@@ -44,6 +45,30 @@ void	append_token(t_token **token_list, t_token *new_token)
 		tmp->next = new_token;
 	}
 }
+
+// void	drop_token(t_token **token_list, t_token *to_drop)
+// {
+// 	if (to_drop == *token_list)
+// 	{
+// 		*token_list = (*token_list)->next;
+// 		ft_free(to_drop->word);
+// 		ft_free(to_drop);
+// 	}
+// 	else
+// 	{
+// 		while((*token_list)->next)
+// 		{
+// 			if ((*token_list)->next == to_drop)
+// 			{
+// 				(*token_list)->next = to_drop->next;
+// 				ft_free(to_drop->word);
+// 				ft_free(to_drop);
+// 				break;
+// 			}
+// 			(*token_list) = (*token_list)->next;
+// 		}
+// 	}
+// }
 
 void	free_tokens(t_token *token_list)
 {
@@ -156,20 +181,4 @@ t_token	*tokenize(char *input)
 		input += len;
 	}
 	return (tokens);
-}
-
-bool	clear_quotes(t_token *tokens)
-{
-	char	*free_of_quotes;
-
-	while (tokens)
-	{
-		if (ft_strchr(tokens, '\'') || ft_strchr(tokens, '\"'))
-
-	}
-}
-
-char	*clear_str(char *to_clear)
-{
-
 }

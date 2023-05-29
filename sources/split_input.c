@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:20:39 by fra               #+#    #+#             */
-/*   Updated: 2023/05/29 16:27:35 by fra              ###   ########.fr       */
+/*   Updated: 2023/05/29 18:56:14 by fra              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,35 +56,15 @@ bool	get_cmd(t_token *tokens, t_cmd *cmd)
 			tokens = tokens->next;
 		else
 		{
-			// if (is_quote(*(tokens->word)))
-			// 	cmd->full_cmd[i] = ft_substr(tokens->word, 1, ft_strlen(tokens->word) - 2);
-			// else
-			cmd->full_cmd[i] = ft_strdup(tokens->word);
+			cmd->full_cmd[i] = clear_str(tokens->word);
 			if (cmd->full_cmd[i] == NULL)
-			{
-				ft_free(cmd->full_cmd);
-				return (false);
-			}
+				return (ft_free(cmd->full_cmd));
 			i++;
 		}
 		tokens = tokens->next;
 	}
 	cmd->cmd_name = *(cmd->full_cmd);
 	return (true);
-}
-
-bool	is_redirection(char	*word)
-{
-	if (is_quote(*word))
-		word++;
-	if (! is_arrow(*word))
-		return (false);
-	word++;
-	if (! is_arrow(*word))
-		return (false);
-	if (is_quote(*word))
-		word++;
-	return (*word == '\0')
 }
 
 bool	get_redirections(t_token *tokens, t_cmd *cmd)
@@ -102,18 +82,11 @@ bool	get_redirections(t_token *tokens, t_cmd *cmd)
 	i = 0;
 	while (tokens)
 	{
-		if (is_redirection(tokens->word))				// NB need to check if redirection is inside quotes
+		if (is_redirection(tokens->word))	// NB need to check if redirection is inside quotes
 		{
-			if (! ft_strncmp(tokens->word, "<", 1))
-				cmd->redirections[i] = RED_IN_SINGLE;
-			else if (! ft_strncmp(tokens->word, ">", 1))
-				cmd->redirections[i] = RED_OUT_SINGLE;
-			else if (! ft_strncmp(tokens->word, "<<", 2))
-				cmd->redirections[i] = RED_IN_DOUBLE;
-			else if (! ft_strncmp(tokens->word, ">>", 2))
-				cmd->redirections[i] = RED_OUT_DOUBLE;
+			cmd->redirections[i] = get_type_redirection(tokens->word);
 			tokens = tokens->next;
-			cmd->files[i] = ft_strdup(tokens->word);
+			cmd->files[i] = clear_str(tokens->word);
 			if (cmd->files[i] == NULL)
 			{
 				ft_free(cmd->redirections);
@@ -135,6 +108,13 @@ bool	split_input(t_cmd *cmd, char *input)
 	tokens = tokenize(input);
 	if (tokens == NULL)
 		return (false);
+	cmd->n_words = count_words(tokens);
+	status = get_cmd(tokens, cmd);
+	if (status == false)
+	{
+		free_tokens(tokens);
+		return (false);
+	}
 	cmd->n_redirect = count_redirections(tokens);
 	if (cmd->n_redirect > 0)
 	{
@@ -151,28 +131,50 @@ bool	split_input(t_cmd *cmd, char *input)
 		cmd->redirections = NULL;
 		cmd->files = NULL;
 	}
-	cmd->n_words = count_words(tokens);
-	status = get_cmd(tokens, cmd);
-	if (status == false)
-	{
-		free_tokens(tokens);
-		return (false);
-	}
 	free_tokens(tokens);
 	return (true);
 }
 
-bool	is_outside_here_doc(t_token *tokens, t_token *to_check)
+bool	is_redirection(char	*word)
 {
-	char	*eof;
-
-	eof = NULL;
-	while (tokens)
+	if (is_quote(*word))
+		word++;
+	if (! is_arrow(*word++))
+		return (false);
+	if (is_quote(*word))
+		word++;
+	if (*word == '\0')
+		return (true);
+	else if (is_arrow(*word++))
 	{
-		if (! ft_strncmp(tokens->word, "<<", 2))
-			eof = tokens->word;
-		else if (! ft_strncmp(tokens->word, eof, ft_strlen(eof)))
-			eof = NULL;
-		
+		if (is_quote(*word))
+			word++;
+		return (*word == '\0');
+	}
+	else
+		return (false);
+}
+
+t_red_type	get_type_redirection(char *to_check)
+{
+	if (is_quote(*to_check))
+		to_check++;
+	if (*to_check++ == '<')
+	{
+		if (is_quote(*to_check))
+			to_check++;
+		if (*to_check == '<')
+			return (RED_IN_DOUBLE);
+		else
+			return (RED_IN_SINGLE);
+	}
+	else
+	{
+		if (is_quote(*to_check))
+			to_check++;
+		if (*to_check == '<')
+			return (RED_IN_DOUBLE);
+		else
+			return (RED_IN_SINGLE);
 	}
 }

@@ -46,6 +46,7 @@ typedef struct s_token
 {
 	struct s_token	*next;
 	char			*word;
+	bool			used;
 }	t_token;
 
 typedef struct s_cmd
@@ -145,6 +146,10 @@ bool		get_redirections(t_token *tokens, t_cmd *cmd);
 
 bool		split_input(t_cmd *cmd, char *input);
 
+bool		is_redirection(char	*word);
+
+t_red_type	get_type_redirection(char *to_check);
+
 
 char	*expand_vars(char *input, t_env *env_vars);
 
@@ -173,12 +178,16 @@ char	*insert_var(char *input, char *var_value, uint32_t start, uint32_t end);
 
 // void	test_char_skip(void);
 
+void    test_clear_quotes(void);
+
 
 t_token *create_new_token(char *word);
 
 void	append_token(t_token **token_list, t_token *new_token);
 
 void	free_tokens(t_token *token_list);
+
+// void	drop_token(t_token **token_list, t_token *to_drop);
 
 void	print_tokens(t_var *depo);
 
@@ -194,6 +203,8 @@ char	**append_string(char **old_matrix, char *to_append);
 uint32_t	skip_redirect_chars(char *cmd, uint32_t pos);
 
 bool	is_only_spaces(char	*to_check);
+
+char	*clear_str(char *to_clear);
 
 bool	is_outside_quotes(char *string, uint32_t pos_to_check);
 
