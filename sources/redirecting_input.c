@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   redirecting.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/19 17:46:55 by fra               #+#    #+#             */
-/*   Updated: 2023/05/28 23:12:51 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   redirecting_input.c                                :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
+/*   Updated: 2023/05/30 18:20:54 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 
 int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos)
 {
-	while (cmd && cmd[start_pos] && (cmd[start_pos] != '\n'))
+	// ft_printf("starting again in: %s\n", cmd + start_pos);
+	while (cmd && cmd[start_pos])// && (cmd[start_pos] != '\n'))
 	{
+		// ft_printf("curr char inspected: |%c|\n", cmd[start_pos]);
 		if (cmd[start_pos] == '<' && is_outside_quotes(cmd, start_pos))
 		{
+			// ft_printf("arrow!\n");
 			start_pos++;
 			if (cmd[start_pos] == '<')
 			{

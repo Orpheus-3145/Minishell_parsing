@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   split_input.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/27 17:20:39 by fra               #+#    #+#             */
-/*   Updated: 2023/05/29 19:22:01 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   split_input.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/27 17:20:39 by fra           #+#    #+#                 */
+/*   Updated: 2023/05/30 19:05:35 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +89,12 @@ bool	get_redirections(t_token *tokens, t_cmd *cmd)
 		{
 			cmd->redirections[i] = get_type_redirection(tokens->word);
 			tokens = tokens->next;
-			if (cmd->redirections[i] != RED_IN_DOUBLE)
+			cmd->files[i] = remove_quotes(tokens->word);
+			if (cmd->files[i] == NULL)
 			{
-				cmd->files[i] = remove_quotes(tokens->word);
-				if (cmd->files[i] == NULL)
-				{
-					ft_free(cmd->redirections);
-					ft_free(cmd->files);
-					return (false);
-				}
+				ft_free(cmd->redirections);
+				ft_free(cmd->files);
+				return (false);
 			}
 			i++;
 		}
@@ -110,7 +107,7 @@ bool	split_input(t_cmd *cmd, char *input)
 {
 	t_token		*tokens;
 	bool		status;
-
+	// t_red_type = RED_OUT_SINGLE;
 	tokens = tokenize(input);
 	if (tokens == NULL)
 		return (false);

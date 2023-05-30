@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tmp_ll.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/28 16:01:04 by faru              #+#    #+#             */
-/*   Updated: 2023/05/29 00:03:04 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   tmp_ll.c                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/28 16:01:04 by faru          #+#    #+#                 */
+/*   Updated: 2023/05/30 16:13:53 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void fill_list(t_env **list)
 {
     *list = ft_calloc(1, sizeof(t_env));
     (*list)->key = "key1";
-    (*list)->value = "prova split ciao";
+    (*list)->value = "prova | ciao";
     
     (*list)->next = ft_calloc(1, sizeof(t_env));
     (*list)->next->key = "key2";

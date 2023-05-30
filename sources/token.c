@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 13:56:10 by faru              #+#    #+#             */
-/*   Updated: 2023/05/29 19:36:54 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   token.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/23 13:56:10 by faru          #+#    #+#                 */
+/*   Updated: 2023/05/30 18:39:47 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void	print_tokens(t_var *depo)
 	{
 		i = 0;
 		ft_printf("full input: ###%s###\n", inputs->raw_input);
+		ft_printf("here_doc input: ###%s###\n", inputs->here_doc_input);
 		ft_printf("exp input: ###%s###\n", inputs->exp_input);
 		while (i < inputs->n_cmd)
 		{

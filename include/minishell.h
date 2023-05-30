@@ -52,9 +52,9 @@ typedef struct s_token
 typedef struct s_cmd
 {
 	char				*cmd_name;
-	uint32_t			n_words;
+	uint32_t			n_words;			// maybe we don't need it
 	char				**full_cmd;
-	uint32_t			n_redirect;
+	uint32_t			n_redirect;			// maybe we don't need it
 	t_red_type			*redirections;
 	char				**files;
 	int32_t				fd_in;

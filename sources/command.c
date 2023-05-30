@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   command.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 17:13:47 by fra               #+#    #+#             */
-/*   Updated: 2023/05/29 20:04:13 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   command.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/16 17:13:47 by fra           #+#    #+#                 */
+/*   Updated: 2023/05/30 18:37:35 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ t_input	*create_new_input(char *input, t_env *env_vars)
 		new_input->here_doc_input = modify(input);		// re-arranging here-doc input
 		if (new_input->here_doc_input == NULL)
 			return (ft_free(new_input));
-		new_input->exp_input = expand_vars(new_input->raw_input, env_vars);	// expanding variables
-		
+		new_input->exp_input = expand_vars(new_input->here_doc_input, env_vars);	// expanding variables
 		if (new_input->exp_input == NULL)
 		{
 			ft_free(new_input->here_doc_input);
